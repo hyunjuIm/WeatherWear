@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WeatherWear</string>
+
+    <string name="home">홈</string>
+    <string name="weather">날씨</string>
+    <string name="wear">데일리룩</string>
+    <string name="setting">설정</string>
+
 </resources>
