@@ -89,6 +89,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 }
             }
         }
+
+        viewModel.weatherStateLiveData.observe(viewLifecycleOwner) {
+            Log.d("날씨 정보", "$it")
+        }
     }
 
     // 위치 퍼미션 얻기
@@ -134,12 +138,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Log.d(TAG, "${location.latitude}, ${location.longitude}")
             viewModel.loadReverseGeoInformation(location.latitude, location.longitude)
-            Log.d(
-                TAG,
-                "좌표값 : " + convertGridGPS(TO_GRID, location.latitude, location.longitude).toString()
-            )
+
+            val grid = convertGridGPS(TO_GRID, location.latitude, location.longitude)
+            viewModel.getWeatherInformation(grid.x.toInt(), grid.y.toInt())
+
             removeLocationListener()
         }
     }
