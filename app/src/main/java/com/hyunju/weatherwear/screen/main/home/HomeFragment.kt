@@ -71,8 +71,24 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    override fun observeData() {
-        getMyLocation()
+    override fun observeData() = with(binding) {
+        viewModel.homeStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is HomeState.Uninitialized -> {
+                    locationTextView.text = getString(R.string.loading)
+                    getMyLocation()
+                }
+                is HomeState.Loading -> {
+                    locationTextView.text = getString(R.string.loading)
+                }
+                is HomeState.Success -> {
+                    locationTextView.text = it.location
+                }
+                is HomeState.Error -> {
+                    locationTextView.text = getString(R.string.location_not_found)
+                }
+            }
+        }
     }
 
     // 위치 퍼미션 얻기
@@ -119,7 +135,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
             Log.d(TAG, "${location.latitude}, ${location.longitude}")
-            Log.d(TAG, "좌표값 : "+convertGridGPS(TO_GRID, location.latitude, location.longitude).toString())
+            viewModel.loadReverseGeoInformation(location.latitude, location.longitude)
+            Log.d(
+                TAG,
+                "좌표값 : " + convertGridGPS(TO_GRID, location.latitude, location.longitude).toString()
+            )
             removeLocationListener()
         }
     }
