@@ -5,6 +5,8 @@
     <color name="white">#FFFFFF</color>
     <color name="snow">#F8F8FA</color>
 
+    <color name="transparent">#00FFFFFF</color>
+
     <color name="red">#FF3120</color>
 
     <color name="pastel_red">#FFEFEF</color>
@@ -15,6 +17,8 @@
     <color name="blue_200">#5397E2</color>
     <color name="blue_500">#5584AC</color>
     <color name="blue_700">#22577E</color>
+
+    <color name="sky_100">#7ECCF3</color>
 
     <color name="gray_200">#DCDCDC</color>
     <color name="gray_500">#767676</color>

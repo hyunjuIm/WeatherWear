@@ -7,8 +7,10 @@
         <item name="colorPrimaryVariant">@color/blue_500</item>
         <item name="colorOnPrimary">@color/white</item>
 
+        <item name="android:windowBackground">@color/white</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- 폰트 설정 -->
@@ -19,4 +21,11 @@
         <item name="colorAccent">@color/gray_500</item>
 
     </style>
+
+    <!-- 홈 화면 테마 -->
+    <style name="Theme.WeatherWear.Home">
+        <item name="android:statusBarColor">@color/sky_100</item>
+        <item name="android:windowBackground">@drawable/bg_gradient_blue_sky</item>
+    </style>
+
 </resources>

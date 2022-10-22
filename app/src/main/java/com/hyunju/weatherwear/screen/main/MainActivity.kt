@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
+import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,9 +22,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
+        showFragment(HomeFragment.newInstance(), HomeFragment.TAG)
+
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_home -> {
+                    showFragment(HomeFragment.newInstance(), HomeFragment.TAG)
                     true
                 }
                 R.id.menu_weather -> {
@@ -55,4 +59,5 @@ class MainActivity : AppCompatActivity() {
                 .commitAllowingStateLoss()
         }
     }
+
 }
