@@ -6,7 +6,6 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -15,8 +14,6 @@ import androidx.fragment.app.viewModels
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.screen.base.BaseFragment
-import com.hyunju.weatherwear.util.location.TO_GRID
-import com.hyunju.weatherwear.util.location.convertGridGPS
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,28 +68,43 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    override fun observeData() = with(binding) {
-        viewModel.homeStateLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                is HomeState.Uninitialized -> {
-                    locationTextView.text = getString(R.string.loading)
-                    getMyLocation()
-                }
-                is HomeState.Loading -> {
-                    locationTextView.text = getString(R.string.loading)
-                }
-                is HomeState.Success -> {
-                    locationTextView.text = it.location
-                }
-                is HomeState.Error -> {
-                    locationTextView.text = getString(R.string.location_not_found)
-                }
+    override fun observeData() = viewModel.homeStateLiveData.observe(this) {
+        when (it) {
+            is HomeState.Uninitialized -> handleUninitializedState()
+            is HomeState.Loading -> handleLoadingState()
+            is HomeState.Success -> handleSuccessState(it)
+            is HomeState.Error -> handleErrorState(it)
+        }
+    }
+
+    private fun handleUninitializedState() = with(binding) {
+        locationTextView.text = getString(R.string.finding_location)
+        getMyLocation()
+    }
+
+    private fun handleLoadingState() = with(binding) {
+        locationTextView.text = getString(R.string.loading)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun handleSuccessState(state: HomeState.Success) = with(binding) {
+        locationTextView.text = state.location
+        temperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
+        when (state.weatherInfo.SKY) {
+            in 0..5 -> {
+                weatherTextView.text = "맑음"
+            }
+            in 6..8 -> {
+                weatherTextView.text = "구름많음"
+            }
+            else -> {
+                weatherTextView.text = "흐림"
             }
         }
+    }
 
-        viewModel.weatherStateLiveData.observe(viewLifecycleOwner) {
-            Log.d("날씨 정보", "$it")
-        }
+    private fun handleErrorState(state: HomeState.Error) = with(binding) {
+        locationTextView.text = getString(state.messageId)
     }
 
     // 위치 퍼미션 얻기
@@ -138,11 +150,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            viewModel.loadReverseGeoInformation(location.latitude, location.longitude)
-
-            val grid = convertGridGPS(TO_GRID, location.latitude, location.longitude)
-            viewModel.getWeatherInformation(grid.x.toInt(), grid.y.toInt())
-
+            viewModel.updateLocationWeather(location.latitude, location.longitude)
             removeLocationListener()
         }
     }

@@ -9,7 +9,7 @@ data class Item(
     @SerializedName("baseTime")
     val baseTime: String?,
     @SerializedName("category")
-    val category: String?,
+    val category: CategoryType?,
     @SerializedName("fcstDate")
     val fcstDate: String?,
     @SerializedName("fcstTime")
