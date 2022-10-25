@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backgroundLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_blue_sky"
@@ -25,13 +26,14 @@
         android:id="@+id/weatherIconImageView"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
+        android:padding="14dp"
         app:layout_constraintEnd_toStartOf="@+id/simpleWeatherLayout"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationTextView"
-        tools:background="@color/black" />
+        tools:src="@drawable/weather_sun" />
 
     <LinearLayout
         android:id="@+id/simpleWeatherLayout"
@@ -45,7 +47,7 @@
         app:layout_constraintTop_toTopOf="@id/weatherIconImageView">
 
         <TextView
-            android:id="@+id/temperatureTextView"
+            android:id="@+id/nowTemperatureTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_kr_bold"
@@ -55,13 +57,68 @@
 
         <TextView
             android:id="@+id/weatherTextView"
-            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:textSize="18sp"
             tools:text="맑음" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/simpleTemperatureTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
+        tools:text="체감온도 28° / 최고 28° / 최저 24°" />
+
+    <TextView
+        android:id="@+id/commentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/simpleTemperatureTextView"
+        tools:text="오늘은 많이 더울 것 같아요.\n반팔에 짧은 하의를 추천드려요 :)" />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardBackgroundColor="@color/lemon"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--        <ImageView-->
+        <!--            android:layout_width="64dp"-->
+        <!--            android:layout_height="64dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:src="@drawable/clothes_vest" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:fontFamily="@font/maruburi_regular"
+            android:gravity="center"
+            android:text="민소매"
+            android:textColor="@color/blue_700"
+            android:textSize="12sp" />
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

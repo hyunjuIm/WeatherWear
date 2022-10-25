@@ -1,6 +1,5 @@
 package com.hyunju.weatherwear.screen.main.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.R

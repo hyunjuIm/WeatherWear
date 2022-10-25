@@ -6,6 +6,7 @@
     <color name="snow">#F8F8FA</color>
 
     <color name="transparent">#00FFFFFF</color>
+    <color name="black_shadow">#29191919</color>
 
     <color name="red">#FF3120</color>
 
@@ -13,6 +14,8 @@
     <color name="pastel_yellow">#FFFBE3</color>
     <color name="pastel_sky">#F2F8FF</color>
     <color name="pastel_blue">#F8F8FA</color>
+
+    <color name="lemon">#F6F2D4</color>
 
     <color name="blue_200">#5397E2</color>
     <color name="blue_500">#5584AC</color>
