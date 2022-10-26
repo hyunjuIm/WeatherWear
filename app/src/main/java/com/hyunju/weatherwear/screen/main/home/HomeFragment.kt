@@ -16,8 +16,9 @@ import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.util.date.getCurrentTime
-import com.hyunju.weatherwear.util.weather.AFTERNOON
+import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.weather.getSensibleTemperature
+import com.hyunju.weatherwear.util.clothes.pickClothes
 import com.hyunju.weatherwear.util.weather.setMatchingUiWeatherInfo
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,18 +66,30 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             }
         }
 
-    override fun initViews() {
+    private val adapter by lazy { PickClothesAdapter() }
+
+    override fun initViews() = with(binding) {
         // 시간에 따른 상태바 색상, 배경 그라데이션 변경
         requireActivity().window.apply {
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
 
-            if (getCurrentTime().toInt() in AFTERNOON) {
+            if (getCurrentTime().toInt() in Time.AFTERNOON) {
                 statusBarColor = ContextCompat.getColor(requireContext(), R.color.sky_100)
             } else {
                 statusBarColor = ContextCompat.getColor(requireContext(), R.color.blue_500)
-                binding.backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_navy)
+                backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_navy)
             }
         }
+
+        refresh.setOnRefreshListener {
+            getMyLocation()
+        }
+
+        weatherWearImageView.setOnClickListener {
+
+        }
+
+        clothesRecyclerView.adapter = adapter
     }
 
     override fun observeData() = viewModel.homeStateLiveData.observe(this) {
@@ -99,6 +112,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: HomeState.Success) = with(binding) {
+        refresh.isRefreshing = false
+
         locationTextView.text = state.location
         nowTemperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
 
@@ -106,12 +121,16 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         weatherIconImageView.load(weatherType.image)
         weatherTextView.text = weatherType.text
 
+        val sensibleTemperature =
+            getSensibleTemperature(state.weatherInfo.TMP, state.weatherInfo.WSD)
         simpleTemperatureTextView.text =
-            "체감온도 ${getSensibleTemperature(state.weatherInfo.TMP, state.weatherInfo.WSD)}°" +
-                    " / 최저 ${state.weatherInfo.TMN}° / 최고 ${state.weatherInfo.TMX}°"
+            "체감온도 ${sensibleTemperature}° / 최저 ${state.weatherInfo.TMN}° / 최고 ${state.weatherInfo.TMX}°"
+
+        adapter.submitList(pickClothes(state.weatherInfo.TMX))
     }
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {
+        refresh.isRefreshing = false
         locationTextView.text = getString(state.messageId)
     }
 

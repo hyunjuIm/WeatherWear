@@ -32,7 +32,8 @@ fun ImageView.load(
 fun ImageView.load(drawable: Int) {
     Glide.with(this)
         .load(drawable)
-        .apply(RequestOptions.circleCropTransform())
-        .timeout(6000)
+        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .timeout(5000)
         .into(this)
 }

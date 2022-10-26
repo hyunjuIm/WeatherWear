@@ -8,11 +8,25 @@
         <entry key="app/src/main/res/drawable-v24/ic_setting_selector.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable-v24/ic_wear_selector.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable-v24/ic_weather_selector.xml" value="0.2455" />
+        <entry key="app/src/main/res/drawable/add_a_photo-48px.xml" value="0.2985" />
         <entry key="app/src/main/res/drawable/bg_gradient_blue_navy.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/bg_gradient_blue_sky.xml" value="0.517" />
+        <entry key="app/src/main/res/drawable/clothes_blouse.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/clothes_cardigan.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/clothes_cardigan_blue.xml" value="0.3055" />
+        <entry key="app/src/main/res/drawable/clothes_coat_blue.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/clothes_long_coat.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_long_padding.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_padding_orange.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_short_padding.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_sleeveless.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_sweater_brown.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_sweater_pink.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_trench_coat.xml" value="0.336" />
         <entry key="app/src/main/res/drawable/ic_home_fill.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable/ic_home_fill1.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable/ic_home_selector.xml" value="0.2455" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3055" />
         <entry key="app/src/main/res/drawable/weatehr_sun_snowy.xml" value="0.416" />
         <entry key="app/src/main/res/drawable/weather_cloud.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/weather_cloudy.xml" value="0.416" />
@@ -33,6 +47,7 @@
         <entry key="app/src/main/res/layout-v28/fragment_home.xml" value="0.5625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_pick_clothes.xml" value="0.5389492753623188" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3203125" />
       </map>
     </option>
