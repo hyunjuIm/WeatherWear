@@ -6,7 +6,7 @@ import com.hyunju.weatherwear.util.clothes.Clothes
 import com.hyunju.weatherwear.util.clothes.ClothesList
 
 object Time {
-    val AFTERNOON = 700..1800
+    val AFTERNOON = 700..1700
 }
 
 object Sky {
@@ -69,4 +69,5 @@ enum class Temperatures(
     TEMPERATURE_9(9..11, ClothesList.temperatures9),
     TEMPERATURE_5(5..8, ClothesList.temperatures5),
     TEMPERATURE_LOW(-100..4, ClothesList.temperaturesLow)
+
 }

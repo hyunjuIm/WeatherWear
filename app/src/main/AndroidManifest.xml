@@ -4,7 +4,6 @@
     package="com.hyunju.weatherwear">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -20,6 +19,9 @@
         android:theme="@style/Theme.WeatherWear"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".screen.wirte.WriteActivity"
+            android:exported="false" />
         <activity
             android:name=".screen.main.MainActivity"
             android:exported="true">

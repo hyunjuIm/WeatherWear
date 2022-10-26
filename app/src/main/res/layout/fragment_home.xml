@@ -17,181 +17,216 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/locationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/maruburi_semibold"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="강남구 대치동" />
-
-            <ImageView
-                android:id="@+id/weatherIconImageView"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:padding="14dp"
-                app:layout_constraintEnd_toStartOf="@+id/simpleWeatherLayout"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/locationTextView"
-                tools:src="@drawable/weather_sun" />
-
-            <LinearLayout
-                android:id="@+id/simpleWeatherLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@id/weatherIconImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/weatherIconImageView"
-                app:layout_constraintTop_toTopOf="@id/weatherIconImageView">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/nowTemperatureTextView"
+                    android:id="@+id/locationTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/notosans_kr_bold"
-                    android:textColor="@color/white"
-                    android:textSize="50sp"
-                    tools:text="26°" />
-
-                <TextView
-                    android:id="@+id/weatherTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/maruburi_semibold"
+                    android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    tools:text="맑음" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/simpleTemperatureTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
-                tools:text="체감온도 28° / 최고 28° / 최저 24°" />
-
-            <TextView
-                android:id="@+id/commentTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/simpleTemperatureTextView"
-                tools:text="오늘은 많이 더울 것 같아요.\n반팔에 짧은 하의를 추천드려요 :)" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/clothesRecyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical"
-                android:scrollbars="none"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/commentTextView"
-                app:spanCount="3"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_pick_clothes" />
-
-            <TextView
-                android:id="@+id/fistMyTodayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:elevation="5dp"
-                android:gravity="center"
-                android:shadowColor="@color/black_shadow"
-                android:shadowRadius="6.0"
-                android:text="오늘 나의"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clothesRecyclerView" />
-
-            <TextView
-                android:id="@+id/secondMyTodayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:elevation="5dp"
-                android:fontFamily="@font/notosans_kr_bold"
-                android:gravity="center"
-                android:shadowColor="@color/black_shadow"
-                android:shadowRadius="6.0"
-                android:text="웨더웨어(WeatherWear)"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@id/thirdTodayTextView"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fistMyTodayTextView" />
-
-            <TextView
-                android:id="@+id/thirdTodayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:gravity="bottom"
-                android:shadowColor="@color/black_shadow"
-                android:shadowRadius="6.0"
-                android:text="는?"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/secondMyTodayTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/secondMyTodayTextView"
-                app:layout_constraintTop_toBottomOf="@+id/fistMyTodayTextView" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/thirdTodayTextView">
-
-                <ImageView
-                    android:id="@+id/weatherWearImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/snow"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_add_photo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/thirdTodayTextView"
-                    app:tint="@color/gray_200" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="강남구 대치동" />
 
-            </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/weatherIconImageView"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:padding="14dp"
+                    app:layout_constraintEnd_toStartOf="@+id/simpleWeatherLayout"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/locationTextView"
+                    tools:src="@drawable/weather_sun" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:id="@+id/simpleWeatherLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@id/weatherIconImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/weatherIconImageView"
+                    app:layout_constraintTop_toTopOf="@id/weatherIconImageView">
+
+                    <TextView
+                        android:id="@+id/nowTemperatureTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/notosans_kr_bold"
+                        android:textColor="@color/white"
+                        android:textSize="50sp"
+                        tools:text="26°" />
+
+                    <TextView
+                        android:id="@+id/weatherTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        tools:text="맑음" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/simpleTemperatureTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
+                    tools:text="체감온도 28° / 최고 28° / 최저 24°" />
+
+                <TextView
+                    android:id="@+id/commentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/maruburi_light"
+                    android:gravity="center"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/simpleTemperatureTextView"
+                    tools:text="오늘은 많이 더울 것 같아요.\n반팔에 짧은 하의를 추천드려요 :)" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/clothesRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/commentTextView"
+                    app:spanCount="3"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_pick_clothes" />
+
+
+                <LinearLayout
+                    android:layout_width="320dp"
+                    android:layout_height="0dp"
+                    android:gravity="end"
+                    android:maxWidth="320dp"
+                    app:layout_constraintBottom_toBottomOf="@id/weatherWearCardView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clothesRecyclerView">
+
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_styler"
+                        app:tint="@color/white_shadow" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/firstMyTodayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:shadowColor="@color/black_shadow"
+                    android:shadowDx="3.0"
+                    android:shadowDy="3.0"
+                    android:shadowRadius="6.0"
+                    android:text="오늘 나의"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clothesRecyclerView" />
+
+                <TextView
+                    android:id="@+id/secondMyTodayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:elevation="5dp"
+                    android:fontFamily="@font/notosans_kr_bold"
+                    android:gravity="center"
+                    android:shadowColor="@color/black_shadow"
+                    android:shadowDx="3.0"
+                    android:shadowDy="3.0"
+                    android:shadowRadius="6.0"
+                    android:text="웨더웨어(WeatherWear)"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@id/thirdTodayTextView"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/firstMyTodayTextView" />
+
+                <TextView
+                    android:id="@+id/thirdTodayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:gravity="bottom"
+                    android:shadowColor="@color/black_shadow"
+                    android:shadowDx="3.0"
+                    android:shadowDy="3.0"
+                    android:shadowRadius="6.0"
+                    android:text="는?"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/secondMyTodayTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/secondMyTodayTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/firstMyTodayTextView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/weatherWearCardView"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/thirdTodayTextView">
+
+                    <ImageView
+                        android:id="@+id/weatherWearImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/snow"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_add_photo"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/thirdTodayTextView"
+                        app:tint="@color/gray_200" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
