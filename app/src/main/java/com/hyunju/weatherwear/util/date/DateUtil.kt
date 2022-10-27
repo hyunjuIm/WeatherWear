@@ -32,3 +32,8 @@ fun setMillisDateFormat(date: Long): String {
     val dataFormat = SimpleDateFormat("yyyy.MM.dd")
     return dataFormat.format(date)
 }
+
+fun setMillisDateFormatForApi(date: Long): String {
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    return dataFormat.format(date)
+}

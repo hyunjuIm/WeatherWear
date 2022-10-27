@@ -5,16 +5,19 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.hyunju.weatherwear.R
-import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.wirte.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
+import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.date.setStringDateFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -29,8 +32,11 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                binding.selectLocationTextView.text =
-                    result.data?.getParcelableExtra<SearchResultEntity>(SearchLocationActivity.LOCATION_KEY)?.name
+                selectLocation =
+                    result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
+                binding.selectLocationTextView.text = selectLocation?.name
+
+                getWeatherInfo()
             }
         }
 
@@ -39,6 +45,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
     private val location by lazy { intent.getStringExtra(LOCATION_KEY) }
 
     private var selectDate: Calendar = Calendar.getInstance()
+    private var selectLocation: SearchResultEntity? = null
 
     @SuppressLint("SetTextI18n")
     override fun initViews() = with(binding) {
@@ -69,8 +76,9 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
                 // 선택한 날짜
                 val currentDate =
                     Calendar.getInstance().apply { set(year, monthOfYear, dayOfMonth) }
-                selectDate = currentDate
                 binding.selectDateTextView.text = setMillisDateFormat(currentDate.timeInMillis)
+                selectDate = currentDate
+                getWeatherInfo()
             },
             selectDate.get(Calendar.YEAR),
             selectDate.get(Calendar.MONTH),
@@ -83,8 +91,48 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
         }.show()
     }
 
-    override fun observeData() {
+    override fun observeData() = viewModel.writeStateLiveData.observe(this) {
+        when (it) {
+            is WriteState.Uninitialized -> handleUninitializedState()
+            is WriteState.Loading -> handleLoadingState()
+            is WriteState.Success -> handleSuccessState(it)
+            is WriteState.Error -> handleErrorState(it)
+        }
+    }
 
+    private fun handleUninitializedState() = with(binding) {
+        writeButton.isEnabled = false
+    }
+
+    private fun handleLoadingState() = with(binding) {
+        loadingView.isVisible = true
+        writeButton.isEnabled = false
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun handleSuccessState(state: WriteState.Success) = with(binding) {
+        loadingView.isGone = true
+        writeButton.isEnabled = true
+
+        weatherTextView.text =
+            "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType.text}"
+    }
+
+    private fun handleErrorState(state: WriteState.Error) = with(binding) {
+        loadingView.isGone = true
+        writeButton.isEnabled = false
+
+        weatherTextView.text = ""
+        Toast.makeText(this@WriteActivity, getString(state.messageId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getWeatherInfo() {
+        selectLocation?.let {
+            viewModel.getWeatherInformation(
+                locationLatLngEntity = it.locationLatLng,
+                date = setMillisDateFormatForApi(selectDate.timeInMillis)
+            )
+        }
     }
 
     companion object {
