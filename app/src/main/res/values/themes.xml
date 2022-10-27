@@ -20,12 +20,11 @@
         <item name="android:includeFontPadding">false</item>
         <item name="colorAccent">@color/gray_500</item>
 
-    </style>
+        <!-- Toolbar 설정-->
+        <item name="toolbarStyle">@style/Widget.Delivery.Toolbar</item>
+        <item name="toolbarWithArrowStyle">@style/Widget.Delivery.Toolbar.WithArrow</item>
+        <item name="toolbarWithCloseStyle">@style/Widget.Delivery.Toolbar.WithClose</item>
 
-    <!-- 홈 화면 테마 -->
-    <style name="Theme.WeatherWear.Home">
-        <item name="android:statusBarColor">@color/sky_100</item>
-        <item name="android:windowBackground">@drawable/bg_gradient_blue_sky</item>
     </style>
 
 </resources>
