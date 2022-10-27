@@ -16,7 +16,7 @@ fun parseWeatherData(weatherInfo: Items): WeatherEntity {
             if (it?.category == CategoryType.TMX) TMX = fcstValueToInt(it.fcstValue)
 
             if (it?.fcstTime == getCurrentTime()) {
-                date = it.baseDate ?: ""
+                date = it.fcstDate ?: ""
                 time = it.fcstTime
                 if (it.category == CategoryType.POP) POP = fcstValueToInt(it.fcstValue)
                 if (it.category == CategoryType.PTY) PTY = fcstValueToInt(it.fcstValue)
@@ -29,6 +29,7 @@ fun parseWeatherData(weatherInfo: Items): WeatherEntity {
             }
         }
     }
+
     return weatherEntity
 }
 

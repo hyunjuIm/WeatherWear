@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
             val grid = convertGridGPS(TO_GRID, latitude, longitude)
             val weatherInfo = weatherRepository.getWeather(
                 dataType = "JSON",
-                numOfRows = 250,
+                numOfRows = 500,
                 pageNo = 1,
                 baseDate = getTodayDate(),
                 baseTime = "0200",

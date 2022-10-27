@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/write_weather_wear"
             android:fontFamily="@font/notosans_kr_medium"
+            android:text="@string/write_weather_wear"
             android:textSize="16sp" />
 
     </androidx.appcompat.widget.Toolbar>
@@ -39,13 +39,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp">
+            android:padding="16dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/weatherWearCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:gravity="center"
-                        android:text="사진은 한 장만 선택할 수 있어요!"
+                        android:text="@string/guide_select_only_one_photo"
                         android:textColor="@color/gray_500"
                         android:textSize="14sp" />
 
@@ -93,17 +92,17 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/pastel_yellow"
                 android:fontFamily="@font/notosans_kr_medium"
-                android:text="최고 기온 28° / 최저 기온 24° / 맑음"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weatherWearCardView" />
+                app:layout_constraintTop_toBottomOf="@+id/weatherWearCardView"
+                tools:text="최고 기온 28°/ 최저 기온 24°/ 맑음" />
 
             <TextView
                 android:id="@+id/guideSelectInfoView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="날짜와 위치를 모두 선택하면 날씨를 확인할 수 있어요 :)"
+                android:text="@string/guide_select_date_and_location"
                 android:textColor="@color/blue_500"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -168,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/notosans_kr_medium"
-                android:text="한 줄 일기"
+                android:text="@string/one_line_diary"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectLocationTextView" />
@@ -180,20 +179,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="top"
-                android:hint="일기 작성은 선택!\n부담이 되지 않는다면 소소하게 한 줄 적어보세요 ;)"
+                android:hint="@string/guide_diary"
                 android:maxLength="200"
                 android:minHeight="80dp"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guideDiaryView" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/diaryEditText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -204,12 +196,11 @@
         style="@style/Widget.WeatherWear.EnableButton"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:enabled="false"
         android:layout_margin="16dp"
+        android:enabled="false"
         android:text="@string/write"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

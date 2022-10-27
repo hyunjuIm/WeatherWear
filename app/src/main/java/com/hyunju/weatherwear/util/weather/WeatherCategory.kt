@@ -1,9 +1,11 @@
 package com.hyunju.weatherwear.util.weather
 
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.util.clothes.Clothes
 import com.hyunju.weatherwear.util.clothes.ClothesList
+import kotlinx.parcelize.Parcelize
 
 object Time {
     val AFTERNOON = 700..1700
@@ -23,10 +25,11 @@ object Shape {
     const val SHOWER = 4
 }
 
+@Parcelize
 enum class Weather(
     val text: String,
     @DrawableRes val image: Int
-) {
+) : Parcelable {
 
     SUN("맑음", R.drawable.weather_sun),
     SUN_RAINY("비", R.drawable.weather_sun_rainy),

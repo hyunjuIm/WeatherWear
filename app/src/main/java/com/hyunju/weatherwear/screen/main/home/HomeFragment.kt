@@ -28,14 +28,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     companion object {
+        fun newInstance() = HomeFragment()
+
+        const val TAG = "HomeFragment"
+
         val locationPermissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-
-        fun newInstance() = HomeFragment()
-
-        const val TAG = "HomeFragment"
     }
 
     override val viewModel by viewModels<HomeViewModel>()
@@ -80,11 +80,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         refresh.setOnRefreshListener {
             changeStatusBarForTime()
             handleUninitializedState()
-        }
-
-        // TODO: 웨더웨어 등록했을 경우, 안 했을 때- > 조건문
-        weatherWearCardView.setOnClickListener {
-            startActivity(WriteActivity.newIntent(requireContext()))
         }
     }
 
@@ -137,6 +132,17 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             "체감온도 ${state.sensibleTemperature}° / 최저 ${state.weatherInfo.TMN}° / 최고 ${state.weatherInfo.TMX}°"
 
         adapter.submitList(pickClothes(state.weatherInfo.TMX))
+
+        weatherWearCardView.setOnClickListener {
+            startActivity(
+                WriteActivity.newIntent(
+                    requireContext(),
+                    state.weatherInfo,
+                    state.weatherType.text,
+                    state.location
+                )
+            )
+        }
     }
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {

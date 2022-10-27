@@ -26,6 +26,12 @@
         <item name="toolbarWithCloseStyle">@style/Widget.WeatherWear.Toolbar.WithClose</item>
 
     </style>
+    <style name="Theme.WeatherWear.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.WeatherWear.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.WeatherWear.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

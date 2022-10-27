@@ -1,5 +1,9 @@
 package com.hyunju.weatherwear.data.entity
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class WeatherEntity(
     var date: String,
     var time: String,
@@ -13,7 +17,7 @@ data class WeatherEntity(
     var WSD: Double, // 풍속 - 약함(0~3), 약간강(4~8), 강(9~13), 매우강(14~)
     var x: Int,
     var y: Int
-) {
+) : Parcelable {
     constructor() : this(
         "", "", -1, -1, -1, -1, -1, -1, -1, -1.0, -1, -1
     )
