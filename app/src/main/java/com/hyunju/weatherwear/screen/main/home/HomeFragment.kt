@@ -15,6 +15,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.hyunju.weatherwear.R
+import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
@@ -22,6 +23,7 @@ import com.hyunju.weatherwear.screen.wirte.WriteActivity
 import com.hyunju.weatherwear.util.date.getCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.clothes.pickClothes
+import com.hyunju.weatherwear.util.date.getTodayDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -195,7 +197,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            viewModel.updateLocationWeather(location.latitude, location.longitude)
+            viewModel.updateLocationWeather(
+                locationLatLngEntity = LocationLatLngEntity(location.latitude, location.longitude),
+                date = getTodayDate()
+            )
             removeLocationListener()
         }
     }
