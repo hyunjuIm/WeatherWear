@@ -110,6 +110,7 @@ fun getCommentWeather(weatherInfo: WeatherEntity): String {
         in Temperatures.TEMPERATURE_12.range -> {
             commentList.add("여러 스타일로 꾸밀 수 있는 날씨네요!")
             commentList.add("얇은 옷을 여러 벌 걸쳐서 레이어드 어떠세요?")
+            commentList.add("은근히 춥죠, 스타킹을 신기도 하는 날씨에요 :)")
         }
         in Temperatures.TEMPERATURE_9.range -> {
             commentList.add("지금이에요! 멋스러운 트렌치코트 어떠세요?")

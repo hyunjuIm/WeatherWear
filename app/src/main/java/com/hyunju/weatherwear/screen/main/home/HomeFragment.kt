@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
@@ -72,24 +74,28 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         // 시간에 따른 상태바 색상, 배경 그라데이션 변경
         changeStatusBarForTime()
 
+        clothesRecyclerView.adapter = adapter
+
+        // SwipeRefreshLayout
         refresh.setOnRefreshListener {
             changeStatusBarForTime()
-            getMyLocation()
+            handleUninitializedState()
         }
 
+        // TODO: 웨더웨어 등록했을 경우, 안 했을 때- > 조건문
         weatherWearCardView.setOnClickListener {
             startActivity(WriteActivity.newIntent(requireContext()))
         }
-
-        clothesRecyclerView.adapter = adapter
     }
 
+    // 시간에 따른 상태바 색상, 배경 그라데이션 변경
     private fun changeStatusBarForTime() {
         requireActivity().window.apply {
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
 
             if (getCurrentTime().toInt() in Time.AFTERNOON) {
                 statusBarColor = ContextCompat.getColor(requireContext(), R.color.sky_100)
+                binding.backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_sky)
             } else {
                 statusBarColor = ContextCompat.getColor(requireContext(), R.color.blue_500)
                 binding.backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_navy)
@@ -108,6 +114,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleUninitializedState() = with(binding) {
         locationTextView.text = getString(R.string.finding_location)
+        loadingView.isVisible = true
+
         getMyLocation()
     }
 
@@ -118,6 +126,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: HomeState.Success) = with(binding) {
         refresh.isRefreshing = false
+        loadingView.isGone = true
 
         locationTextView.text = state.location
         nowTemperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
@@ -132,6 +141,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {
         refresh.isRefreshing = false
+        loadingView.isGone = true
+
         locationTextView.text = getString(state.messageId)
     }
 
