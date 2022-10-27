@@ -21,5 +21,9 @@
     <!-- Error -->
     <string name="request_error">예상치 못한 이슈가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>
+    <string name="write_weather_wear">웨더웨어 등록하기</string>
+    <string name="select_date">날짜 선택</string>
+    <string name="select_location">위치 선택</string>
+    <string name="write">등록하기</string>
 
 </resources>

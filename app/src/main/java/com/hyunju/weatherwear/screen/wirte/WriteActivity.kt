@@ -18,6 +18,10 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
 
     override fun getViewBinding() = ActivityWriteBinding.inflate(layoutInflater)
 
+    override fun initViews() = with(binding) {
+        toolbar.setNavigationOnClickListener { finish() }
+    }
+
     override fun observeData() {
 
     }

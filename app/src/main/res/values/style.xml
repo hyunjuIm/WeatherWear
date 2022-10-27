@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.Delivery.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.WeatherWear.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">@color/white</item>
         <item name="android:title">@null</item>
         <item name="android:elevation">0dp</item>
     </style>
 
-    <style name="Widget.Delivery.Toolbar.WithArrow" parent="Widget.Delivery.Toolbar">
+    <style name="Widget.WeatherWear.Toolbar.WithArrow" parent="Widget.WeatherWear.Toolbar">
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="Widget.Delivery.Toolbar.WithClose" parent="Widget.Delivery.Toolbar">
+    <style name="Widget.WeatherWear.Toolbar.WithClose" parent="Widget.WeatherWear.Toolbar">
         <item name="navigationIcon">@drawable/ic_close</item>
         <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Widget.WeatherWear.BaseInputView" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/bg_rounded_white_line_gray</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="Widget.WeatherWear.BaseButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/bg_rounded_blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+
+    <style name="Widget.WeatherWear.EnableButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/btn_enable_blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="backgroundTint">@null</item>
     </style>
 
 </resources>

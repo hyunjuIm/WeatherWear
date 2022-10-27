@@ -5,4 +5,6 @@
     <attr name="toolbarWithCloseStyle" format="reference"/>
     <attr name="toolbarWithArrowStyle" format="reference"/>
 
+    <attr name="buttonBaseStyle" format="reference"/>
+
 </resources>

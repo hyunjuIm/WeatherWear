@@ -217,9 +217,6 @@
                         android:background="@color/snow"
                         android:scaleType="center"
                         android:src="@drawable/ic_add_photo"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/thirdTodayTextView"
                         app:tint="@color/gray_200" />
 
                 </androidx.cardview.widget.CardView>
