@@ -76,9 +76,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getParcelableExtra<Uri>(GalleryActivity.URI_KEY)
-                    ?.let { uri ->
-                        binding.weatherWearImageView.load(uri.toString(), 0f)
-                    } ?: kotlin.run {
+                    ?.let { getUriData(it) } ?: kotlin.run {
                     Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -88,9 +86,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getParcelableExtra<Uri>(CameraActivity.URI_KEY)
-                    ?.let { uri ->
-                        binding.weatherWearImageView.load(uri.toString(), 0f)
-                    } ?: kotlin.run {
+                    ?.let { getUriData(it) } ?: kotlin.run {
                     Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -113,6 +109,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
 
     private var selectDate: Calendar = Calendar.getInstance()
     private var selectLocation: SearchResultEntity? = null
+    private var selectPhoto: Uri? = null
 
     @SuppressLint("SetTextI18n")
     override fun initViews() = with(binding) {
@@ -206,6 +203,13 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                 date = setMillisDateFormatForApi(selectDate.timeInMillis)
             )
         }
+    }
+
+    private fun getUriData(uri: Uri) = with(binding) {
+        selectPhoto = uri
+
+        weatherWearImageView.load(uri.toString(), 0f)
+        guideSelectPhotoView.isGone = true
     }
 
     private fun showPictureUploadDialog() {

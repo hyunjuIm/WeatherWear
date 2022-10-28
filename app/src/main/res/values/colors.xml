@@ -26,5 +26,6 @@
 
     <color name="gray_200">#DCDCDC</color>
     <color name="gray_500">#767676</color>
+    <color name="gray_700">#2B2B2B</color>
 
 </resources>
