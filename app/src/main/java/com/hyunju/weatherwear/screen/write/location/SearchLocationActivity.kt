@@ -1,11 +1,9 @@
-package com.hyunju.weatherwear.screen.wirte.location
+package com.hyunju.weatherwear.screen.write.location
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.KeyEvent
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible

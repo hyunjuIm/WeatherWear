@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.screen.wirte
+package com.hyunju.weatherwear.screen.write
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope

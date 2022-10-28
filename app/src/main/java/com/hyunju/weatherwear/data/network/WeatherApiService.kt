@@ -1,6 +1,6 @@
 package com.hyunju.weatherwear.data.network
 
-import com.hyunju.weatherwear.data.response.wether.WeatherResponse
+import com.hyunju.weatherwear.data.response.weather.WeatherResponse
 import com.hyunju.weatherwear.data.url.Url
 import retrofit2.Response
 import retrofit2.http.GET

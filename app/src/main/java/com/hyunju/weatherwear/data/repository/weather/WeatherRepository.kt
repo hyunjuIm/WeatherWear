@@ -1,6 +1,6 @@
 package com.hyunju.weatherwear.data.repository.weather
 
-import com.hyunju.weatherwear.data.response.wether.Items
+import com.hyunju.weatherwear.data.response.weather.Items
 
 interface WeatherRepository {
 

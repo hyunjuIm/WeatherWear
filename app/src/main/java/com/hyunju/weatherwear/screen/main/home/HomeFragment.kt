@@ -18,7 +18,7 @@ import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
-import com.hyunju.weatherwear.screen.wirte.WriteActivity
+import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.util.date.getCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.clothes.pickClothes

@@ -1,8 +1,7 @@
 package com.hyunju.weatherwear.data.repository.weather
 
-import android.util.Log
 import com.hyunju.weatherwear.data.network.WeatherApiService
-import com.hyunju.weatherwear.data.response.wether.Items
+import com.hyunju.weatherwear.data.response.weather.Items
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

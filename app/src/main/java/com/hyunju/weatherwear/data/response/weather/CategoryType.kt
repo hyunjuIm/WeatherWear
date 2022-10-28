@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.data.response.wether
+package com.hyunju.weatherwear.data.response.weather
 
 import com.google.gson.annotations.SerializedName
 

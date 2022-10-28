@@ -1,8 +1,6 @@
-package com.hyunju.weatherwear.data.response.wether
+package com.hyunju.weatherwear.data.response.weather
 
 import com.google.gson.annotations.SerializedName
-import com.hyunju.weatherwear.data.entity.WeatherEntity
-import com.hyunju.weatherwear.util.date.getCurrentTime
 
 data class Item(
     @SerializedName("baseDate")

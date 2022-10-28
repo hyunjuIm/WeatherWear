@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.screen.wirte.location
+package com.hyunju.weatherwear.screen.write.location
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

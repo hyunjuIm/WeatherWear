@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.screen.wirte
+package com.hyunju.weatherwear.screen.write
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -15,7 +15,7 @@ import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
-import com.hyunju.weatherwear.screen.wirte.location.SearchLocationActivity
+import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.date.setStringDateFormat

@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.screen.wirte
+package com.hyunju.weatherwear.screen.write
 
 import androidx.annotation.StringRes
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
