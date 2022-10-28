@@ -53,16 +53,17 @@
                 <ImageView
                     android:id="@+id/weatherWearImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@color/snow" />
 
                 <LinearLayout
-                    android:id="@+id/guideSelectPhotoView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/selectPhotoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <ImageView
@@ -82,6 +83,17 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/cancelPhotoButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_circle_blue"
+                    android:src="@drawable/ic_close"
+                    android:visibility="gone"
+                    app:tint="@color/white" />
 
             </androidx.cardview.widget.CardView>
 

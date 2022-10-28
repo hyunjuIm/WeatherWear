@@ -76,7 +76,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getParcelableExtra<Uri>(GalleryActivity.URI_KEY)
-                    ?.let { getUriData(it) } ?: kotlin.run {
+                    ?.let { setPhotoFromUriData(it) } ?: kotlin.run {
                     Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -86,7 +86,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.getParcelableExtra<Uri>(CameraActivity.URI_KEY)
-                    ?.let { getUriData(it) } ?: kotlin.run {
+                    ?.let { setPhotoFromUriData(it) } ?: kotlin.run {
                     Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -99,7 +99,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                     result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
                 binding.selectLocationTextView.text = selectLocation?.name
 
-                getWeatherInfo()
+                getSelectedWeatherInfo()
             }
         }
 
@@ -131,10 +131,14 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             )
         }
 
-        weatherWearCardView.setOnClickListener {
+        selectPhotoView.setOnClickListener {
             checkHasPermission {
                 showPictureUploadDialog()
             }
+        }
+
+        cancelPhotoButton.setOnClickListener {
+            cancelSelectedPhoto()
         }
     }
 
@@ -148,7 +152,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                     Calendar.getInstance().apply { set(year, monthOfYear, dayOfMonth) }
                 binding.selectDateTextView.text = setMillisDateFormat(currentDate.timeInMillis)
                 selectDate = currentDate
-                getWeatherInfo()
+                getSelectedWeatherInfo()
             },
             selectDate.get(Calendar.YEAR),
             selectDate.get(Calendar.MONTH),
@@ -159,6 +163,26 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             datePicker.maxDate = System.currentTimeMillis()
             title = "최근 3일만 선택할 수 있어요 :)"
         }.show()
+    }
+
+    // 가져온 사진 셋팅
+    private fun setPhotoFromUriData(uri: Uri) = with(binding) {
+        selectPhoto = uri
+
+        weatherWearImageView.load(uri.toString(), 0f)
+        selectPhotoView.isGone = true
+        cancelPhotoButton.isVisible = true
+    }
+
+    // 선택한 사진 취소
+    private fun cancelSelectedPhoto() = with(binding) {
+        selectPhoto = null
+
+        weatherWearImageView.setImageBitmap(null)
+        weatherWearImageView.setBackgroundColor(getColor(R.color.snow))
+
+        selectPhotoView.isVisible = true
+        cancelPhotoButton.isGone = true
     }
 
     override fun observeData() = viewModel.writeStateLiveData.observe(this) {
@@ -196,20 +220,14 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         Toast.makeText(this@WriteActivity, getString(state.messageId), Toast.LENGTH_SHORT).show()
     }
 
-    private fun getWeatherInfo() {
+    // 선택한 날씨 정보 가져오기
+    private fun getSelectedWeatherInfo() {
         selectLocation?.let {
             viewModel.getWeatherInformation(
                 locationLatLngEntity = it.locationLatLng,
                 date = setMillisDateFormatForApi(selectDate.timeInMillis)
             )
         }
-    }
-
-    private fun getUriData(uri: Uri) = with(binding) {
-        selectPhoto = uri
-
-        weatherWearImageView.load(uri.toString(), 0f)
-        guideSelectPhotoView.isGone = true
     }
 
     private fun showPictureUploadDialog() {

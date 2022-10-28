@@ -29,7 +29,7 @@ fun ImageView.load(
         .into(this)
 }
 
-fun ImageView.load(drawable: Int) {
+fun ImageView.load(drawable: Int?) {
     Glide.with(this)
         .load(drawable)
         .transition(DrawableTransitionOptions.withCrossFade(factory))
