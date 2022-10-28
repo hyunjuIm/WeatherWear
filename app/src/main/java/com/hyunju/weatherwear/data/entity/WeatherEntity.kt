@@ -17,11 +17,4 @@ data class WeatherEntity(
     var WSD: Double, // 풍속 - 약함(0~3), 약간강(4~8), 강(9~13), 매우강(14~)
     var x: Int,
     var y: Int
-) : Parcelable {
-    constructor() : this(
-        "", "", -1, -1, -1, -1, -1, -1, -1, -1.0, -1, -1
-    )
-
-    fun fcstValueToInt(value: String?) = value?.toFloat()?.toInt() ?: -1
-    fun fcstValueToDouble(value: String?) = value?.toDouble() ?: -1.0
-}
+) : Parcelable

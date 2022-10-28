@@ -12,7 +12,6 @@ import com.hyunju.weatherwear.util.location.convertGridGPS
 import com.hyunju.weatherwear.util.weather.getCommentWeather
 import com.hyunju.weatherwear.util.weather.getMatchingUiWeatherInfo
 import com.hyunju.weatherwear.util.weather.getSensibleTemperature
-import com.hyunju.weatherwear.util.weather.parseWeatherData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -48,7 +47,7 @@ class HomeViewModel @Inject constructor(
                 locationLatLngEntity.latitude,
                 locationLatLngEntity.longitude
             )
-            val weatherInfo = weatherRepository.getWeather(
+            val weatherItems = weatherRepository.getWeather(
                 dataType = "JSON",
                 numOfRows = 500,
                 pageNo = 1,
@@ -61,15 +60,18 @@ class HomeViewModel @Inject constructor(
                 return@launch
             }
 
-            val weatherEntity = parseWeatherData(weatherInfo)
-
-            homeStateLiveData.value = HomeState.Success(
-                location = location,
-                weatherInfo = weatherEntity,
-                weatherType = getMatchingUiWeatherInfo(weatherEntity),
-                sensibleTemperature = getSensibleTemperature(weatherEntity.TMP, weatherEntity.WSD),
-                comment = getCommentWeather(weatherEntity)
-            )
+            weatherItems.toEntity()?.let {
+                homeStateLiveData.value = HomeState.Success(
+                    location = location,
+                    weatherInfo = it,
+                    weatherType = getMatchingUiWeatherInfo(it),
+                    sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
+                    comment = getCommentWeather(it)
+                )
+            } ?: run {
+                homeStateLiveData.value = HomeState.Error(R.string.can_not_load_weather_info)
+                return@launch
+            }
         }
 
     override fun errorData(message: Int): Job = viewModelScope.launch {

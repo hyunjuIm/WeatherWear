@@ -1,37 +1,7 @@
 package com.hyunju.weatherwear.util.weather
 
 import com.hyunju.weatherwear.data.entity.WeatherEntity
-import com.hyunju.weatherwear.data.response.wether.CategoryType
-import com.hyunju.weatherwear.data.response.wether.Items
-import com.hyunju.weatherwear.util.date.getCurrentTime
 import kotlin.math.pow
-
-// api를 통해 받은 날씨 정보 파싱
-fun parseWeatherData(weatherInfo: Items): WeatherEntity {
-    val weatherEntity = WeatherEntity()
-
-    weatherInfo.item?.forEach {
-        weatherEntity.run {
-            if (it?.category == CategoryType.TMN) TMN = fcstValueToInt(it.fcstValue)
-            if (it?.category == CategoryType.TMX) TMX = fcstValueToInt(it.fcstValue)
-
-            if (it?.fcstTime == getCurrentTime()) {
-                date = it.fcstDate ?: ""
-                time = it.fcstTime
-                if (it.category == CategoryType.POP) POP = fcstValueToInt(it.fcstValue)
-                if (it.category == CategoryType.PTY) PTY = fcstValueToInt(it.fcstValue)
-                if (it.category == CategoryType.REH) REH = fcstValueToInt(it.fcstValue)
-                if (it.category == CategoryType.SKY) SKY = fcstValueToInt(it.fcstValue)
-                if (it.category == CategoryType.TMP) TMP = fcstValueToInt(it.fcstValue)
-                if (it.category == CategoryType.WSD) WSD = fcstValueToDouble(it.fcstValue)
-                this.x = it.nx ?: -1
-                this.y = it.ny ?: -1
-            }
-        }
-    }
-
-    return weatherEntity
-}
 
 // 체감온도
 fun getSensibleTemperature(temperatures: Int, windSpeed: Double): Int {
