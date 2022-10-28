@@ -120,7 +120,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         refresh.isRefreshing = false
         loadingView.isGone = true
 
-        locationTextView.text = state.location
+        locationTextView.text = state.location.name
         nowTemperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
         weatherIconImageView.load(state.weatherType.image)
         weatherTextView.text = state.weatherType.text

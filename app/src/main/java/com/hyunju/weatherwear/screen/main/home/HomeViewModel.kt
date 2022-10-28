@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
+import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.repository.map.MapRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
@@ -62,7 +63,7 @@ class HomeViewModel @Inject constructor(
 
             weatherItems.toEntity()?.let {
                 homeStateLiveData.value = HomeState.Success(
-                    location = location,
+                    location = SearchResultEntity(location, locationLatLngEntity),
                     weatherInfo = it,
                     weatherType = getMatchingUiWeatherInfo(it),
                     sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
