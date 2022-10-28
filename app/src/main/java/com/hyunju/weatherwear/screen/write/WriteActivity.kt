@@ -1,20 +1,31 @@
 package com.hyunju.weatherwear.screen.write
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.hyunju.weatherwear.screen.write.gallery.GalleryActivity
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
+import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
+import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
+import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
+import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
@@ -23,11 +34,67 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
+class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), ConfirmDialogInterface {
+
+    companion object {
+        const val WEATHER_KEY = "weather"
+        const val WEATHER_TYPE_KEY = "weatherType"
+        const val LOCATION_KEY = "location"
+
+        fun newIntent(
+            context: Context,
+            weatherEntity: WeatherEntity,
+            weatherType: String,
+            location: String
+        ) = Intent(context, WriteActivity::class.java).apply {
+            putExtra(WEATHER_KEY, weatherEntity)
+            putExtra(WEATHER_TYPE_KEY, weatherType)
+            putExtra(LOCATION_KEY, location)
+        }
+
+        val photoPermissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
 
     override val viewModel by viewModels<WriteViewModel>()
 
     override fun getViewBinding() = ActivityWriteBinding.inflate(layoutInflater)
+
+    private val photoPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.all { permission -> permission.value }) {
+                showPictureUploadDialog()
+            } else {
+                Toast.makeText(this, R.string.can_not_assigned_permission, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getParcelableExtra<Uri>(GalleryActivity.URI_KEY)
+                    ?.let { uri ->
+                        binding.weatherWearImageView.load(uri.toString(), 0f)
+                    } ?: kotlin.run {
+                    Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getParcelableExtra<Uri>(CameraActivity.URI_KEY)
+                    ?.let { uri ->
+                        binding.weatherWearImageView.load(uri.toString(), 0f)
+                    } ?: kotlin.run {
+                    Toast.makeText(this, R.string.fail_photo_to_get, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -65,6 +132,12 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
             searchLocationLauncher.launch(
                 SearchLocationActivity.newIntent(this@WriteActivity)
             )
+        }
+
+        weatherWearCardView.setOnClickListener {
+            checkHasPermission {
+                showPictureUploadDialog()
+            }
         }
     }
 
@@ -135,23 +208,70 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>() {
         }
     }
 
-    companion object {
-        const val WEATHER_KEY = "weather"
-        const val WEATHER_TYPE_KEY = "weatherType"
-        const val LOCATION_KEY = "location"
-
-        fun newIntent(
-            context: Context,
-            weatherEntity: WeatherEntity,
-            weatherType: String,
-            location: String
-        ) =
-            Intent(context, WriteActivity::class.java).apply {
-                putExtra(WEATHER_KEY, weatherEntity)
-                putExtra(WEATHER_TYPE_KEY, weatherType)
-                putExtra(LOCATION_KEY, location)
+    private fun showPictureUploadDialog() {
+        AlertDialog.Builder(this)
+            .setMessage("사진 첨부 방식을 선택해주세요.")
+            .setPositiveButton("카메라") { _, _ ->
+                cameraLauncher.launch(
+                    CameraActivity.newIntent(this)
+                )
             }
+            .setNegativeButton("갤러리") { _, _ ->
+                galleryLauncher.launch(
+                    GalleryActivity.newIntent(this)
+                )
+            }
+            .create()
+            .show()
+    }
 
+    private fun checkHasPermission(uploadAction: () -> Unit) {
+        val hasCameraPermission = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+        val refusedCameraPermission =
+            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+
+        val refusedExternalStoragePermission =
+            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val hasExternalStoragePermission = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        when {
+            // 권한이 있을 경우
+            hasCameraPermission && hasExternalStoragePermission -> {
+                uploadAction()
+            }
+            !hasCameraPermission && !hasExternalStoragePermission -> {
+                photoPermissionLauncher.launch(photoPermissions)
+            }
+            // 이전에 거부한 경우, 권한 필요성 설명 및 권한 요청 / 다시 묻기까지 거부된 경우
+            (!hasCameraPermission || !hasExternalStoragePermission) ||
+                    (refusedCameraPermission || refusedExternalStoragePermission) -> {
+                showPermissionContextPopup()
+            }
+            else -> {
+                photoPermissionLauncher.launch(photoPermissions)
+            }
+        }
+    }
+
+    private fun showPermissionContextPopup() {
+        ConfirmDialog(
+            confirmDialogInterface = this,
+            text = getString(R.string.setting_photo_permission)
+        ).show(this.supportFragmentManager, "ConfirmDialog")
+    }
+
+    // 설정 메뉴로 이동
+    override fun onYesButtonClick() {
+        val intent = Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            val uri = Uri.fromParts("package", packageName, null)
+            data = uri
+        }
+        startActivity(intent)
     }
 
 }

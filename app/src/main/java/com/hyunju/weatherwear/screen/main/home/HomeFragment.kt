@@ -48,11 +48,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private val locationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val responsePermissions = permissions.entries.filter {
-                it.key == Manifest.permission.ACCESS_FINE_LOCATION
-                        || it.key == Manifest.permission.ACCESS_COARSE_LOCATION
-            }
-            if (responsePermissions.filter { it.value }.size == locationPermissions.size) {
+            if (permissions.all { permission -> permission.value }) {
                 setMyLocationListener()
             } else {
                 with(binding.locationTextView) {

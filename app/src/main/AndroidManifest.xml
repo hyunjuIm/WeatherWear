@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".WeatherWearApplication"
         android:allowBackup="true"
@@ -20,12 +23,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".screen.wirte.location.SearchLocationActivity"
-            android:exported="false"
-            android:label="@string/title_activity_search_location"
-            android:theme="@style/Theme.WeatherWear.NoActionBar" />
+            android:name=".screen.write.gallery.GalleryActivity"
+            android:exported="false" />
         <activity
-            android:name=".screen.wirte.WriteActivity"
+            android:name=".screen.write.camera.CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screen.write.location.SearchLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screen.write.WriteActivity"
             android:exported="false" />
         <activity
             android:name=".screen.main.MainActivity"
