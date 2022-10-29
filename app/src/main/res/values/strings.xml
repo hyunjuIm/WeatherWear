@@ -31,7 +31,7 @@
     <string name="setting_photo_permission">⚠️\n\n사진을 가져오기 위해 권한이 필요합니다.\n설정 - [카메라], [저장공간] 권한을 허용해주세요.\n\n확인을 누르면 설정으로 이동합니다.</string>
 
     <!-- Error -->
-    <string name="request_error">예상치 못한 이슈가 발생했습니다.</string>
+    <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>
     <string name="fail_photo_to_get">사진을 가져오지 못했습니다.</string>
 

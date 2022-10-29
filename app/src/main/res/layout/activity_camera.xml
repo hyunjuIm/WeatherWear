@@ -57,7 +57,7 @@
     <FrameLayout
         android:id="@+id/frameLayoutPreview"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:layout_height="match_parent">
 
         <ImageView

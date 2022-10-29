@@ -7,8 +7,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.animation.Animation
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -24,8 +22,6 @@ import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.util.file.newJpgFileName
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -62,12 +58,37 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun bindViews() = with(binding) {
-        cameraButton.setOnClickListener {
-            takePhoto()
-        }
-        cancelButton.setOnClickListener {
-            onBackPressed()
-        }
+        cameraButton.setOnClickListener { takePhoto() } // 카메라 촬영
+        cancelButton.setOnClickListener { onBackPressed() } // 다시 찍기 or 뒤로 가기
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+        cameraProviderFuture.addListener({
+            // 카메라의 수명 주기를 수명 주기 소유자에게 바인딩
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(binding.previewView.surfaceProvider)
+            }
+            imageCapture = ImageCapture.Builder().build()
+
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA // 후면 카메라로 설정
+
+            try {
+                // 다시 바인딩하기 전에 사용 사례 바인딩 해제
+                cameraProvider.unbindAll()
+                // 설정된 카메라의 수명 주기 지정
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+            } catch (exc: Exception) {
+                Log.d("CameraX-Debug", "Use case binding failed", exc)
+                showErrorMessage()
+            }
+
+        }, ContextCompat.getMainExecutor(this))
+
+        isActivated = true
     }
 
     private fun takePhoto() {
@@ -84,44 +105,16 @@ class CameraActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
 
                 override fun onError(exc: ImageCaptureException) {
+                    showErrorMessage()
                     Log.d("CameraX-Debug", "Photo capture failed: ${exc.message}", exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    Log.d("CameraX-Debug", "Photo capture succeeded: $savedUri")
                     showPreviewPhoto(savedUri)
+                    Log.d("CameraX-Debug", "Photo capture succeeded: $savedUri")
                 }
             })
-    }
-
-    // viewFinder 설정 : Preview
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
-        cameraProviderFuture.addListener({
-            // 카메라의 수명 주기를 수명 주기 소유자에게 바인딩하는 데 사용됩니다.
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(binding.previewView.surfaceProvider)
-            }
-            imageCapture = ImageCapture.Builder().build()
-
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA // 후면 카메라로 설정
-
-            try {
-                // 다시 바인딩하기 전에 사용 사례 바인딩 해제
-                cameraProvider.unbindAll()
-                // 카메라에 사용 사례 바인딩
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-            } catch (exc: Exception) {
-                Log.d("CameraX-Debug", "Use case binding failed", exc)
-            }
-
-        }, ContextCompat.getMainExecutor(this))
-
-        isActivated = true
     }
 
     private fun showPreviewPhoto(uri: Uri) = with(binding) {
@@ -135,7 +128,6 @@ class CameraActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, Intent().apply {
                 putExtra(URI_KEY, uri)
             })
-
             finish()
         }
 
@@ -145,6 +137,11 @@ class CameraActivity : AppCompatActivity() {
     private fun showCamera() = with(binding) {
         frameLayoutPreview.isGone = true
         frameLayoutPreview.isClickable = false
+    }
+
+    private fun showErrorMessage() {
+        Toast.makeText(this@CameraActivity, R.string.request_error, Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun getOutputDirectory(): File {
