@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.util.location
+package com.hyunju.weatherwear.util.conventer
 
 const val TO_GRID = 0
 const val TO_GPS = 1
