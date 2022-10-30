@@ -8,7 +8,7 @@ import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.location.TO_GRID
 import com.hyunju.weatherwear.util.location.convertGridGPS
-import com.hyunju.weatherwear.util.weather.getMatchingUiWeatherInfo
+import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -48,7 +48,7 @@ class WriteViewModel @Inject constructor(
                 writeStateLiveData.value = WriteState.Success(
                     location = locationLatLngEntity,
                     weatherInfo = it,
-                    weatherType = getMatchingUiWeatherInfo(it)
+                    weatherType = getWeatherType(it)
                 )
             } ?: run {
                 writeStateLiveData.value = WriteState.Error(R.string.can_not_load_weather_info)

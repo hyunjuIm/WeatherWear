@@ -11,7 +11,7 @@ import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.location.TO_GRID
 import com.hyunju.weatherwear.util.location.convertGridGPS
 import com.hyunju.weatherwear.util.weather.getCommentWeather
-import com.hyunju.weatherwear.util.weather.getMatchingUiWeatherInfo
+import com.hyunju.weatherwear.util.weather.getWeatherType
 import com.hyunju.weatherwear.util.weather.getSensibleTemperature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
                 homeStateLiveData.value = HomeState.Success(
                     location = SearchResultEntity(location, locationLatLngEntity),
                     weatherInfo = it,
-                    weatherType = getMatchingUiWeatherInfo(it),
+                    weatherType = getWeatherType(it),
                     sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
                     comment = getCommentWeather(it)
                 )

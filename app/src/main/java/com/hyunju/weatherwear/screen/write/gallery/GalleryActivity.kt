@@ -68,7 +68,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel, ActivityGalleryBinding>()
     private fun handleConfirmState(state: GalleryState.Confirm) {
         state.photo?.let {
             setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(URI_KEY,it.uri)
+                putExtra(URI_KEY, it.uri)
             })
         }
 

@@ -11,27 +11,17 @@ fun getSensibleTemperature(temperatures: Int, windSpeed: Double): Int {
 }
 
 // 날씨 이미지, 정보 ui 셋팅
-fun getMatchingUiWeatherInfo(weatherInfo: WeatherEntity): Weather {
-    val time = weatherInfo.time.toInt()
+fun getWeatherType(weatherInfo: WeatherEntity): Weather {
+    val afternoon = (weatherInfo.time.toInt()) in Time.AFTERNOON
     val sky = weatherInfo.SKY
     val shape = weatherInfo.PTY
 
-    return when (true) {
-        (sky in Sky.SUN && shape == Shape.NONE) -> {
-            if (time in Time.AFTERNOON) Weather.SUN else Weather.NIGHT
-        }
-        (sky in Sky.SUN && shape == Shape.RAIN) -> {
-            if (time in Time.AFTERNOON) Weather.SUN_RAINY else Weather.NIGHT_RAINY
-        }
-        (sky in Sky.SUN && shape == Shape.RAIN_SNOW) -> {
-            if (time in Time.AFTERNOON) Weather.SUN_RAINY_SNOWY else Weather.NIGHT_RAINY_SNOWY
-        }
-        (sky in Sky.SUN && shape == Shape.SNOW) -> {
-            if (time in Time.AFTERNOON) Weather.SUN_SNOWY else Weather.NIGHT_SNOWY
-        }
-        (sky in Sky.SUN && shape == Shape.SHOWER) -> {
-            if (time in Time.AFTERNOON) Weather.SUN_SHOWER else Weather.NIGHT_SHOWER
-        }
+    return when {
+        (sky in Sky.SUN && shape == Shape.NONE) -> if (afternoon) Weather.SUN else Weather.NIGHT
+        (sky in Sky.SUN && shape == Shape.RAIN) -> if (afternoon) Weather.SUN_RAINY else Weather.NIGHT_RAINY
+        (sky in Sky.SUN && shape == Shape.RAIN_SNOW) -> if (afternoon) Weather.SUN_RAINY_SNOWY else Weather.NIGHT_RAINY_SNOWY
+        (sky in Sky.SUN && shape == Shape.SNOW) -> if (afternoon) Weather.SUN_SNOWY else Weather.NIGHT_SNOWY
+        (sky in Sky.SUN && shape == Shape.SHOWER) -> if (afternoon) Weather.SUN_SHOWER else Weather.NIGHT_SHOWER
 
         (sky in Sky.CLOUDY && shape == Shape.NONE) -> Weather.CLOUDY
         (sky in Sky.CLOUDY && shape == Shape.RAIN) -> Weather.CLOUDY_RAINY
@@ -51,7 +41,6 @@ fun getMatchingUiWeatherInfo(weatherInfo: WeatherEntity): Weather {
 
 // 메인화면 코멘트
 fun getCommentWeather(weatherInfo: WeatherEntity): String {
-
     val commentList = arrayListOf<String>()
 
     if (weatherInfo.TMX - weatherInfo.TMN >= 10) {

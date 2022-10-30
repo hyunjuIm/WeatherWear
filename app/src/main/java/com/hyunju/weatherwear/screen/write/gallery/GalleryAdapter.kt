@@ -27,11 +27,7 @@ class GalleryAdapter(val clickItem: (GalleryModel) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryAdapter.ViewHolder =
         ViewHolder(
-            ItemGalleryPhotoBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+            ItemGalleryPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
     override fun onBindViewHolder(holder: GalleryAdapter.ViewHolder, position: Int): Unit =

@@ -23,12 +23,14 @@ class GalleryViewModel @Inject constructor() : BaseViewModel() {
 
     override fun fetchData(): Job = viewModelScope.launch(exceptionHandler) {
         galleryStateLiveData.value = GalleryState.Loading
+
         photoList = galleryPhotoRepository.getAllPhotos()
         galleryStateLiveData.value = GalleryState.Success(
             photoList = photoList
         )
     }
 
+    // 사진 선택 (1장만)
     fun selectPhoto(selectGalleryModel: GalleryModel) {
         if (photoList.filter { it.isSelected }.size == 1 &&
             (photoList.first { it.isSelected } != selectGalleryModel)
@@ -47,10 +49,13 @@ class GalleryViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
+    // 사진 선택 완료
     fun confirmSelectedPhoto() {
         galleryStateLiveData.value = GalleryState.Loading
+
+        val selectPhoto = photoList.filter { it.isSelected }
         galleryStateLiveData.value = GalleryState.Confirm(
-            photo = if (photoList.filter { it.isSelected }.size == 1) photoList.first { it.isSelected } else null
+            photo = if (selectPhoto.size == 1) selectPhoto.first() else null
         )
     }
 
