@@ -27,6 +27,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".screen.dailylook.detail.WeatherWearDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".screen.write.gallery.GalleryActivity"
             android:exported="false" />
         <activity

@@ -26,6 +26,7 @@ import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.model.WriteModel
 import com.hyunju.weatherwear.screen.base.BaseActivity
+import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
@@ -189,7 +190,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             is WriteState.Uninitialized -> handleUninitializedState()
             is WriteState.Loading -> handleLoadingState()
             is WriteState.Success -> handleSuccessState(it)
-            is WriteState.Register -> handleSuccessRegister(it)
+            is WriteState.Register -> handleRegister(it)
             is WriteState.Error -> handleErrorState(it)
         }
     }
@@ -213,9 +214,17 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         isEnabledWriteButton()
     }
 
-    private fun handleSuccessRegister(state: WriteState.Register) = with(binding) {
+    private fun handleRegister(state: WriteState.Register) = with(binding) {
         loadingView.isGone = true
-        Toast.makeText(this@WriteActivity, "업로드 완료 : ${state.id}", Toast.LENGTH_SHORT).show()
+
+        startActivity(
+            WeatherWearDetailActivity.newIntent(
+                this@WriteActivity,
+                state.id
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+
+        finish()
     }
 
     private fun handleErrorState(state: WriteState.Error) = with(binding) {

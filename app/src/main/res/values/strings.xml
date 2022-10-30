@@ -34,5 +34,6 @@
     <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>
     <string name="fail_photo_to_get">사진을 가져오지 못했습니다.</string>
+    <string name="delete">삭제</string>
 
 </resources>
