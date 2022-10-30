@@ -8,8 +8,8 @@ import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.repository.map.MapRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
-import com.hyunju.weatherwear.util.location.TO_GRID
-import com.hyunju.weatherwear.util.location.convertGridGPS
+import com.hyunju.weatherwear.util.conventer.TO_GRID
+import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.weather.getCommentWeather
 import com.hyunju.weatherwear.util.weather.getWeatherType
 import com.hyunju.weatherwear.util.weather.getSensibleTemperature

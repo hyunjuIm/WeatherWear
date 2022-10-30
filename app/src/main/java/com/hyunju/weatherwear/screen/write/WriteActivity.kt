@@ -24,6 +24,7 @@ import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.extension.load
+import com.hyunju.weatherwear.model.WriteModel
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
@@ -114,24 +115,26 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             selectLocation = location
         }
 
-        selectDateTextView.setOnClickListener {
-            showDatePickerDialog()
-        }
-
+        // 날짜 선택
+        selectDateTextView.setOnClickListener { showDatePickerDialog() }
+        // 위치 선택
         selectLocationTextView.setOnClickListener {
             searchLocationLauncher.launch(
                 SearchLocationActivity.newIntent(this@WriteActivity)
             )
         }
-
+        // 사진 선택
         selectPhotoView.setOnClickListener {
             checkHasPermission {
                 showPictureUploadDialog()
             }
         }
+        // 사진 선택 취소
+        cancelPhotoButton.setOnClickListener { cancelSelectedPhoto() }
 
-        cancelPhotoButton.setOnClickListener {
-            cancelSelectedPhoto()
+        // 등록하기
+        writeButton.setOnClickListener {
+            uploadWeatherWear()
         }
     }
 
@@ -186,6 +189,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             is WriteState.Uninitialized -> handleUninitializedState()
             is WriteState.Loading -> handleLoadingState()
             is WriteState.Success -> handleSuccessState(it)
+            is WriteState.Register -> handleSuccessRegister(it)
             is WriteState.Error -> handleErrorState(it)
         }
     }
@@ -207,6 +211,11 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType.text}"
 
         isEnabledWriteButton()
+    }
+
+    private fun handleSuccessRegister(state: WriteState.Register) = with(binding) {
+        loadingView.isGone = true
+        Toast.makeText(this@WriteActivity, "업로드 완료 : ${state.id}", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleErrorState(state: WriteState.Error) = with(binding) {
@@ -291,6 +300,18 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             data = uri
         }
         startActivity(intent)
+    }
+
+    private fun uploadWeatherWear() {
+        viewModel.uploadWeatherWear(
+            WriteModel(
+                date = selectDate,
+                location = selectLocation!!,
+                weather = weatherInfo!!,
+                photo = selectPhoto!!,
+                diary = binding.diaryEditText.text.toString()
+            )
+        )
     }
 
     // 등록하기 버튼 활성화 여부

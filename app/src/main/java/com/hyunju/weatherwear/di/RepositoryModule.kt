@@ -2,6 +2,8 @@ package com.hyunju.weatherwear.di
 
 import com.hyunju.weatherwear.data.repository.map.DefaultMapRepository
 import com.hyunju.weatherwear.data.repository.map.MapRepository
+import com.hyunju.weatherwear.data.repository.wear.DefaultWeatherWearRepository
+import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.data.repository.weather.DefaultWeatherRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import dagger.Binds
@@ -19,4 +21,6 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindMapRepository(mapRepositoryImpl: DefaultMapRepository): MapRepository
 
+    @Binds
+    abstract fun bindWeatherWearRepository(weatherWearRepositoryImpl: DefaultWeatherWearRepository): WeatherWearRepository
 }
