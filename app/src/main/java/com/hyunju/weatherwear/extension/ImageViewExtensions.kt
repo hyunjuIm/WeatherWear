@@ -24,7 +24,6 @@ fun ImageView.load(url: String, corner: Float = 0f) {
         .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
         .timeout(5000)
         .into(this)
-
 }
 
 fun ImageView.load(url: String) {
