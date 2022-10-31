@@ -27,6 +27,7 @@ class WearAdapter(val clickItem: (Long) -> Unit) :
             binding.dateTextView.text = setMillisDateFormat(item.date)
             binding.temperatureTextView.text =
                 "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
+            binding.locationTextView.text = item.location
 
             root.setOnClickListener { clickItem(item.id) }
         }

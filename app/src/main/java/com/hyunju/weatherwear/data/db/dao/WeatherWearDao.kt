@@ -12,7 +12,7 @@ interface WeatherWearDao {
     @Query("SELECT * FROM WeatherWearEntity WHERE id=:id")
     suspend fun get(id: Long): WeatherWearEntity
 
-    @Query("SELECT * FROM WeatherWearEntity")
+    @Query("SELECT * FROM WeatherWearEntity ORDER BY date DESC")
     suspend fun getAll(): List<WeatherWearEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
