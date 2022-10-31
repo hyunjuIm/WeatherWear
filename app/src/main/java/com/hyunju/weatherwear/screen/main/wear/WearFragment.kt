@@ -1,14 +1,18 @@
 package com.hyunju.weatherwear.screen.main.wear
 
 import android.app.Activity
+import android.graphics.Canvas
+import android.widget.EdgeEffect
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.FragmentWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
+import com.hyunju.weatherwear.extension.removeEdgeEffect
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +51,7 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
 
     override fun initViews() = with(binding) {
         recyclerView.adapter = adapter
+        recyclerView.edgeEffectFactory = recyclerView.removeEdgeEffect()
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(spanCount = 2, spacing = 16f.fromDpToPx())
         )
