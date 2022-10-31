@@ -3,6 +3,7 @@ package com.hyunju.weatherwear.extension
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
@@ -19,14 +20,20 @@ fun ImageView.load(
     url: String,
     corner: Float = 0f
 ) {
-    Glide.with(this)
-        .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade(factory))
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .apply {
-            if (corner > 0) RequestOptions.bitmapTransform(RoundedCorners(corner.fromDpToPx()))
-        }
-        .into(this)
+    if (corner > 0) {
+        Glide.with(this)
+            .load(url)
+            .transition(DrawableTransitionOptions.withCrossFade(factory))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
+            .into(this)
+    } else {
+        Glide.with(this)
+            .load(url)
+            .transition(DrawableTransitionOptions.withCrossFade(factory))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(this)
+    }
 }
 
 fun ImageView.load(drawable: Int?) {

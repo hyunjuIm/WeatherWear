@@ -3,10 +3,10 @@ package com.hyunju.weatherwear.screen.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
+import com.hyunju.weatherwear.screen.main.wear.WearFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_wear -> {
+                    showFragment(WearFragment.newInstance(), WearFragment.TAG)
                     true
                 }
                 R.id.menu_setting -> {

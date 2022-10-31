@@ -11,7 +11,6 @@ import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityGalleryBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class GalleryActivity : BaseActivity<GalleryViewModel, ActivityGalleryBinding>() {
