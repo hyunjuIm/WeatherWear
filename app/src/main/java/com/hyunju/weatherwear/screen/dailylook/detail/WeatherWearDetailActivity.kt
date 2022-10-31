@@ -1,6 +1,7 @@
 package com.hyunju.weatherwear.screen.dailylook.detail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -12,8 +13,6 @@ import androidx.core.view.isVisible
 import com.hyunju.weatherwear.databinding.ActivityWeatherWearDetailBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
-import com.hyunju.weatherwear.screen.write.camera.CameraActivity
-import com.hyunju.weatherwear.screen.write.gallery.GalleryActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +22,7 @@ class WeatherWearDetailActivity :
 
     companion object {
         const val ID_KEY = "id"
+        const val DELETE_KEY = "delete"
 
         fun newIntent(context: Context, id: Long) =
             Intent(context, WeatherWearDetailActivity::class.java).apply {
@@ -92,6 +92,10 @@ class WeatherWearDetailActivity :
             "삭제되었습니다.",
             Toast.LENGTH_SHORT
         ).show()
+
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(DELETE_KEY, true)
+        })
 
         finish()
     }

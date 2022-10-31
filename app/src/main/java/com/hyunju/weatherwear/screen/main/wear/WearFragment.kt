@@ -1,6 +1,8 @@
 package com.hyunju.weatherwear.screen.main.wear
 
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -9,8 +11,6 @@ import com.hyunju.weatherwear.databinding.FragmentWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
-import com.hyunju.weatherwear.screen.write.WriteActivity
-import com.hyunju.weatherwear.screen.write.gallery.GridDividerDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,9 +26,20 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
 
     override fun getViewBinding() = FragmentWearBinding.inflate(layoutInflater)
 
+    private val detailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getBooleanExtra(WeatherWearDetailActivity.DELETE_KEY, false)
+                    ?.let { delete -> if (delete) viewModel.fetchData() } ?: kotlin.run {
+                    Toast.makeText(requireContext(), R.string.request_error, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+
     private val adapter by lazy {
         WearAdapter(clickItem = {
-            startActivity(
+            detailLauncher.launch(
                 WeatherWearDetailActivity.newIntent(requireContext(), it)
             )
         })

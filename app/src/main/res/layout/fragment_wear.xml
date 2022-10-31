@@ -45,7 +45,7 @@
         android:layout_marginHorizontal="16dp"
         android:fontFamily="@font/notosans_kr_light"
         android:paddingBottom="16dp"
-        android:text="비슷한 날씨, 혹은 내가 과거 이맘때쯤 어떤 옷을 입었는지\n데일리룩으로 기록하고 확인해보세요!"
+        android:text="비슷한 날씨, 혹은 내가 이맘때쯤 어떤 옷을 입었는지\n데일리룩으로 기록하고 확인해보세요!"
         android:textColor="@color/blue_500"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
