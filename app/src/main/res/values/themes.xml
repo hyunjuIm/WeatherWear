@@ -25,6 +25,8 @@
         <item name="toolbarWithArrowStyle">@style/Widget.WeatherWear.Toolbar.WithArrow</item>
         <item name="toolbarWithCloseStyle">@style/Widget.WeatherWear.Toolbar.WithClose</item>
 
+        <item name="android:colorEdgeEffect">@color/transparent</item>
+
     </style>
     <style name="Theme.WeatherWear.NoActionBar">
         <item name="windowActionBar">false</item>
