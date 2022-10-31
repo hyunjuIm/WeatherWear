@@ -122,7 +122,7 @@ class CameraActivity : AppCompatActivity() {
 
         frameLayoutPreview.isVisible = true
         frameLayoutPreview.isClickable = true
-        imageViewPreview.load(uri.toString(), 0f)
+        imageViewPreview.load(uri.toString())
 
         usePhotoButton.setOnClickListener {
             setResult(Activity.RESULT_OK, Intent().apply {

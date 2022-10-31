@@ -16,24 +16,24 @@ private val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(tru
 // ImageView 의 캐시를 clear 한다
 fun ImageView.clear() = Glide.with(context).clear(this)
 
-fun ImageView.load(
-    url: String,
-    corner: Float = 0f
-) {
-    if (corner > 0) {
-        Glide.with(this)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade(factory))
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
-            .into(this)
-    } else {
-        Glide.with(this)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade(factory))
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(this)
-    }
+fun ImageView.load(url: String, corner: Float = 0f) {
+    Glide.with(this)
+        .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
+        .timeout(5000)
+        .into(this)
+
+}
+
+fun ImageView.load(url: String) {
+    Glide.with(this)
+        .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .timeout(5000)
+        .into(this)
 }
 
 fun ImageView.load(drawable: Int?) {

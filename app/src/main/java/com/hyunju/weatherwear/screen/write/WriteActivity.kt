@@ -168,7 +168,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private fun setPhotoFromUriData(uri: Uri) = with(binding) {
         selectPhoto = uri
 
-        weatherWearImageView.load(uri.toString(), 0f)
+        weatherWearImageView.load(uri.toString())
         selectPhotoView.isGone = true
         cancelPhotoButton.isVisible = true
     }
