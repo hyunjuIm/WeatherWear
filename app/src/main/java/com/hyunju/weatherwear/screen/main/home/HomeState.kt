@@ -1,8 +1,8 @@
 package com.hyunju.weatherwear.screen.main.home
 
 import androidx.annotation.StringRes
-import com.hyunju.weatherwear.data.entity.SearchResultEntity
-import com.hyunju.weatherwear.data.entity.WeatherEntity
+import com.hyunju.weatherwear.data.entity.LocationEntity
+import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.util.weather.Weather
 
 sealed class HomeState {
@@ -12,8 +12,8 @@ sealed class HomeState {
     object Loading : HomeState()
 
     data class Success(
-        val location: SearchResultEntity,
-        val weatherInfo: WeatherEntity,
+        val location: LocationEntity,
+        val weatherInfo: WeatherModel,
         val weatherType:Weather,
         val sensibleTemperature:Int,
         val comment: String

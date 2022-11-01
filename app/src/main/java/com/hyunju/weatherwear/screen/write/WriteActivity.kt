@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -21,7 +22,7 @@ import androidx.databinding.DataBindingUtil
 import com.hyunju.weatherwear.screen.write.gallery.GalleryActivity
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.SearchResultEntity
-import com.hyunju.weatherwear.data.entity.WeatherEntity
+import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.model.WriteModel
@@ -39,6 +40,16 @@ import java.util.*
 
 @AndroidEntryPoint
 class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), ConfirmDialogInterface {
+
+    companion object {
+
+        fun newIntent(context: Context) = Intent(context, WriteActivity::class.java)
+
+        val photoPermissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    }
 
     override val viewModel by viewModels<WriteViewModel>()
 
@@ -77,17 +88,10 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                selectLocation =
-                    result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
-                binding.selectLocationTextView.text = selectLocation?.name
-
+                selectLocation = result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
                 getSelectedWeatherInfo()
             }
         }
-
-    private val weatherInfo by lazy { intent.getParcelableExtra<WeatherEntity>(WEATHER_KEY) }
-    private val weatherType by lazy { intent.getStringExtra(WEATHER_TYPE_KEY) }
-    private val location by lazy { intent.getParcelableExtra<SearchResultEntity>(LOCATION_KEY) }
 
     private var selectDate: Calendar = Calendar.getInstance()
     private var selectLocation: SearchResultEntity? = null
@@ -108,14 +112,6 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     override fun initViews() = with(binding) {
         toolbar.setNavigationOnClickListener { finish() }
 
-        weatherInfo?.let {
-            weatherTextView.text = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ $weatherType"
-            selectDateTextView.text = setStringDateFormat(it.date)
-            selectLocationTextView.text = location?.name
-
-            selectLocation = location
-        }
-
         // 날짜 선택
         selectDateTextView.setOnClickListener { showDatePickerDialog() }
         // 위치 선택
@@ -132,11 +128,6 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         }
         // 사진 선택 취소
         cancelPhotoButton.setOnClickListener { cancelSelectedPhoto() }
-
-        // 등록하기
-        writeButton.setOnClickListener {
-            uploadWeatherWear()
-        }
     }
 
     // 날짜 선택
@@ -150,8 +141,6 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                 }
                 selectDate = currentDate
                 getSelectedWeatherInfo()
-
-                binding.selectDateTextView.text = setMillisDateFormat(currentDate.timeInMillis)
             },
             selectDate.get(Calendar.YEAR),
             selectDate.get(Calendar.MONTH),
@@ -209,7 +198,25 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         loadingView.isGone = true
 
         weatherTextView.text =
-            "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType.text}"
+            "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType}"
+
+        selectDateTextView.text = setStringDateFormat(state.weatherInfo.date)
+        selectLocationTextView.text = state.location.name
+
+        selectLocation = state.location
+
+        // 등록하기
+        writeButton.setOnClickListener {
+            viewModel.uploadWeatherWear(
+                WriteModel(
+                    date = selectDate,
+                    location = state.location.name,
+                    weather = state.weatherInfo,
+                    photo = selectPhoto!!,
+                    diary = binding.diaryEditText.text.toString()
+                )
+            )
+        }
 
         isEnabledWriteButton()
     }
@@ -239,7 +246,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private fun getSelectedWeatherInfo() {
         selectLocation?.let {
             viewModel.getWeatherInformation(
-                locationLatLngEntity = it.locationLatLng,
+                searchResultEntity = it,
                 date = setMillisDateFormatForApi(selectDate.timeInMillis)
             )
         }
@@ -311,44 +318,10 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         startActivity(intent)
     }
 
-    private fun uploadWeatherWear() {
-        viewModel.uploadWeatherWear(
-            WriteModel(
-                date = selectDate,
-                location = selectLocation!!,
-                weather = weatherInfo!!,
-                photo = selectPhoto!!,
-                diary = binding.diaryEditText.text.toString()
-            )
-        )
-    }
-
     // 등록하기 버튼 활성화 여부
     private fun isEnabledWriteButton() {
         binding.enable = (selectDate.toString().isNotEmpty())
                 && (selectLocation != null) && (selectPhoto != null)
-    }
-
-    companion object {
-        const val WEATHER_KEY = "weather"
-        const val WEATHER_TYPE_KEY = "weatherType"
-        const val LOCATION_KEY = "location"
-
-        fun newIntent(
-            context: Context,
-            weatherEntity: WeatherEntity,
-            weatherType: String,
-            location: SearchResultEntity
-        ) = Intent(context, WriteActivity::class.java).apply {
-            putExtra(WEATHER_KEY, weatherEntity)
-            putExtra(WEATHER_TYPE_KEY, weatherType)
-            putExtra(LOCATION_KEY, location)
-        }
-
-        val photoPermissions = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
     }
 
 }

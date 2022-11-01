@@ -1,5 +1,8 @@
 package com.hyunju.weatherwear.data.repository.map
 
+import com.hyunju.weatherwear.data.db.dao.LocationDao
+import com.hyunju.weatherwear.data.entity.LocationEntity
+import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.data.network.MapApiService
 import com.hyunju.weatherwear.data.response.address.AddressInfo
 import com.hyunju.weatherwear.data.response.search.Poi
@@ -8,7 +11,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultMapRepository @Inject constructor(
-    private val mapApiService: MapApiService
+    private val mapApiService: MapApiService,
+    private val locationDao: LocationDao
 ) : MapRepository {
 
     override suspend fun getReverseGeoInformation(
@@ -34,5 +38,16 @@ class DefaultMapRepository @Inject constructor(
             } else {
                 null
             }
+        }
+
+    override suspend fun getLocationDataFromDevice(): List<LocationEntity> =
+        withContext(Dispatchers.IO) {
+            locationDao.getAll()
+        }
+
+    override suspend fun saveLocationDataToDevice(locationEntity: LocationEntity) =
+        withContext(Dispatchers.IO) {
+            locationDao.deleteAll()
+            locationDao.insert(locationEntity)
         }
 }

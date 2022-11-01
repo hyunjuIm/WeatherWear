@@ -1,6 +1,7 @@
 package com.hyunju.weatherwear.data.response.weather
 
 import com.google.gson.annotations.SerializedName
+import com.hyunju.weatherwear.data.entity.WeatherEntity
 
 data class Item(
     @SerializedName("baseDate")
@@ -19,4 +20,15 @@ data class Item(
     val nx: Int?,
     @SerializedName("ny")
     val ny: Int?
-)
+) {
+    fun toEntity() = WeatherEntity(
+        baseDate = baseDate,
+        baseTime = baseTime,
+        category = category,
+        fcstDate = fcstDate,
+        fcstTime = fcstTime,
+        fcstValue = fcstValue,
+        nx = nx,
+        ny = ny
+    )
+}

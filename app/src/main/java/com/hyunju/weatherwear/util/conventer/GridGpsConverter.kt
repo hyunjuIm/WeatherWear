@@ -1,9 +1,11 @@
 package com.hyunju.weatherwear.util.conventer
 
+import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
+
 const val TO_GRID = 0
 const val TO_GPS = 1
 
-fun convertGridGPS(mode: Int, lat_X: Double, lng_Y: Double): LatXLngY {
+fun convertGridGPS(mode: Int, locationLatLngEntity: LocationLatLngEntity): LatXLngY {
     val RE = 6371.00877 // 지구 반경(km)
     val GRID = 5.0 // 격자 간격(km)
     val SLAT1 = 30.0 // 투영 위도1(degree)
@@ -31,21 +33,21 @@ fun convertGridGPS(mode: Int, lat_X: Double, lng_Y: Double): LatXLngY {
     ro = re * sf / Math.pow(ro, sn)
     val rs = LatXLngY()
     if (mode == TO_GRID) {
-        rs.lat = lat_X
-        rs.lng = lng_Y
-        var ra = Math.tan(Math.PI * 0.25 + lat_X * DEGRAD * 0.5)
+        rs.lat = locationLatLngEntity.latitude
+        rs.lng = locationLatLngEntity.longitude
+        var ra = Math.tan(Math.PI * 0.25 + locationLatLngEntity.latitude * DEGRAD * 0.5)
         ra = re * sf / Math.pow(ra, sn)
-        var theta = lng_Y * DEGRAD - olon
+        var theta = locationLatLngEntity.longitude * DEGRAD - olon
         if (theta > Math.PI) theta -= 2.0 * Math.PI
         if (theta < -Math.PI) theta += 2.0 * Math.PI
         theta *= sn
         rs.x = Math.floor(ra * Math.sin(theta) + XO + 0.5)
         rs.y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5)
     } else {
-        rs.x = lat_X
-        rs.y = lng_Y
-        val xn = lat_X - XO
-        val yn = ro - lng_Y + YO
+        rs.x = locationLatLngEntity.latitude
+        rs.y = locationLatLngEntity.longitude
+        val xn = locationLatLngEntity.latitude - XO
+        val yn = ro - locationLatLngEntity.longitude + YO
         var ra = Math.sqrt(xn * xn + yn * yn)
         if (sn < 0.0) {
             ra = -ra

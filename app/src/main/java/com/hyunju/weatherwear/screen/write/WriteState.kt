@@ -2,7 +2,8 @@ package com.hyunju.weatherwear.screen.write
 
 import androidx.annotation.StringRes
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
-import com.hyunju.weatherwear.data.entity.WeatherEntity
+import com.hyunju.weatherwear.data.entity.SearchResultEntity
+import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.util.weather.Weather
 
 sealed class WriteState {
@@ -12,9 +13,9 @@ sealed class WriteState {
     object Loading : WriteState()
 
     data class Success(
-        val location: LocationLatLngEntity,
-        val weatherInfo: WeatherEntity,
-        val weatherType: Weather
+        val location: SearchResultEntity,
+        val weatherInfo: WeatherModel,
+        val weatherType: String
     ) : WriteState()
 
     data class Register(

@@ -1,6 +1,6 @@
 package com.hyunju.weatherwear.util.weather
 
-import com.hyunju.weatherwear.data.entity.WeatherEntity
+import com.hyunju.weatherwear.model.WeatherModel
 import kotlin.math.pow
 
 // 체감온도
@@ -11,7 +11,7 @@ fun getSensibleTemperature(temperatures: Int, windSpeed: Double): Int {
 }
 
 // 날씨 이미지, 정보 ui 셋팅
-fun getWeatherType(weatherInfo: WeatherEntity): Weather {
+fun getWeatherType(weatherInfo: WeatherModel): Weather {
     val afternoon = (weatherInfo.time.toInt()) in Time.AFTERNOON
     val sky = weatherInfo.SKY
     val shape = weatherInfo.PTY
@@ -40,7 +40,7 @@ fun getWeatherType(weatherInfo: WeatherEntity): Weather {
 }
 
 // 메인화면 코멘트
-fun getCommentWeather(weatherInfo: WeatherEntity): String {
+fun getCommentWeather(weatherInfo: WeatherModel): String {
     val commentList = arrayListOf<String>()
 
     if (weatherInfo.TMX - weatherInfo.TMN >= 10) {

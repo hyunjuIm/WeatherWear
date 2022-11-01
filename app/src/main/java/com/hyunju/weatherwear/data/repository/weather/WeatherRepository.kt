@@ -1,5 +1,6 @@
 package com.hyunju.weatherwear.data.repository.weather
 
+import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.data.response.weather.Items
 
 interface WeatherRepository {
@@ -13,5 +14,9 @@ interface WeatherRepository {
         nx: Int,
         ny: Int
     ): Items?
+
+    suspend fun getWeatherItemsFromDevice(): List<WeatherEntity>
+
+    suspend fun saveWeatherItemsToDevice(weatherItems: List<WeatherEntity>)
 
 }

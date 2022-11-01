@@ -151,12 +151,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         weatherWearCardView.setOnClickListener {
             startActivity(
-                WriteActivity.newIntent(
-                    requireContext(),
-                    state.weatherInfo,
-                    state.weatherType.text,
-                    state.location
-                )
+                WriteActivity.newIntent(requireContext())
             )
         }
     }
@@ -212,8 +207,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
             viewModel.updateLocationWeather(
-                locationLatLngEntity = LocationLatLngEntity(location.latitude, location.longitude),
-                date = getTodayDate()
+                LocationLatLngEntity(location.latitude, location.longitude)
             )
             removeLocationListener()
         }

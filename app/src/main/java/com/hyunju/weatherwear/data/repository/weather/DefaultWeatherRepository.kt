@@ -1,5 +1,7 @@
 package com.hyunju.weatherwear.data.repository.weather
 
+import com.hyunju.weatherwear.data.db.dao.WeatherDao
+import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.data.network.WeatherApiService
 import com.hyunju.weatherwear.data.response.weather.Items
 import kotlinx.coroutines.Dispatchers
@@ -7,7 +9,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DefaultWeatherRepository @Inject constructor(
-    private val weatherApiService: WeatherApiService
+    private val weatherApiService: WeatherApiService,
+    private val weatherDao: WeatherDao
 ) : WeatherRepository {
 
     override suspend fun getWeather(
@@ -34,5 +37,16 @@ class DefaultWeatherRepository @Inject constructor(
             null
         }
     }
+
+    override suspend fun getWeatherItemsFromDevice(): List<WeatherEntity> =
+        withContext(Dispatchers.IO) {
+            weatherDao.getAll()
+        }
+
+    override suspend fun saveWeatherItemsToDevice(weatherItems: List<WeatherEntity>) =
+        withContext(Dispatchers.IO) {
+            weatherDao.deleteAll()
+            weatherDao.insert(weatherItems)
+        }
 
 }

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun getTodayDate(): String {
-    val currentTime: Long = System.currentTimeMillis() - (1000 * 60 * 60 * 24)
+    val currentTime: Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     return dataFormat.format(currentTime)
 }
