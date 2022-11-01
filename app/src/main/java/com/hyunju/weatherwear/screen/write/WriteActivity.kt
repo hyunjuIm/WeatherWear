@@ -55,6 +55,8 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
 
     override fun getViewBinding() = ActivityWriteBinding.inflate(layoutInflater)
 
+    override val layoutId = R.layout.activity_write
+
     private val photoPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions.all { permission -> permission.value }) {
@@ -96,12 +98,6 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private var selectDate: Calendar = Calendar.getInstance()
     private var selectLocation: SearchResultEntity? = null
     private var selectPhoto: Uri? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_write)
-        initState()
-    }
 
     override fun onResume() {
         super.onResume()

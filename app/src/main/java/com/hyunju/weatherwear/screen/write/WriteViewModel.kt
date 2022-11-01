@@ -1,6 +1,5 @@
 package com.hyunju.weatherwear.screen.write
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.R
@@ -17,7 +16,6 @@ import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
 import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -66,7 +64,6 @@ class WriteViewModel @Inject constructor(
                 }
 
             Items(item = weatherEntityList.map { it.toItem() }).toEntity(date)?.let {
-                Log.d("ㅎㅎ", "완성했어 : $it")
                 writeStateLiveData.value = WriteState.Success(
                     location = searchResultEntity,
                     weatherInfo = it,

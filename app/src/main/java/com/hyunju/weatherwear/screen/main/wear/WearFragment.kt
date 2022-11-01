@@ -11,6 +11,7 @@ import com.hyunju.weatherwear.databinding.FragmentWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
+import com.hyunju.weatherwear.screen.write.WriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,6 +55,9 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
         refresh.setOnRefreshListener { viewModel.fetchData() }
 
         addButton.setOnClickListener {
+            startActivity(
+                WriteActivity.newIntent(requireContext())
+            )
         }
     }
 
