@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.Job
 
@@ -17,12 +19,21 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
     protected lateinit var binding: VB
     abstract fun getViewBinding(): VB
 
+    @StringRes
+    open val layoutId: Int = -1
+
     private lateinit var fetchJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = getViewBinding()
-        setContentView(binding.root)
+
+        if (layoutId != -1) {
+            binding = DataBindingUtil.setContentView(this, layoutId)
+        } else {
+            binding = getViewBinding()
+            setContentView(binding.root)
+        }
+
         initState()
     }
 

@@ -14,8 +14,6 @@ data class Items(
     private fun fcstValueToDouble(value: String?) = value?.toDouble() ?: -99.0
 
     fun toEntity(date: String): WeatherModel? {
-        Log.d("ㅎㅎ", "toEntity: $item")
-
         item?.let { item ->
             val maxTemperatures = item.first { it?.category == CategoryType.TMX }?.fcstValue
             val minTemperatures = item.first { it?.category == CategoryType.TMN }?.fcstValue
