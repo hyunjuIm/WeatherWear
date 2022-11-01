@@ -14,6 +14,11 @@ class DefaultWeatherWearRepository @Inject constructor(
         weatherWearDao.get(id)
     }
 
+    override suspend fun getWeatherWearLatestItem(): WeatherWearEntity =
+        withContext(Dispatchers.IO) {
+            weatherWearDao.getLatestItem()
+        }
+
     override suspend fun getAllWeatherWears(): List<WeatherWearEntity> =
         withContext(Dispatchers.IO) {
             weatherWearDao.getAll()

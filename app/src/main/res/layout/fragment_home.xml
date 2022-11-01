@@ -216,8 +216,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/snow"
                         android:scaleType="center"
-                        android:src="@drawable/ic_add_photo"
-                        app:tint="@color/gray_200" />
+                        android:src="@drawable/ic_add_photo" />
 
                 </androidx.cardview.widget.CardView>
 

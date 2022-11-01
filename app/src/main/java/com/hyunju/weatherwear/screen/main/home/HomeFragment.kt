@@ -6,7 +6,6 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -19,11 +18,11 @@ import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
+import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.util.date.getCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.clothes.pickClothes
-import com.hyunju.weatherwear.util.date.getTodayDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,6 +77,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         refresh.setOnRefreshListener {
             changeStatusBarForTime()
             handleUninitializedState()
+            viewModel.fetchData()
         }
     }
 
@@ -118,6 +118,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         when (it) {
             is HomeState.Uninitialized -> handleUninitializedState()
             is HomeState.Loading -> handleLoadingState()
+            is HomeState.Pick -> handlePickState(it)
             is HomeState.Success -> handleSuccessState(it)
             is HomeState.Error -> handleErrorState(it)
         }
@@ -134,6 +135,24 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         locationTextView.text = getString(R.string.loading)
     }
 
+    private fun handlePickState(state: HomeState.Pick) = with(binding) {
+        state.weatherWearEntity?.let { item ->
+            weatherWearImageView.load(item.photo)
+            weatherWearCardView.setOnClickListener {
+                startActivity(
+                    WeatherWearDetailActivity.newIntent(requireContext(), item.id)
+                )
+            }
+            return@with
+        }
+
+        weatherWearCardView.setOnClickListener {
+            startActivity(
+                WriteActivity.newIntent(requireContext())
+            )
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: HomeState.Success) = with(binding) {
         refresh.isRefreshing = false
@@ -148,12 +167,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             "체감온도 ${state.sensibleTemperature}° / 최저 ${state.weatherInfo.TMN}° / 최고 ${state.weatherInfo.TMX}°"
 
         adapter.submitList(pickClothes(state.weatherInfo.TMX))
-
-        weatherWearCardView.setOnClickListener {
-            startActivity(
-                WriteActivity.newIntent(requireContext())
-            )
-        }
     }
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {

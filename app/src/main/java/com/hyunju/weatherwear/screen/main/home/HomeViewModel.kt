@@ -7,6 +7,7 @@ import com.hyunju.weatherwear.data.entity.LocationEntity
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.data.entity.WeatherEntity
 import com.hyunju.weatherwear.data.repository.map.MapRepository
+import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.data.response.weather.Items
 import com.hyunju.weatherwear.screen.base.BaseViewModel
@@ -25,10 +26,17 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mapRepository: MapRepository,
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val weatherWearRepository: WeatherWearRepository
 ) : BaseViewModel() {
 
     val homeStateLiveData = MutableLiveData<HomeState>(HomeState.Uninitialized)
+
+    override fun fetchData(): Job  = viewModelScope.launch(exceptionHandler){
+        homeStateLiveData.value = HomeState.Pick(
+            weatherWearRepository.getWeatherWearLatestItem()
+        )
+    }
 
     // 위치로 날씨 정보 받아오기
     fun updateLocationWeather(locationLatLngEntity: LocationLatLngEntity) =
