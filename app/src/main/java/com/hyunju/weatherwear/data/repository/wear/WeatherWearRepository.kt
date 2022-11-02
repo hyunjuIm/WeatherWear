@@ -10,7 +10,9 @@ interface WeatherWearRepository {
 
     suspend fun getSearchDateWeatherWears(date: Long): List<WeatherWearEntity>
 
-    suspend fun getSearchTemperatureRangeWeatherWears(start: Int, end: Int): List<WeatherWearEntity>
+    suspend fun getSearchMaxTemperatureRangeWeatherWears(start: Int, end: Int): List<WeatherWearEntity>
+
+    suspend fun getSearchMinTemperatureRangeWeatherWears(start: Int, end: Int): List<WeatherWearEntity>
 
     suspend fun getAllWeatherWears(): List<WeatherWearEntity>
 

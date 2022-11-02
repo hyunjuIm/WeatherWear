@@ -9,14 +9,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.BottomSheetSelectTemperatureBinding
 import com.hyunju.weatherwear.util.weather.Temperatures
+import kotlin.math.max
 
 class SelectTemperatureBottomSheetDialog(
-    val itemClick: (Temperatures) -> Unit
+    val itemClick: (String, Temperatures) -> Unit
 ) : BottomSheetDialogFragment() {
+
+    companion object {
+        const val MAX = "max"
+        const val MIN = "min"
+    }
 
     private var _binding: BottomSheetSelectTemperatureBinding? = null
     private val binding get() = _binding!!
 
+    private var selectStandard: String? = MAX
     private var selectTemperature: Temperatures? = null
 
     override fun onCreateView(
@@ -27,7 +34,7 @@ class SelectTemperatureBottomSheetDialog(
         return binding.root
     }
 
-    override fun getTheme() = R.style.BottomSheetDialogTheme
+    override fun getTheme() = R.style.Widget_WeatherWear_BottomSheetDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,17 +52,31 @@ class SelectTemperatureBottomSheetDialog(
                 else -> null
             }
 
-            binding.searchButton.isEnabled = (selectTemperature != null)
+            toggleEnableSearchButton()
+        }
+
+        binding.standardRadioGroup.setOnCheckedChangeListener { _, id ->
+            selectStandard = when (id) {
+                R.id.maxTemperatureButton -> MAX
+                R.id.minTemperatureButton -> MIN
+                else -> null
+            }
+
+            toggleEnableSearchButton()
         }
 
         binding.searchButton.setOnClickListener {
             selectTemperature?.let {
-                itemClick(it)
+                itemClick(selectStandard!!, it)
                 dismiss()
                 return@setOnClickListener
             }
 
             Toast.makeText(requireContext(), "옵션을 선택해주세요!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun toggleEnableSearchButton() {
+        binding.searchButton.isEnabled = (selectStandard != null) && (selectTemperature != null)
     }
 }

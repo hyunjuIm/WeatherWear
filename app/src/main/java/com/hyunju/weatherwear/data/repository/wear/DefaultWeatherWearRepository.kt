@@ -24,11 +24,18 @@ class DefaultWeatherWearRepository @Inject constructor(
             weatherWearDao.getSearchDate(date)
         }
 
-    override suspend fun getSearchTemperatureRangeWeatherWears(
+    override suspend fun getSearchMaxTemperatureRangeWeatherWears(
         start: Int,
         end: Int
     ): List<WeatherWearEntity> = withContext(Dispatchers.IO) {
-        weatherWearDao.getSearchTemperatureRange(start, end)
+        weatherWearDao.getSearchMaxTemperatureRange(start, end)
+    }
+
+    override suspend fun getSearchMinTemperatureRangeWeatherWears(
+        start: Int,
+        end: Int
+    ): List<WeatherWearEntity> = withContext(Dispatchers.IO) {
+        weatherWearDao.getSearchMinTemperatureRange(start, end)
     }
 
     override suspend fun getAllWeatherWears(): List<WeatherWearEntity> =

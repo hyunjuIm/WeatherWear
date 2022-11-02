@@ -28,11 +28,11 @@
 
         <ImageView
             android:id="@+id/searchButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_gravity="end"
-            android:layout_margin="16dp"
             android:background="@color/white"
+            android:padding="16dp"
             android:src="@drawable/ic_search"
             app:tint="@color/gray_500" />
 

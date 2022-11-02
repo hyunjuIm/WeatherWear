@@ -72,9 +72,7 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
             getString(R.string.search_temperature)
         )
 
-        AlertDialog.Builder(
-            requireContext()
-        ).setItems(options) { _, index ->
+        AlertDialog.Builder(requireContext()).setItems(options) { _, index ->
             val option = when (options[index]) {
                 getString(R.string.search_date) -> SearchWeatherWearActivity.DATE
                 getString(R.string.search_temperature) -> SearchWeatherWearActivity.TEMPERATURES

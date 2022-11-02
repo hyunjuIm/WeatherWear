@@ -20,7 +20,10 @@ interface WeatherWearDao {
     suspend fun getSearchDate(date: Long): List<WeatherWearEntity>
 
     @Query("SELECT * FROM WeatherWearEntity WHERE maxTemperature BETWEEN :start AND :end")
-    suspend fun getSearchTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
+    suspend fun getSearchMaxTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
+
+    @Query("SELECT * FROM WeatherWearEntity WHERE minTemperature BETWEEN :start AND :end")
+    suspend fun getSearchMinTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
 
     @Query("SELECT * FROM WeatherWearEntity ORDER BY date DESC")
     suspend fun getAll(): List<WeatherWearEntity>

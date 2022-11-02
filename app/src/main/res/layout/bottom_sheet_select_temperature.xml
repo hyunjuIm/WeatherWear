@@ -13,8 +13,8 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <View
-        android:layout_width="30dp"
-        android:layout_height="3dp"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
         android:background="@drawable/bg_rounded_gray" />
 
     <TextView
@@ -24,11 +24,37 @@
         android:fontFamily="@font/notosans_kr_medium"
         android:gravity="center"
         android:text="@string/select_temperature_range"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:id="@+id/standardRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/maxTemperatureButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:checked="true"
+            android:text="최고 기온"
+            android:textSize="16sp"
+            android:theme="@style/Widget.WeatherWear.RadioButton" />
+
+        <RadioButton
+            android:id="@+id/minTemperatureButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="최저 기온️"
+            android:textSize="16sp"
+            android:theme="@style/Widget.WeatherWear.RadioButton" />
+
+    </RadioGroup>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_marginTop="20dp">
 
         <RadioGroup
