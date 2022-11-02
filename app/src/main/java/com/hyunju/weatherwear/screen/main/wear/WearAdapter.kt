@@ -24,7 +24,7 @@ class WearAdapter(val clickItem: (Long) -> Unit) :
             binding.wearImageView.clear()
             binding.wearImageView.load(item.photo, 8f)
 
-            binding.dateTextView.text = setMillisDateFormat(item.date)
+            binding.dateTextView.text = setMillisDateFormat(item.date.time)
             binding.temperatureTextView.text =
                 "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
             binding.locationTextView.text = item.location

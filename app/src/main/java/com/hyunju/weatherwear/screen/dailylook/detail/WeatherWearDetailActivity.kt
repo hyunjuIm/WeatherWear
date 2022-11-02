@@ -60,7 +60,7 @@ class WeatherWearDetailActivity :
     private fun handleSuccessState(state: WeatherWearDetailState.Success) = with(binding) {
         loadingView.isGone = true
 
-        titleTextView.text = setMillisDateFormat(state.weatherWearInfo.date)
+        titleTextView.text = setMillisDateFormat(state.weatherWearInfo.date.time)
         photoImageView.load(state.weatherWearInfo.photo)
         locationTextView.text = state.weatherWearInfo.location
         maxTemperatureTextView.text = "${state.weatherWearInfo.maxTemperature}°"

@@ -1,6 +1,7 @@
 package com.hyunju.weatherwear.data.repository.wear
 
 import com.hyunju.weatherwear.data.entity.WeatherWearEntity
+import java.util.*
 
 interface WeatherWearRepository {
 
@@ -8,7 +9,7 @@ interface WeatherWearRepository {
 
     suspend fun getWeatherWearLatestItem(): WeatherWearEntity?
 
-    suspend fun getSearchDateWeatherWears(date: Long): List<WeatherWearEntity>
+    suspend fun getSearchDateWeatherWears(date: Calendar): List<WeatherWearEntity>
 
     suspend fun getSearchMaxTemperatureRangeWeatherWears(start: Int, end: Int): List<WeatherWearEntity>
 

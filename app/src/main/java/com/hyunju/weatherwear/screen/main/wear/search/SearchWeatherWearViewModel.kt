@@ -10,6 +10,7 @@ import com.hyunju.weatherwear.util.weather.Temperatures
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,10 +21,10 @@ class SearchWeatherWearViewModel @Inject constructor(
     val searchWeatherWearStateLiveData =
         MutableLiveData<SearchWeatherWearState>(SearchWeatherWearState.Uninitialized)
 
-    fun searchDate(date: Long) = viewModelScope.launch(exceptionHandler) {
+    fun searchDate(date: Calendar) = viewModelScope.launch(exceptionHandler) {
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Loading
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Success(
-            searchText = setMillisDateFormat(date),
+            searchText = setMillisDateFormat(date.timeInMillis),
             weatherWearList = weatherWearRepository.getSearchDateWeatherWears(date)
         )
     }

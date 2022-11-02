@@ -105,7 +105,7 @@ class SearchWeatherWearActivity :
                     set(Calendar.MILLISECOND, 0)
                 }
 
-                viewModel.searchDate(currentDate.timeInMillis)
+                viewModel.searchDate(currentDate)
             },
             selectDate.get(Calendar.YEAR),
             selectDate.get(Calendar.MONTH),

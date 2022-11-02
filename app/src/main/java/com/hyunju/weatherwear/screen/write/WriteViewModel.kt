@@ -99,7 +99,8 @@ class WriteViewModel @Inject constructor(
 
         val weatherWear = WeatherWearEntity(
             location = writeModel.location,
-            date = writeModel.date.timeInMillis,
+            createDate = writeModel.date.timeInMillis,
+            date = writeModel.date.time,
             maxTemperature = writeModel.weather.TMX,
             minTemperature = writeModel.weather.TMN,
             weatherType = getWeatherType(writeModel.weather).text,

@@ -95,10 +95,8 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         set(
             this.get(Calendar.YEAR),
             this.get(Calendar.MONTH),
-            this.get(Calendar.DAY_OF_MONTH),
-            0, 0, 0
+            this.get(Calendar.DAY_OF_MONTH)
         )
-        set(Calendar.MILLISECOND, 0)
     }
     private var selectLocation: SearchResultEntity? = null
     private var selectPhoto: Uri? = null
@@ -137,8 +135,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             { _, year, monthOfYear, dayOfMonth ->
                 // 선택한 날짜
                 val currentDate = Calendar.getInstance().apply {
-                    set(year, monthOfYear, dayOfMonth, 0, 0, 0)
-                    set(Calendar.MILLISECOND, 0)
+                    set(year, monthOfYear, dayOfMonth)
                 }
                 selectDate = currentDate
                 getSelectedWeatherInfo()

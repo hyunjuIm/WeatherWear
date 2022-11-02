@@ -4,6 +4,7 @@ import com.hyunju.weatherwear.data.db.dao.WeatherWearDao
 import com.hyunju.weatherwear.data.entity.WeatherWearEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 class DefaultWeatherWearRepository @Inject constructor(
@@ -19,9 +20,25 @@ class DefaultWeatherWearRepository @Inject constructor(
             weatherWearDao.getLatestItem()
         }
 
-    override suspend fun getSearchDateWeatherWears(date: Long): List<WeatherWearEntity> =
+    override suspend fun getSearchDateWeatherWears(date: Calendar): List<WeatherWearEntity> =
         withContext(Dispatchers.IO) {
-            weatherWearDao.getSearchDate(date)
+            val start = Calendar.getInstance().apply {
+                set(
+                    date.get(Calendar.YEAR),
+                    date.get(Calendar.MONTH),
+                    date.get(Calendar.DAY_OF_MONTH),
+                    0, 0, 0
+                )
+            }.time
+            val end = Calendar.getInstance().apply {
+                set(
+                    date.get(Calendar.YEAR),
+                    date.get(Calendar.MONTH),
+                    date.get(Calendar.DAY_OF_MONTH),
+                    23, 59, 59
+                )
+            }.time
+            weatherWearDao.getSearchDate(start, end)
         }
 
     override suspend fun getSearchMaxTemperatureRangeWeatherWears(

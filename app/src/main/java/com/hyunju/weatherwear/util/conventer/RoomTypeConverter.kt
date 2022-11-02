@@ -2,22 +2,19 @@ package com.hyunju.weatherwear.util.conventer
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
+import java.util.*
 
 @ProvidedTypeConverter
 object RoomTypeConverter {
 
     @TypeConverter
-    @JvmStatic
-    fun listToJson(value: LocationLatLngEntity): String {
-        return Gson().toJson(value)
+    fun fromTimestamp(value: Long): Date {
+        return Date(value)
     }
 
     @TypeConverter
-    @JvmStatic
-    fun jsonToList(value: String): LocationLatLngEntity {
-        return Gson().fromJson(value, LocationLatLngEntity::class.java)
+    fun dateToTimestamp(date: Date): Long {
+        return date.time
     }
 
 }
