@@ -16,7 +16,6 @@ import com.hyunju.weatherwear.screen.main.wear.search.SearchWeatherWearActivity
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
 
@@ -50,14 +49,26 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
     }
 
     override fun initViews() = with(binding) {
+        titleTextView.setOnClickListener {
+            recyclerView.smoothScrollToPosition(0)
+        }
+
         searchButton.setOnClickListener { showSearchDialog() }
 
         recyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(spanCount = 2, spacing = 16f.fromDpToPx())
         )
 
-        refresh.setOnRefreshListener { viewModel.fetchData() }
+        // 스크롤 업 대신에 리프레쉬 이벤트가 트리거 되는걸 방지하기 위해서
+        recyclerView.viewTreeObserver.addOnScrollChangedListener {
+            recyclerView.isEnabled = (recyclerView.scrollY == 0)
+        }
+
+        refresh.setOnRefreshListener {
+            viewModel.fetchData()
+        }
 
         addButton.setOnClickListener {
             startActivity(
@@ -86,12 +97,18 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
             .show()
     }
 
-    override fun observeData() = viewModel.wearStateLiveDate.observe(this) {
-        when (it) {
-            is WearState.Loading -> handleLoadingState()
-            is WearState.Success -> handleSuccessState(it)
-            is WearState.Error -> handleErrorState(it)
-            else -> Unit
+    override fun observeData() {
+        viewModel.wearStateLiveDate.observe(this) {
+            when (it) {
+                is WearState.Loading -> handleLoadingState()
+                is WearState.Success -> handleSuccessState(it)
+                is WearState.Error -> handleErrorState(it)
+                else -> Unit
+            }
+        }
+
+        viewModel.updateUIState.observe(this) {
+            if (it) viewModel.fetchData()
         }
     }
 

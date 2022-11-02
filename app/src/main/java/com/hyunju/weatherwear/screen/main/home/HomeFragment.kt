@@ -114,13 +114,19 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    override fun observeData() = viewModel.homeStateLiveData.observe(this) {
-        when (it) {
-            is HomeState.Uninitialized -> handleUninitializedState()
-            is HomeState.Loading -> handleLoadingState()
-            is HomeState.Pick -> handlePickState(it)
-            is HomeState.Success -> handleSuccessState(it)
-            is HomeState.Error -> handleErrorState(it)
+    override fun observeData() {
+        viewModel.homeStateLiveData.observe(this) {
+            when (it) {
+                is HomeState.Uninitialized -> handleUninitializedState()
+                is HomeState.Loading -> handleLoadingState()
+                is HomeState.Pick -> handlePickState(it)
+                is HomeState.Success -> handleSuccessState(it)
+                is HomeState.Error -> handleErrorState(it)
+            }
+        }
+
+        viewModel.updateUIState.observe(this) {
+            if (it) viewModel.fetchData()
         }
     }
 

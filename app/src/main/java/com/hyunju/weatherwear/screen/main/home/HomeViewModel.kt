@@ -15,6 +15,8 @@ import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
+import com.hyunju.weatherwear.util.event.EventBus
+import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.weather.getCommentWeather
 import com.hyunju.weatherwear.util.weather.getWeatherType
 import com.hyunju.weatherwear.util.weather.getSensibleTemperature
@@ -132,5 +134,23 @@ class HomeViewModel @Inject constructor(
     override fun errorData(message: Int): Job = viewModelScope.launch {
         homeStateLiveData.value = HomeState.Loading
         homeStateLiveData.value = HomeState.Error(message)
+    }
+
+    private val _updateUIState = MutableLiveData<Boolean>()
+    val updateUIState = _updateUIState
+
+    init {
+        initEventBusSubscribe()
+    }
+
+    private fun initEventBusSubscribe() {
+        viewModelScope.launch {
+            EventBus.subscribeEvent {
+                when (it) {
+                    UpdateEvent.Updated -> _updateUIState.value = true
+                    UpdateEvent.UnUpdated -> _updateUIState.value = false
+                }
+            }
+        }
     }
 }
