@@ -15,11 +15,14 @@ interface WeatherWearDao {
     @Query("SELECT * FROM WeatherWearEntity ORDER BY date DESC LIMIT 1")
     suspend fun getLatestItem(): WeatherWearEntity
 
+    @Query("SELECT * FROM WeatherWearEntity WHERE date=:date")
+    suspend fun getSearchDate(date: Long): List<WeatherWearEntity>
+
     @Query("SELECT * FROM WeatherWearEntity ORDER BY date DESC")
     suspend fun getAll(): List<WeatherWearEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(weatherWearEntity: WeatherWearEntity):Long
+    suspend fun insert(weatherWearEntity: WeatherWearEntity): Long
 
     @Query("DELETE FROM WeatherWearEntity WHERE id=:id")
     suspend fun delete(id: Long)

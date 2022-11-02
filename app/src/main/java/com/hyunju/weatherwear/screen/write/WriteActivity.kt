@@ -9,20 +9,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import com.hyunju.weatherwear.screen.write.gallery.GalleryActivity
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.SearchResultEntity
-import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.databinding.ActivityWriteBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.model.WriteModel
@@ -32,7 +28,6 @@ import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.date.setStringDateFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,12 +85,21 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                selectLocation = result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
+                selectLocation =
+                    result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
                 getSelectedWeatherInfo()
             }
         }
 
-    private var selectDate: Calendar = Calendar.getInstance()
+    private var selectDate: Calendar = Calendar.getInstance().apply {
+        set(
+            this.get(Calendar.YEAR),
+            this.get(Calendar.MONTH),
+            this.get(Calendar.DAY_OF_MONTH),
+            0, 0, 0
+        )
+        set(Calendar.MILLISECOND, 0)
+    }
     private var selectLocation: SearchResultEntity? = null
     private var selectPhoto: Uri? = null
 
@@ -133,7 +137,8 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             { _, year, monthOfYear, dayOfMonth ->
                 // 선택한 날짜
                 val currentDate = Calendar.getInstance().apply {
-                    set(year, monthOfYear, dayOfMonth)
+                    set(year, monthOfYear, dayOfMonth, 0, 0, 0)
+                    set(Calendar.MILLISECOND, 0)
                 }
                 selectDate = currentDate
                 getSelectedWeatherInfo()

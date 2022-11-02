@@ -1,6 +1,7 @@
 package com.hyunju.weatherwear.screen.main.wear
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
@@ -11,8 +12,10 @@ import com.hyunju.weatherwear.databinding.FragmentWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
+import com.hyunju.weatherwear.screen.main.wear.search.SearchWeatherWearActivity
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
@@ -47,6 +50,8 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
     }
 
     override fun initViews() = with(binding) {
+        searchButton.setOnClickListener { showSearchDialog() }
+
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(spanCount = 2, spacing = 16f.fromDpToPx())
@@ -59,6 +64,28 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
                 WriteActivity.newIntent(requireContext())
             )
         }
+    }
+
+    private fun showSearchDialog() {
+        val options = arrayOf<CharSequence>(
+            getString(R.string.search_date),
+            getString(R.string.search_temperature)
+        )
+
+        AlertDialog.Builder(
+            requireContext()
+        ).setItems(options) { _, index ->
+            val option = when (options[index]) {
+                getString(R.string.search_date) -> SearchWeatherWearActivity.DATE
+                getString(R.string.search_temperature) -> SearchWeatherWearActivity.TEMPERATURES
+                else -> ""
+            }
+            startActivity(
+                SearchWeatherWearActivity.newIntent(requireContext(), option)
+            )
+        }.setCancelable(true)
+            .create()
+            .show()
     }
 
     override fun observeData() = viewModel.wearStateLiveDate.observe(this) {
