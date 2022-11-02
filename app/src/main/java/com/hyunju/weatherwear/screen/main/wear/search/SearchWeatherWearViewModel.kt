@@ -23,9 +23,23 @@ class SearchWeatherWearViewModel @Inject constructor(
 
     fun searchDate(date: Calendar) = viewModelScope.launch(exceptionHandler) {
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Loading
+
+        val start = Calendar.getInstance().apply {
+            set(
+                date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH),
+                0, 0, 0
+            )
+        }.time
+        val end = Calendar.getInstance().apply {
+            set(
+                date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH),
+                23, 59, 59
+            )
+        }.time
+
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Success(
             searchText = setMillisDateFormat(date.timeInMillis),
-            weatherWearList = weatherWearRepository.getSearchDateWeatherWears(date)
+            weatherWearList = weatherWearRepository.getSearchDateWeatherWears(start, end)
         )
     }
 

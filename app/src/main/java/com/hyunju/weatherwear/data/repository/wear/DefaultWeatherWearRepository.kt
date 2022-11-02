@@ -20,24 +20,8 @@ class DefaultWeatherWearRepository @Inject constructor(
             weatherWearDao.getLatestItem()
         }
 
-    override suspend fun getSearchDateWeatherWears(date: Calendar): List<WeatherWearEntity> =
+    override suspend fun getSearchDateWeatherWears(start: Date, end:Date): List<WeatherWearEntity> =
         withContext(Dispatchers.IO) {
-            val start = Calendar.getInstance().apply {
-                set(
-                    date.get(Calendar.YEAR),
-                    date.get(Calendar.MONTH),
-                    date.get(Calendar.DAY_OF_MONTH),
-                    0, 0, 0
-                )
-            }.time
-            val end = Calendar.getInstance().apply {
-                set(
-                    date.get(Calendar.YEAR),
-                    date.get(Calendar.MONTH),
-                    date.get(Calendar.DAY_OF_MONTH),
-                    23, 59, 59
-                )
-            }.time
             weatherWearDao.getSearchDate(start, end)
         }
 
