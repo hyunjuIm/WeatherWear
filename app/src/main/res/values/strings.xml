@@ -39,5 +39,7 @@
     <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>
     <string name="fail_photo_to_get">사진을 가져오지 못했습니다.</string>
+    <string name="search">검색</string>
+    <string name="select_temperature_range">기온 범위를 선택해주세요.</string>
 
 </resources>

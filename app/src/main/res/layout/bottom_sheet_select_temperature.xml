@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selectTemperatureBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_top_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp"
+    app:behavior_draggable="true"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="3dp"
+        android:background="@drawable/bg_rounded_gray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/notosans_kr_medium"
+        android:gravity="center"
+        android:text="@string/select_temperature_range"
+        android:textSize="16sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/temperatureHigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_red"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="28° 이상"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_red"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="27° ~ 23°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_orange"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="22° ~ 20°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_yellow"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="19° ~ 17°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_yellow"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="16° ~ 12°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_sky"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="11° ~ 9°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperature5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_sky"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="8° ~ 5°"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/temperatureLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radio_check_pastel_navy"
+                android:button="@null"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="4° 이하"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/searchButton"
+        style="@style/Widget.WeatherWear.EnableButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="@string/search"
+        android:textSize="16sp" />
+
+</LinearLayout>

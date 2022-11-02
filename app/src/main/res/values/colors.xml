@@ -12,9 +12,11 @@
     <color name="red">#FF3120</color>
 
     <color name="pastel_red">#FFEFEF</color>
+    <color name="pastel_orange">#FFEED3</color>
     <color name="pastel_yellow">#FFFBE3</color>
     <color name="pastel_sky">#F2F8FF</color>
     <color name="pastel_blue">#F8F8FA</color>
+    <color name="pastel_navy">#E7ECF8</color>
 
     <color name="lemon">#F6F2D4</color>
 

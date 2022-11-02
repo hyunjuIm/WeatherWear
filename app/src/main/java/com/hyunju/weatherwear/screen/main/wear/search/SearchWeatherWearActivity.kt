@@ -10,11 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivitySearchWeatherWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
+import com.hyunju.weatherwear.screen.dialog.SelectTemperatureBottomSheetDialog
 import com.hyunju.weatherwear.screen.main.wear.GridSpacingItemDecoration
 import com.hyunju.weatherwear.screen.main.wear.WearAdapter
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
@@ -49,6 +51,10 @@ class SearchWeatherWearActivity :
             }
         }
 
+    override val viewModel by viewModels<SearchWeatherWearViewModel>()
+
+    override fun getViewBinding() = ActivitySearchWeatherWearBinding.inflate(layoutInflater)
+
     private val adapter by lazy {
         WearAdapter(clickItem = {
             detailLauncher.launch(
@@ -57,9 +63,12 @@ class SearchWeatherWearActivity :
         })
     }
 
-    override val viewModel by viewModels<SearchWeatherWearViewModel>()
+    private val selectTemperatureBottomSheetDialog by lazy {
+        SelectTemperatureBottomSheetDialog { temperature ->
+            viewModel.searchTemperature(temperature)
+        }
+    }
 
-    override fun getViewBinding() = ActivitySearchWeatherWearBinding.inflate(layoutInflater)
 
     override fun initViews() = with(binding) {
         toolbar.setNavigationOnClickListener { finish() }
@@ -78,7 +87,12 @@ class SearchWeatherWearActivity :
             DATE -> {
                 showDatePickerDialog()
             }
-            TEMPERATURES -> {}
+            TEMPERATURES -> {
+                selectTemperatureBottomSheetDialog.show(
+                    supportFragmentManager,
+                    "selectTemperatureBottomSheetDialog"
+                )
+            }
         }
     }
 
@@ -87,7 +101,7 @@ class SearchWeatherWearActivity :
         val calendar = Calendar.getInstance()
 
         DatePickerDialog(
-            this, R.style.Widget_WeatherWear_SpinnerDatePicker,
+            this, R.style.Widget_WeatherWear_DatePickerDialog,
             { _, year, monthOfYear, dayOfMonth ->
                 // 선택한 날짜
                 val currentDate = Calendar.getInstance().apply {
@@ -95,7 +109,6 @@ class SearchWeatherWearActivity :
                     set(Calendar.MILLISECOND, 0)
                 }
 
-                binding.searchTextView.text = setMillisDateFormat(currentDate.timeInMillis)
                 viewModel.searchDate(currentDate.timeInMillis)
             },
             calendar.get(Calendar.YEAR),
@@ -123,6 +136,8 @@ class SearchWeatherWearActivity :
     private fun handleSuccessState(state: SearchWeatherWearState.Success) = with(binding) {
         loadingView.isGone = true
 
+        binding.searchTextView.text = state.searchText
+
         if (state.weatherWearList.isNotEmpty()) {
             recyclerView.isVisible = true
             emptyResultTextView.isGone = true
@@ -136,6 +151,7 @@ class SearchWeatherWearActivity :
 
     private fun handleErrorState(state: SearchWeatherWearState.Error) = with(binding) {
         loadingView.isGone = true
-        Toast.makeText(this@SearchWeatherWearActivity, state.messageId, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@SearchWeatherWearActivity, state.messageId, Toast.LENGTH_SHORT)
+            .show()
     }
 }

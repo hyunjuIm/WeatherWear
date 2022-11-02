@@ -4,6 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/bg_gradient_blue_navy.xml" value="0.2565" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_blue_bottom_line_gray.xml" value="0.113" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_blue_line_navy.xml" value="0.113" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_navy_bottom_line_gray.xml" value="0.207" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_navy_line_navy.xml" value="0.207" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_orange_bottom_line_gray.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_red_line_navy.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_yellow_bottom_line_gray.xml" value="0.125" />
+        <entry key="app/src/main/res/drawable-v24/bg_pastel_yellow_line_navy.xml" value="0.125" />
         <entry key="app/src/main/res/drawable-v24/bg_rounded_gray.xml" value="0.368" />
         <entry key="app/src/main/res/drawable-v24/bg_rounded_snow.xml" value="0.3235" />
         <entry key="app/src/main/res/drawable-v24/bg_rounded_white.xml" value="0.368" />
@@ -12,6 +20,10 @@
         <entry key="app/src/main/res/drawable-v24/ic_setting_selector.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable-v24/ic_wear_selector.xml" value="0.2455" />
         <entry key="app/src/main/res/drawable-v24/ic_weather_selector.xml" value="0.2455" />
+        <entry key="app/src/main/res/drawable-v24/radio_check_pastel_blue.xml" value="0.113" />
+        <entry key="app/src/main/res/drawable-v24/radio_check_pastel_navy.xml" value="0.207" />
+        <entry key="app/src/main/res/drawable-v24/radio_check_pastel_orange.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable-v24/radio_check_pastel_yellow.xml" value="0.125" />
         <entry key="app/src/main/res/drawable-v24/resize_ic_location.xml" value="0.416" />
         <entry key="app/src/main/res/drawable-v24/view_rounded_top_white.xml" value="0.368" />
         <entry key="app/src/main/res/drawable/add_a_photo-48px.xml" value="0.2985" />
@@ -19,8 +31,12 @@
         <entry key="app/src/main/res/drawable/bg_frame_gallery.xml" value="0.3715" />
         <entry key="app/src/main/res/drawable/bg_gradient_blue_navy.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/bg_gradient_blue_sky.xml" value="0.517" />
+        <entry key="app/src/main/res/drawable/bg_pastel_orange_line_navy.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/bg_pastel_red_bottom_gray_line.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/bg_pastel_red_line_navy.xml" value="0.3555" />
         <entry key="app/src/main/res/drawable/bg_rounded_blue.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/bg_rounded_gray.xml" value="0.3715" />
+        <entry key="app/src/main/res/drawable/bg_rounded_top_white.xml" value="0.3655" />
         <entry key="app/src/main/res/drawable/btn_enable_blue.xml" value="0.454" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.1605" />
         <entry key="app/src/main/res/drawable/clothes_blouse.xml" value="0.3565" />
@@ -52,6 +68,7 @@
         <entry key="app/src/main/res/drawable/ic_location_fill.xml" value="0.3715" />
         <entry key="app/src/main/res/drawable/ic_location_pin.xml" value="0.5505" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.368" />
+        <entry key="app/src/main/res/drawable/radio_check_pastel_red.xml" value="0.3545" />
         <entry key="app/src/main/res/drawable/resize_ic_location_pin.xml" value="0.52" />
         <entry key="app/src/main/res/drawable/weatehr_sun_snowy.xml" value="0.416" />
         <entry key="app/src/main/res/drawable/weather_cloud.xml" value="0.1825" />
@@ -80,6 +97,7 @@
         <entry key="app/src/main/res/layout/activity_weather_wear_detail.xml" value="0.42478790283203127" />
         <entry key="app/src/main/res/layout/activity_write.xml" value="0.2245088868101029" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_location.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/bottom_sheet_select_temperature.xml" value="0.41448692152917505" />
         <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.391968994140625" />
         <entry key="app/src/main/res/layout/fragment_wear.xml" value="0.33" />

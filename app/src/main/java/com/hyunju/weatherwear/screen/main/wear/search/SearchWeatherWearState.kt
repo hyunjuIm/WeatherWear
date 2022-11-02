@@ -10,6 +10,7 @@ sealed class SearchWeatherWearState {
     object Loading : SearchWeatherWearState()
 
     data class Success(
+        val searchText: String,
         val weatherWearList: List<WeatherWearEntity>
     ) : SearchWeatherWearState()
 

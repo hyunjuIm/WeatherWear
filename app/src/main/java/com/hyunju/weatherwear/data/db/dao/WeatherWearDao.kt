@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.hyunju.weatherwear.data.entity.WeatherWearEntity
+import com.hyunju.weatherwear.util.weather.Temperatures
 
 @Dao
 interface WeatherWearDao {
@@ -17,6 +18,9 @@ interface WeatherWearDao {
 
     @Query("SELECT * FROM WeatherWearEntity WHERE date=:date")
     suspend fun getSearchDate(date: Long): List<WeatherWearEntity>
+
+    @Query("SELECT * FROM WeatherWearEntity WHERE maxTemperature BETWEEN :start AND :end")
+    suspend fun getSearchTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
 
     @Query("SELECT * FROM WeatherWearEntity ORDER BY date DESC")
     suspend fun getAll(): List<WeatherWearEntity>
