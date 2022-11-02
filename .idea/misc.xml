@@ -37,6 +37,7 @@
         <entry key="app/src/main/res/drawable/bg_rounded_blue.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/bg_rounded_gray.xml" value="0.3715" />
         <entry key="app/src/main/res/drawable/bg_rounded_top_white.xml" value="0.3655" />
+        <entry key="app/src/main/res/drawable/bg_white_bottom_line_gray.xml" value="0.5565" />
         <entry key="app/src/main/res/drawable/btn_enable_blue.xml" value="0.454" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.1605" />
         <entry key="app/src/main/res/drawable/clothes_blouse.xml" value="0.3565" />
@@ -72,6 +73,8 @@
         <entry key="app/src/main/res/drawable/radio_check_base_blue.xml" value="0.3005" />
         <entry key="app/src/main/res/drawable/radio_check_pastel_red.xml" value="0.3545" />
         <entry key="app/src/main/res/drawable/resize_ic_location_pin.xml" value="0.52" />
+        <entry key="app/src/main/res/drawable/switch_thumb.xml" value="0.5555" />
+        <entry key="app/src/main/res/drawable/switch_track.xml" value="0.5555" />
         <entry key="app/src/main/res/drawable/weatehr_sun_snowy.xml" value="0.416" />
         <entry key="app/src/main/res/drawable/weather_cloud.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/weather_cloudy.xml" value="0.416" />
@@ -102,6 +105,7 @@
         <entry key="app/src/main/res/layout/bottom_sheet_select_temperature.xml" value="0.5" />
         <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.391968994140625" />
+        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_wear.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_gallery_photo.xml" value="0.18784722222222222" />
         <entry key="app/src/main/res/layout/item_pick_clothes.xml" value="0.5389492753623188" />

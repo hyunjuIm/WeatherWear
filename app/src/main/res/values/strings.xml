@@ -41,5 +41,7 @@
     <string name="fail_photo_to_get">사진을 가져오지 못했습니다.</string>
     <string name="search">검색</string>
     <string name="select_temperature_range">기온 범위를 선택해주세요.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

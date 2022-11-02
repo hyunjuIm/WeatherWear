@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModel by viewModels<HomeViewModel>()
 
-    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentHomeBinding.inflate(layoutInflater)
 
     private lateinit var locationManager: LocationManager
     private lateinit var myLocationListener: MyLocationListener

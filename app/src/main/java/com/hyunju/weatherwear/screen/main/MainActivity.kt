@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
+import com.hyunju.weatherwear.screen.main.setting.SettingFragment
 import com.hyunju.weatherwear.screen.main.wear.WearFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_setting -> {
+                    showFragment(SettingFragment.newInstance(), SettingFragment.TAG)
                     true
                 }
                 else -> false
