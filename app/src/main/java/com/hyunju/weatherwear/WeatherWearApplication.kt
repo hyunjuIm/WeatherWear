@@ -2,8 +2,8 @@ package com.hyunju.weatherwear
 
 import android.app.Application
 import android.content.Context
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.hyunju.weatherwear.work.AppWorkerFactory
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class WeatherWearApplication : Application(), Configuration.Provider {
         appContext = null
     }
 
-    @Inject lateinit var workerFactory: AppWorkerFactory
+    @Inject lateinit var workerFactory: HiltWorkerFactory
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()

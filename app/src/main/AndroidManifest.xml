@@ -46,8 +46,8 @@
             android:exported="false" />
         <activity
             android:name=".screen.main.MainActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,7 +63,7 @@
             <!-- If you are using androidx.startup to initialize other components -->
             <meta-data
                 android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
+                android:authorities="${applicationId}.androidx-startup"
                 tools:node="remove" />
         </provider>
 
