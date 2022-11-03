@@ -3,12 +3,16 @@ package com.hyunju.weatherwear.screen.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.work.*
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingFragment
 import com.hyunju.weatherwear.screen.main.wear.WearFragment
+import com.hyunju.weatherwear.util.date.getTimeUsingInWorkRequest
+import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViews()
+        initWorker()
     }
 
     private fun initViews() = with(binding) {
@@ -61,6 +66,15 @@ class MainActivity : AppCompatActivity() {
                 .add(R.id.fragmentContainer, fragment, tag)
                 .commitAllowingStateLoss()
         }
+    }
+
+    private fun initWorker() {
+        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WeatherWearWorker>()
+            .setInitialDelay(getTimeUsingInWorkRequest(), TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniqueWork("WeatherWearCheck", ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
     }
 
 }
