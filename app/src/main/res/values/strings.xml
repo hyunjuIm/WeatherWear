@@ -1,47 +1,71 @@
 <resources>
     <string name="app_name">WeatherWear</string>
+    <string name="app_full_name">웨더웨어(WeatherWear)</string>
 
+    <!-- Menu -->
     <string name="home">홈</string>
     <string name="weather">날씨</string>
     <string name="wear">데일리룩</string>
     <string name="setting">설정</string>
 
-    <string name="loading">로딩 중...</string>
+    <string name="loading">로딩 중…</string>
 
-    <string name="finding_location">현재 위치 정보 조회 중...</string>
+    <string name="ok">확인</string>
+    <string name="delete">삭제</string>
+    <string name="search">검색</string>
+    <string name="write">등록하기</string>
+
+    <string name="finding_location">현재 위치 정보 조회 중…</string>
     <string name="location_not_found">위치 정보 없음</string>
 
     <string name="please_setup_your_location_permission">위치 권한을 설정해주세요.</string>
     <string name="can_not_assigned_permission">권한을 얻지 못했습니다.</string>
     <string name="can_not_load_address_info">위치 정보를 불러올 수 없습니다.</string>
-
     <string name="can_not_load_weather_info">날씨 정보를 불러올 수 없습니다.</string>
-    <string name="what_today_weatherwear">오늘 나의\n웨더웨어(WeatherWear)는?</string>
 
-    <string name="write_weather_wear">웨더웨어 등록하기</string>
     <string name="select_date">날짜 선택</string>
     <string name="select_location">위치 선택</string>
-    <string name="write">등록하기</string>
+
+    <string name="comment_wear_tab">비슷한 날씨, 혹은 내가 이맘때쯤 어떤 옷을 입었는지\n데일리룩으로 기록하고 확인해보세요!</string>
+
+    <!-- Temperature -->
+    <string name="max_temperature">최고 기온</string>
+    <string name="min_temperature">최저 기온</string>
+    <string name="temperature_high">28° 이상</string>
+    <string name="temperature_23">27° ~ 23°</string>
+    <string name="temperature_20">22° ~ 20°</string>
+    <string name="temperature_17">19° ~ 17°</string>
+    <string name="temperature_12">16° ~ 12°</string>
+    <string name="temperature_9">11° ~ 9°</string>
+    <string name="temperature_5">8° ~ 5°</string>
+    <string name="temperature_4">4° 이하</string>
+
+    <!-- Write -->
+    <string name="write_weather_wear">웨더웨어 등록하기</string>
+    <string name="what_today_weather_wear">오늘 나의\n웨더웨어(WeatherWear)는?</string>
     <string name="guide_select_date_and_location">날짜와 위치를 모두 선택하면 날씨를 확인할 수 있어요 :)</string>
     <string name="one_line_diary">한 줄 일기</string>
     <string name="guide_diary">일기 작성은 선택!\n부담이 되지 않는다면 소소하게 한 줄 적어보세요 ;)</string>
+    <string name="use_photo">사진 사용</string>
+    <string name="take_a_picture_again">다시 찍기</string>
     <string name="guide_select_only_one_photo">사진은 한 장만 선택할 수 있어요!</string>
-    <string name="ok">확인</string>
-    <string name="empty_search_result">검색 결과가 없습니다.</string>
     <string name="setting_photo_permission">⚠️\n\n사진을 가져오기 위해 권한이 필요합니다.\n설정 - [카메라], [저장공간] 권한을 허용해주세요.\n\n확인을 누르면 설정으로 이동합니다.</string>
-    <string name="delete">삭제</string>
 
+    <!-- Search -->
     <string name="search_date">날짜로 검색</string>
     <string name="search_temperature">기온으로 검색</string>
+    <string name="select_temperature_range">기온 범위를 선택해주세요.</string>
+    <string name="guide_search_location_comment">대략적인 주소를 입력하면 \'읍/면/동\' 까지 조회 가능해요!\n예시) 강남역 → 서울 강남구 역삼동</string>
+    <string name="please_check_option">옵션을 선택해주세요!</string>
+    <string name="empty_search_result">검색 결과가 없습니다.</string>
 
+    <!-- Setting -->
+    <string name="data_back_up_or_restore">데이터 백업 / 복원하기</string>
+    <string name="push_notification">푸시 알림</string>
 
     <!-- Error -->
     <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>
     <string name="fail_photo_to_get">사진을 가져오지 못했습니다.</string>
-    <string name="search">검색</string>
-    <string name="select_temperature_range">기온 범위를 선택해주세요.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

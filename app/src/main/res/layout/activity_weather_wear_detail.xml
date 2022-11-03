@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:fontFamily="@font/notosans_kr_light"
-                        android:text="최고 기온"
+                        android:text="@string/max_temperature"
                         android:textSize="16sp" />
 
                     <TextView
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:fontFamily="@font/notosans_kr_light"
-                        android:text="최저 기온"
+                        android:text="@string/min_temperature"
                         android:textSize="16sp" />
 
                     <TextView

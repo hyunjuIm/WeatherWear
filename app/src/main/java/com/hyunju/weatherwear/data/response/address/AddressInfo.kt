@@ -53,7 +53,7 @@ data class AddressInfo(
     @Expose
     val roadCode: String?
 ) {
-    fun toLocationNameString(latitude: Double, longitude: Double): String {
+    fun toLocationNameString(): String {
         if (cityDo.isNullOrEmpty()) return "위치 정보 없음"
 
         val guGunText = if (!guGun.isNullOrEmpty()) " $guGun" else ""

@@ -3,7 +3,7 @@ package com.hyunju.weatherwear.util.event
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-object EventBus {
+object UpdateEventBus {
     private val _events = MutableSharedFlow<UpdateEvent>()
     private val events = _events.asSharedFlow()
 

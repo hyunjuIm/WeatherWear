@@ -174,7 +174,7 @@
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
                     android:shadowRadius="6.0"
-                    android:text="웨더웨어(WeatherWear)"
+                    android:text="@string/app_full_name"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@id/thirdTodayTextView"

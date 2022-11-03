@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
-import com.hyunju.weatherwear.util.event.EventBus
+import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -39,7 +39,7 @@ class WearViewModel @Inject constructor(
 
     private fun initEventBusSubscribe() {
         viewModelScope.launch {
-            EventBus.subscribeEvent {
+            UpdateEventBus.subscribeEvent {
                 when (it) {
                     UpdateEvent.Updated -> _updateUIState.value = true
                     UpdateEvent.UnUpdated -> _updateUIState.value = false

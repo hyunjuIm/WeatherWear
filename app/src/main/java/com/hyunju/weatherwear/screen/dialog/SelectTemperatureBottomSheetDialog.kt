@@ -72,7 +72,11 @@ class SelectTemperatureBottomSheetDialog(
                 return@setOnClickListener
             }
 
-            Toast.makeText(requireContext(), "옵션을 선택해주세요!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.please_check_option),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

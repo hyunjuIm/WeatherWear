@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:checked="true"
-            android:text="최고 기온"
+            android:text="@string/max_temperature"
             android:textSize="16sp"
             android:theme="@style/Widget.WeatherWear.RadioButton" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/minTemperatureButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="최저 기온️"
+            android:text="@string/min_temperature"
             android:textSize="16sp"
             android:theme="@style/Widget.WeatherWear.RadioButton" />
 
@@ -70,7 +70,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="28° 이상"
+                android:text="@string/temperature_high"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -81,7 +81,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="27° ~ 23°"
+                android:text="@string/temperature_23"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -92,7 +92,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="22° ~ 20°"
+                android:text="@string/temperature_20"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -103,7 +103,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="19° ~ 17°"
+                android:text="@string/temperature_17"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -114,7 +114,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="16° ~ 12°"
+                android:text="@string/temperature_12"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -125,7 +125,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="11° ~ 9°"
+                android:text="@string/temperature_9"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -136,7 +136,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="8° ~ 5°"
+                android:text="@string/temperature_5"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -147,7 +147,7 @@
                 android:button="@null"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="4° 이하"
+                android:text="@string/temperature_4"
                 android:textSize="16sp" />
 
         </RadioGroup>

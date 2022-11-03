@@ -14,7 +14,7 @@ import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
-import com.hyunju.weatherwear.util.event.EventBus
+import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -114,7 +114,7 @@ class WriteViewModel @Inject constructor(
             weatherWearRepository.insertWeatherWear(weatherWear)
         )
 
-        EventBus.invokeEvent(UpdateEvent.Updated)
+        UpdateEventBus.invokeEvent(UpdateEvent.Updated)
     }
 
     override fun errorData(message: Int): Job = viewModelScope.launch {

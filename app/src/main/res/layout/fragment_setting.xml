@@ -35,7 +35,7 @@
         android:background="@drawable/bg_white_bottom_line_gray"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:text="데이터 백업 / 복원하기"
+        android:text="@string/data_back_up_or_restore"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="푸시 알림"
+            android:text="@string/push_notification"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_kr_bold"
-            android:text="웨더웨어(WeatherWear)"
+            android:text="@string/app_full_name"
             android:textColor="@color/blue_700"
             android:textSize="20sp" />
 
@@ -45,7 +45,7 @@
         android:layout_marginHorizontal="16dp"
         android:fontFamily="@font/notosans_kr_light"
         android:paddingBottom="16dp"
-        android:text="비슷한 날씨, 혹은 내가 이맘때쯤 어떤 옷을 입었는지\n데일리룩으로 기록하고 확인해보세요!"
+        android:text="@string/comment_wear_tab"
         android:textColor="@color/blue_500"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
