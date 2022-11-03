@@ -1,4 +1,4 @@
-package com.hyunju.weatherwear.screen.main.wear
+package com.hyunju.weatherwear.util.view
 
 import android.graphics.Rect
 import android.view.View

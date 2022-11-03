@@ -7,9 +7,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityGalleryBinding
+import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseActivity
+import com.hyunju.weatherwear.util.view.GridSpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel, ActivityGalleryBinding>()
     override fun initViews() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
-            GridDividerDecoration(this@GalleryActivity, R.drawable.bg_rectangle_white)
+            GridSpacingItemDecoration(3, 1.5f.fromDpToPx())
         )
 
         binding.confirmButton.setOnClickListener {
@@ -54,12 +55,10 @@ class GalleryActivity : BaseActivity<GalleryViewModel, ActivityGalleryBinding>()
 
     private fun handleLoadingState() = with(binding) {
         progressBar.isVisible = true
-        recyclerView.isGone = true
     }
 
     private fun handleSuccessState(state: GalleryState.Success) = with(binding) {
         progressBar.isGone = true
-        recyclerView.isVisible = true
 
         adapter.submitList(state.photoList.toMutableList())
     }

@@ -17,7 +17,7 @@ class GalleryAdapter(val clickItem: (GalleryModel) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GalleryModel) = with(binding) {
-            photoImageView.load(item.uri.toString(), 5f)
+            photoImageView.load(item.uri.toString())
             checkButton.setBackgroundResource(
                 if (item.isSelected) R.drawable.bg_rounded_blue else R.drawable.bg_rounded_gray
             )

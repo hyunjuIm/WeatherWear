@@ -14,6 +14,7 @@ import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.main.wear.search.SearchWeatherWearActivity
 import com.hyunju.weatherwear.screen.write.WriteActivity
+import com.hyunju.weatherwear.util.view.GridSpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

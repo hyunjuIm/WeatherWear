@@ -15,7 +15,7 @@ import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.SelectTemperatureBottomSheetDialog
-import com.hyunju.weatherwear.screen.main.wear.GridSpacingItemDecoration
+import com.hyunju.weatherwear.util.view.GridSpacingItemDecoration
 import com.hyunju.weatherwear.screen.main.wear.WearAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*

@@ -54,6 +54,12 @@ class GalleryViewModel @Inject constructor() : BaseViewModel() {
         galleryStateLiveData.value = GalleryState.Loading
 
         val selectPhoto = photoList.filter { it.isSelected }
+
+        if (selectPhoto.isEmpty()) {
+            galleryStateLiveData.value = GalleryState.Error(R.string.selected_photo_empty)
+            return
+        }
+
         galleryStateLiveData.value = GalleryState.Confirm(
             photo = if (selectPhoto.size == 1) selectPhoto.first() else null
         )
