@@ -81,7 +81,7 @@ class WriteViewModel @Inject constructor(
 
         val responseData = weatherRepository.getWeather(
             dataType = "JSON",
-            numOfRows = 500,
+            numOfRows = 600,
             pageNo = 1,
             baseDate = date,
             baseTime = "0200",

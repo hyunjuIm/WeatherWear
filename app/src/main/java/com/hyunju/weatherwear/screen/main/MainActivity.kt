@@ -1,33 +1,26 @@
 package com.hyunju.weatherwear.screen.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.app.AlertDialog
+import android.content.DialogInterface
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.work.*
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
+import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingFragment
+import com.hyunju.weatherwear.screen.main.setting.SettingViewModel
 import com.hyunju.weatherwear.screen.main.wear.WearFragment
-import com.hyunju.weatherwear.util.date.getTimeUsingInWorkRequest
-import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    override val viewModel by viewModels<MainViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
-        initViews()
-        initWorker()
-    }
-
-    private fun initViews() = with(binding) {
+    override fun initViews() = with(binding) {
         showFragment(HomeFragment.newInstance(), HomeFragment.TAG)
 
         bottomNav.setOnItemSelectedListener {
@@ -68,13 +61,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initWorker() {
-        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WeatherWearWorker>()
-            .setInitialDelay(getTimeUsingInWorkRequest(), TimeUnit.MILLISECONDS)
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniqueWork("WeatherWearCheck", ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
+    override fun observeData() = viewModel.mainLiveData.observe(this) {
+        if (it ==  SettingViewModel.YET) {
+            AlertDialog.Builder(this)
+                .setTitle("웨더웨어(WeatherWear)에서 알림을 보내고자 합니다.")
+                .setMessage("해당 기기로 날씨 및 옷차림에 관련된 정보를 푸시 알림으로 보내드리겠습니다.\n앱 푸시에 수신 동의하시겠습니까?")
+                .setPositiveButton("허용") { _, _ ->
+                    viewModel.updateAgreeNotification(true)
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                }
+                .setNegativeButton("허용 안 함") { _, _ ->
+                    viewModel.updateAgreeNotification(false)
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                }
+                .create()
+                .show()
+        }
     }
 
 }

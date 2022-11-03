@@ -8,14 +8,14 @@
     <string name="wear">데일리룩</string>
     <string name="setting">설정</string>
 
-    <string name="loading">로딩 중…</string>
+    <string name="loading">로딩 중 …</string>
 
     <string name="ok">확인</string>
     <string name="delete">삭제</string>
     <string name="search">검색</string>
     <string name="write">등록하기</string>
 
-    <string name="finding_location">현재 위치 정보 조회 중…</string>
+    <string name="finding_location">현재 위치 정보 조회 중 …</string>
     <string name="location_not_found">위치 정보 없음</string>
 
     <string name="please_setup_your_location_permission">위치 권한을 설정해주세요.</string>

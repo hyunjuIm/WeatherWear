@@ -20,6 +20,7 @@ import com.hyunju.weatherwear.data.repository.map.MapRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.data.response.weather.Items
 import com.hyunju.weatherwear.screen.main.MainActivity
+import com.hyunju.weatherwear.screen.main.setting.SettingViewModel
 import com.hyunju.weatherwear.util.clothes.pickClothes
 import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
@@ -52,23 +53,27 @@ class WeatherWearWorker @AssistedInject constructor(
         private const val NOTIFICATION_ID = 101
     }
 
-    private var notificationTitle = ""
-    private var notificationDescription = "지금 바로 오늘의 날씨와 옷차림을 확인해보세요!"
+    private var notificationTitle = context.getString(R.string.app_full_name)
+    private var notificationContent = "ଘ(੭˃ᴗ˂)━☆ﾟ.*･｡ﾟ \n지금 바로 오늘의 날씨와 옷차림을 확인해보세요!"
 
     override suspend fun doWork(): Result = coroutineScope {
         try {
-            withContext(ioDispatchers) {
-                getWeatherInformation()
+            val push = inputData.getString(SettingViewModel.PUSH_ALERT) ?: ""
+            if (push == SettingViewModel.YES) {
+                withContext(ioDispatchers) {
+                    getWeatherInformation()
+                }
+
+                createNotificationChannelIfNeeded()
+
+                NotificationManagerCompat
+                    .from(context)
+                    .notify(NOTIFICATION_ID, createNotification())
+
+                Result.success()
+            } else {
+                Result.success()
             }
-
-            createNotificationChannelIfNeeded()
-
-            NotificationManagerCompat
-                .from(context)
-                .notify(NOTIFICATION_ID, createNotification())
-
-            Result.success()
-
         } catch (e: Exception) {
             Result.failure()
         }
@@ -96,10 +101,12 @@ class WeatherWearWorker @AssistedInject constructor(
 
         val weatherEntityList = hasWeatherData.ifEmpty { getWeatherDataFromAPI(grid, date) }
 
-        Items(item = weatherEntityList?.map { it.toItem() }).toEntity(date)?.let {
-            notificationTitle = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ ${getWeatherType(it).text}"
-            notificationDescription = getCommentWeather(it) +
-                    "\n추천 옷차림 ଘ(੭˃ᴗ˂)━☆ﾟ.*･｡ﾟ ${pickClothes(it.TMX).map { clothes -> clothes.text }}"
+        weatherEntityList?.let { list ->
+            Items(item = list.map { it.toItem() }).toEntity(date)?.let {
+                notificationTitle = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ ${getWeatherType(it).text}"
+                notificationContent = getCommentWeather(it) +
+                        "\n추천 옷차림 ଘ(੭˃ᴗ˂)━☆ﾟ.*･｡ﾟ ${pickClothes(it.TMX).map { clothes -> clothes.text }}"
+            }
         }
     }
 
@@ -108,7 +115,7 @@ class WeatherWearWorker @AssistedInject constructor(
 
         val responseData = weatherRepository.getWeather(
             dataType = "JSON",
-            numOfRows = 500,
+            numOfRows = 600,
             pageNo = 1,
             baseDate = date,
             baseTime = "0200",
@@ -148,12 +155,12 @@ class WeatherWearWorker @AssistedInject constructor(
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_sunny_line)
             .setContentTitle(notificationTitle)
-            .setContentText(notificationDescription)
+            .setContentText(notificationContent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setStyle(
-                NotificationCompat.BigTextStyle().bigText(notificationDescription)
+                NotificationCompat.BigTextStyle().bigText(notificationContent)
             )
             .build()
     }

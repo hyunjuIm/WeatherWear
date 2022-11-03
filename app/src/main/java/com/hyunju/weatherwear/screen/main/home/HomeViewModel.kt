@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
         } else {
             val responseData = weatherRepository.getWeather(
                 dataType = "JSON",
-                numOfRows = 500,
+                numOfRows = 600,
                 pageNo = 1,
                 baseDate = getTodayDate(),
                 baseTime = "0200",

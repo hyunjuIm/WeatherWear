@@ -75,7 +75,7 @@ fun getCommentWeather(weatherInfo: WeatherModel): String {
         in Temperatures.TEMPERATURE_9.range -> {
             commentList.add("지금이에요! 멋스러운 트렌치코트 어떠세요?")
             commentList.add("트렌치코트, 점퍼, 야상을 추천드려요 :)")
-            commentList.add("일교차가 클 수도 있어서 감기를 조심해야할 시기에요.")
+            commentList.add("감기를 조심해야할 시기에요.")
         }
         in Temperatures.TEMPERATURE_5.range -> {
             commentList.add("추위를 많이 타시는 분이라면 히트택 어떠세요?")

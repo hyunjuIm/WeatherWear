@@ -1,7 +1,5 @@
 package com.hyunju.weatherwear.data.response.weather
 
-
-import android.util.Log
 import com.google.gson.annotations.SerializedName
 import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.util.date.getCurrentTime

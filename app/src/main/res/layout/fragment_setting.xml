@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
-            android:checked="true"
+            android:checked="false"
             android:scaleX="0.8"
             android:scaleY="0.8"
             android:thumb="@drawable/switch_thumb"
