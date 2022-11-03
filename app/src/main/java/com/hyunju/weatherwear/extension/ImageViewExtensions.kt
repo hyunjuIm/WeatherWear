@@ -2,11 +2,12 @@ package com.hyunju.weatherwear.extension
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 
 // drawable 메모리 캐시에서 로드 되었는지 여부와
@@ -19,7 +20,7 @@ fun ImageView.clear() = Glide.with(context).clear(this)
 fun ImageView.load(url: String, corner: Float = 0f) {
     Glide.with(this)
         .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .transition(DrawableTransitionOptions.withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
         .timeout(5000)
@@ -29,7 +30,7 @@ fun ImageView.load(url: String, corner: Float = 0f) {
 fun ImageView.load(url: String) {
     Glide.with(this)
         .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .transition(DrawableTransitionOptions.withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
@@ -38,8 +39,11 @@ fun ImageView.load(url: String) {
 fun ImageView.load(drawable: Int?) {
     Glide.with(this)
         .load(drawable)
-        .transition(DrawableTransitionOptions.withCrossFade(factory))
+        .transition(DrawableTransitionOptions.withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
 }
+
+@GlideModule
+class AppGlideModule : AppGlideModule()
