@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor(
 
     val homeStateLiveData = MutableLiveData<HomeState>(HomeState.Uninitialized)
 
-    override fun fetchData(): Job  = viewModelScope.launch(exceptionHandler){
+    override fun fetchData(): Job = viewModelScope.launch(exceptionHandler) {
         homeStateLiveData.value = HomeState.Pick(
             weatherWearRepository.getWeatherWearLatestItem()
         )
@@ -58,12 +58,13 @@ class HomeViewModel @Inject constructor(
             }
 
             Items(item = weatherItemList.map { it.toItem() }).toEntity(getTodayDate())?.let {
+                val commentList = getCommentWeather(it)
                 homeStateLiveData.value = HomeState.Success(
                     location = location,
                     weatherInfo = it,
                     weatherType = getWeatherType(it),
                     sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
-                    comment = getCommentWeather(it)
+                    comment = commentList[0] + "\n" + commentList[1]
                 )
             } ?: run {
                 homeStateLiveData.value = HomeState.Error(R.string.can_not_load_weather_info)

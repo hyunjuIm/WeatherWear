@@ -39,8 +39,8 @@ fun getWeatherType(weatherInfo: WeatherModel): Weather {
     }
 }
 
-// 메인화면 코멘트
-fun getCommentWeather(weatherInfo: WeatherModel): String {
+// 날씨 코멘트
+fun getCommentWeather(weatherInfo: WeatherModel): List<String> {
     val commentList = arrayListOf<String>()
 
     if (weatherInfo.TMX - weatherInfo.TMN >= 10) {
@@ -89,7 +89,5 @@ fun getCommentWeather(weatherInfo: WeatherModel): String {
         }
     }
 
-    val random = commentList.shuffled()
-
-    return "${random[0]}\n${random[1]}"
+    return commentList.shuffled()
 }
