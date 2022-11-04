@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,7 +39,6 @@ import java.util.*
 class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), ConfirmDialogInterface {
 
     companion object {
-
         fun newIntent(context: Context) = Intent(context, WriteActivity::class.java)
 
         val photoPermissions = arrayOf(
@@ -52,6 +52,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     override fun getViewBinding() = ActivityWriteBinding.inflate(layoutInflater)
 
     override val layoutId = R.layout.activity_write
+    override val transitionMode = TransitionMode.VERTICAL
 
     private val photoPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->

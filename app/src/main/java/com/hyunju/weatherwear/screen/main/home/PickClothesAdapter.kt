@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyunju.weatherwear.databinding.ItemPickClothesBinding
+import com.hyunju.weatherwear.extension.clear
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.util.clothes.Clothes
 
@@ -15,6 +16,7 @@ class PickClothesAdapter : ListAdapter<Clothes, PickClothesAdapter.ViewHolder>(d
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Clothes) {
+            binding.clothesIcon.clear()
             binding.clothesIcon.load(item.image)
             binding.clothesTextView.text = item.text
         }

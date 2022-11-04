@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.viewbinding.ViewBinding
+import com.hyunju.weatherwear.R
 import kotlinx.coroutines.Job
 
 
@@ -21,6 +22,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
 
     @StringRes
     open val layoutId: Int = -1
+    open val transitionMode: TransitionMode = TransitionMode.NONE
 
     private lateinit var fetchJob: Job
 
@@ -34,7 +36,34 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
             setContentView(binding.root)
         }
 
+        when (transitionMode) {
+            TransitionMode.HORIZON -> overridePendingTransition(R.anim.horizon_enter, R.anim.none)
+            TransitionMode.VERTICAL -> overridePendingTransition(R.anim.vertical_enter, R.anim.none)
+            else -> Unit
+        }
+
         initState()
+    }
+
+    override fun finish() {
+        super.finish()
+
+        when (transitionMode) {
+            TransitionMode.HORIZON -> overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+            TransitionMode.VERTICAL -> overridePendingTransition(R.anim.none, R.anim.vertical_exit)
+            else -> Unit
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isFinishing) {
+            when (transitionMode) {
+                TransitionMode.HORIZON -> overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+                TransitionMode.VERTICAL -> overridePendingTransition(R.anim.none, R.anim.vertical_exit)
+                else -> Unit
+            }
+        }
     }
 
     open fun initState() {
@@ -72,4 +101,9 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         return super.dispatchTouchEvent(ev)
     }
 
+    enum class TransitionMode {
+        NONE,
+        HORIZON,
+        VERTICAL
+    }
 }

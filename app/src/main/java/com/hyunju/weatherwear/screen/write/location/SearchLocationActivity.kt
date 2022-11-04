@@ -3,10 +3,13 @@ package com.hyunju.weatherwear.screen.write.location
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.icu.number.Scale.none
+import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivitySearchLocationBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +27,8 @@ class SearchLocationActivity :
     override val viewModel by viewModels<SearchLocationViewModel>()
 
     override fun getViewBinding() = ActivitySearchLocationBinding.inflate(layoutInflater)
+
+    override val transitionMode = TransitionMode.HORIZON
 
     private val adapter by lazy {
         SearchLocationAdapter(clickItem = { location ->

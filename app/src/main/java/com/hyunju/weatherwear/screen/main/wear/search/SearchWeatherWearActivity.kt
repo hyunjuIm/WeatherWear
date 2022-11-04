@@ -36,6 +36,12 @@ class SearchWeatherWearActivity :
             }
     }
 
+    override val viewModel by viewModels<SearchWeatherWearViewModel>()
+
+    override fun getViewBinding() = ActivitySearchWeatherWearBinding.inflate(layoutInflater)
+
+    override val transitionMode = TransitionMode.HORIZON
+
     private val option by lazy { intent.getStringExtra(OPTION_KEY) }
 
     private val detailLauncher =
@@ -47,10 +53,6 @@ class SearchWeatherWearActivity :
                 }
             }
         }
-
-    override val viewModel by viewModels<SearchWeatherWearViewModel>()
-
-    override fun getViewBinding() = ActivitySearchWeatherWearBinding.inflate(layoutInflater)
 
     private val adapter by lazy {
         WearAdapter(clickItem = {

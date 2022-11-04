@@ -21,6 +21,7 @@ import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
 import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
+import com.hyunju.weatherwear.extension.clear
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
@@ -176,7 +177,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
         locationTextView.text = state.location.name
         nowTemperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
+
+        weatherIconImageView.clear()
         weatherIconImageView.load(state.weatherType.image)
+
         weatherTextView.text = state.weatherType.text
         commentTextView.text = state.comment
         simpleTemperatureTextView.text =
