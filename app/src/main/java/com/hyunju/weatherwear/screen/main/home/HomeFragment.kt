@@ -89,6 +89,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
         changeStatusBarForTime()
 
         clothesRecyclerView.adapter = adapter
+        clothesRecyclerView.itemAnimator = null
 
         // SwipeRefreshLayout
         refresh.setOnRefreshListener {

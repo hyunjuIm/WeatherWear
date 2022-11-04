@@ -1,12 +1,19 @@
 package com.hyunju.weatherwear.extension
 
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.VectorDrawable
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 
@@ -20,7 +27,7 @@ fun ImageView.clear() = Glide.with(context).clear(this)
 fun ImageView.load(url: String, corner: Float = 0f) {
     Glide.with(this)
         .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade())
+        .transition(withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
         .timeout(5000)
@@ -30,16 +37,17 @@ fun ImageView.load(url: String, corner: Float = 0f) {
 fun ImageView.load(url: String) {
     Glide.with(this)
         .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade())
+        .transition(withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
 }
 
-fun ImageView.load(drawable: Int?) {
+fun ImageView.load(drawable: Int) {
+    val image = ContextCompat.getDrawable(context, drawable)
     Glide.with(this)
-        .load(drawable)
-        .transition(DrawableTransitionOptions.withCrossFade())
+        .load(image)
+        .transition(withCrossFade())
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
