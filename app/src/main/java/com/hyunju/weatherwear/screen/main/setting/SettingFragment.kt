@@ -31,8 +31,8 @@ class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>()
     override fun observeData() = viewModel.settingLiveData.observe(this) {
         when (it) {
             SettingViewModel.YET -> showPushCheckDialog()
-            SettingViewModel.YES -> binding.pushSwitch.isChecked = true
-            SettingViewModel.NO -> binding.pushSwitch.isChecked = false
+            SettingViewModel.ON -> binding.pushSwitch.isChecked = true
+            SettingViewModel.OFF -> binding.pushSwitch.isChecked = false
         }
     }
 

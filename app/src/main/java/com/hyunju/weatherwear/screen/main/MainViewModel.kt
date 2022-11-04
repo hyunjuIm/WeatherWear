@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
 
         val workManager = WorkManager.getInstance(WeatherWearApplication.appContext!!)
 
-        if (notification == SettingViewModel.YES) {
+        if (notification == SettingViewModel.ON) {
             val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WeatherWearWorker>()
                 .setInputData(inputData)
                 .setInitialDelay(getTimeUsingInWorkRequest(), TimeUnit.MILLISECONDS)
@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
     fun updateAgreeNotification(isChecked: Boolean) = viewModelScope.launch {
         appPreferenceManager.setString(
             SettingViewModel.NOTIFICATION,
-            if (isChecked) SettingViewModel.YES else SettingViewModel.NO
+            if (isChecked) SettingViewModel.ON else SettingViewModel.OFF
         )
         fetchData()
     }

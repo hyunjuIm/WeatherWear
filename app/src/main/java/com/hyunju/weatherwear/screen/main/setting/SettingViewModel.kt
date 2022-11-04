@@ -24,8 +24,8 @@ class SettingViewModel @Inject constructor(
 
     companion object {
         const val YET = "yet"
-        const val YES = "yes"
-        const val NO = "no"
+        const val ON = "on"
+        const val OFF = "off"
 
         const val NOTIFICATION = "notification"
 
@@ -48,11 +48,11 @@ class SettingViewModel @Inject constructor(
 
     fun updateAgreeNotification(isChecked: Boolean) = viewModelScope.launch {
         if (isChecked) {
-            appPreferenceManager.setString(NOTIFICATION, YES)
-            settingLiveData.value = YES
+            appPreferenceManager.setString(NOTIFICATION, ON)
+            settingLiveData.value = ON
         } else {
-            appPreferenceManager.setString(NOTIFICATION, NO)
-            settingLiveData.value = NO
+            appPreferenceManager.setString(NOTIFICATION, OFF)
+            settingLiveData.value = OFF
         }
 
         doWorkChaining()
@@ -66,7 +66,7 @@ class SettingViewModel @Inject constructor(
 
         val workManager = WorkManager.getInstance(appContext!!)
 
-        if (notification == YES) {
+        if (notification == ON) {
             val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WeatherWearWorker>()
                 .setInputData(inputData)
                 .setInitialDelay(getTimeUsingInWorkRequest(), TimeUnit.MILLISECONDS)

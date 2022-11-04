@@ -59,7 +59,7 @@ class WeatherWearWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = coroutineScope {
         try {
             val push = inputData.getString(SettingViewModel.PUSH_ALERT) ?: ""
-            if (push == SettingViewModel.YES) {
+            if (push == SettingViewModel.ON) {
                 withContext(ioDispatchers) {
                     getWeatherInformation()
                 }
