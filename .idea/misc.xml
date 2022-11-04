@@ -38,6 +38,8 @@
         <entry key="app/src/main/res/drawable/bg_rounded_blue.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/bg_rounded_gray.xml" value="0.3715" />
         <entry key="app/src/main/res/drawable/bg_rounded_top_white.xml" value="0.3655" />
+        <entry key="app/src/main/res/drawable/bg_rounded_white_line_blue.xml" value="0.2025" />
+        <entry key="app/src/main/res/drawable/bg_rounded_white_line_gray.xml" value="0.2025" />
         <entry key="app/src/main/res/drawable/bg_white_bottom_line_gray.xml" value="0.5565" />
         <entry key="app/src/main/res/drawable/btn_enable_blue.xml" value="0.454" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.1605" />
@@ -94,6 +96,7 @@
         <entry key="app/src/main/res/drawable/weather_sun_cloudy.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/weather_sun_rainy.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/weather_sun_snowy.xml" value="0.416" />
+        <entry key="app/src/main/res/layout-v28/dialog_yes_or_no.xml" value="0.20353581142339075" />
         <entry key="app/src/main/res/layout-v28/fragment_home.xml" value="0.5625" />
         <entry key="app/src/main/res/layout-v28/item_gallery_photo.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3075671277461351" />
@@ -105,7 +108,8 @@
         <entry key="app/src/main/res/layout/activity_write.xml" value="0.2245088868101029" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_location.xml" value="0.5" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_temperature.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/dialog_yes_or_no.xml" value="0.26246600181323665" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.391968994140625" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_wear.xml" value="0.33" />

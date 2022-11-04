@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_white"
+    android:gravity="center"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:fontFamily="@font/notosans_kr_medium"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        android:paddingBottom="20dp"
+        tools:text="알림을 보내고자 합니다. 수신 동의하시겠습니까?" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="확인창입니다." />
+
+    <Button
+        android:id="@+id/noButton"
+        style="@style/Widget.WeatherWear.CancelButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="6dp"
+        android:text="@string/ok"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/yesButton"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/messageTextView"
+        tools:text="아니오" />
+
+    <Button
+        android:id="@+id/yesButton"
+        style="@style/Widget.WeatherWear.BaseButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/ok"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/noButton"
+        app:layout_constraintTop_toBottomOf="@id/messageTextView"
+        tools:text="예" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

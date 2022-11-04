@@ -1,12 +1,12 @@
 package com.hyunju.weatherwear.screen.main
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityMainBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingViewModel
@@ -14,7 +14,7 @@ import com.hyunju.weatherwear.screen.main.wear.WearFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNoDialogInterface {
 
     override val viewModel by viewModels<MainViewModel>()
 
@@ -62,25 +62,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     override fun observeData() = viewModel.mainLiveData.observe(this) {
-        if (it ==  SettingViewModel.YET) {
-            AlertDialog.Builder(this)
-                .setTitle("웨더웨어(WeatherWear)에서 알림을 보내고자 합니다.")
-                .setMessage("해당 기기로 날씨 및 옷차림에 관련된 정보를 푸시 알림으로 보내드리겠습니다.\n앱 푸시에 수신 동의하시겠습니까?")
-                .setPositiveButton("허용") { _, _ ->
-                    viewModel.updateAgreeNotification(true)
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                }
-                .setNegativeButton("허용 안 함") { _, _ ->
-                    viewModel.updateAgreeNotification(false)
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                }
-                .create()
-                .show()
+        if (it == SettingViewModel.YET || it.isNullOrEmpty()) {
+            YesOrNoDialog(
+                yesOrNoDialogInterface = this,
+                title = getString(R.string.push_title),
+                message = getString(R.string.push_message),
+                positiveButton = getString(R.string.push_allow),
+                negativeButton = getString(R.string.push_not_allow)
+            ).show(this.supportFragmentManager, "YesOrNoDialog")
         }
+    }
+
+    override fun onYesButtonClick(value: Boolean) {
+        viewModel.updateAgreeNotification(value)
     }
 
 }
