@@ -11,7 +11,6 @@ import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.data.response.weather.Items
 import com.hyunju.weatherwear.screen.base.BaseViewModel
-import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
@@ -35,32 +34,62 @@ class HomeViewModel @Inject constructor(
     val homeStateLiveData = MutableLiveData<HomeState>(HomeState.Uninitialized)
 
     override fun fetchData(): Job = viewModelScope.launch(exceptionHandler) {
+        homeStateLiveData.value = HomeState.Loading
+
         homeStateLiveData.value = HomeState.Pick(
-            weatherWearRepository.getWeatherWearLatestItem()
+            weatherWearEntity = weatherWearRepository.getWeatherWearLatestItem()
+        )
+
+        val location = mapRepository.getLocationDataFromDevice()
+        homeStateLiveData.value = HomeState.Find(
+            location = if (location.isEmpty()) null else location.first()
+        )
+    }
+
+    fun getLocationData(location: LocationLatLngEntity) = viewModelScope.launch(exceptionHandler) {
+        homeStateLiveData.value = HomeState.Loading
+
+        val grid = convertGridGPS(TO_GRID, location)
+
+        val locationEntity: LocationEntity?
+
+        val responseData = mapRepository.getReverseGeoInformation(
+            latitude = grid.lat,
+            longitude = grid.lng
+        ) ?: run {
+            homeStateLiveData.value = HomeState.Error(R.string.can_not_load_address_info)
+            return@launch
+        }
+
+        locationEntity = LocationEntity(
+            name = responseData.toLocationNameString(),
+            latitude = grid.lat,
+            longitude = grid.lng,
+            x = grid.x.toInt(),
+            y = grid.y.toInt()
+        )
+
+        mapRepository.saveLocationDataToDevice(locationEntity)
+
+        homeStateLiveData.value = HomeState.Find(
+            location = locationEntity
         )
     }
 
     // 위치로 날씨 정보 받아오기
-    fun updateLocationWeather(locationLatLngEntity: LocationLatLngEntity) =
+    fun updateLocationWeather(locationEntity: LocationEntity) =
         viewModelScope.launch(exceptionHandler) {
             homeStateLiveData.value = HomeState.Loading
 
-            val grid = convertGridGPS(TO_GRID, locationLatLngEntity)
-
-            val location = getLocationData(grid) ?: run {
-                homeStateLiveData.value = HomeState.Error(R.string.can_not_load_address_info)
-                return@launch
-            }
-
-            val weatherItemList = getTodayWeatherData(location) ?: run {
+            val weatherItemList = getTodayWeatherData(locationEntity) ?: run {
                 homeStateLiveData.value = HomeState.Error(R.string.can_not_load_weather_info)
                 return@launch
             }
 
-            Items(item = weatherItemList.map { it.toItem() }).toEntity(getTodayDate())?.let {
+            Items(item = weatherItemList.map { it.toItem() }).toWeatherModel(getTodayDate())?.let {
                 val commentList = getCommentWeather(it)
                 homeStateLiveData.value = HomeState.Success(
-                    location = location,
+                    location = locationEntity,
                     weatherInfo = it,
                     weatherType = getWeatherType(it),
                     sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
@@ -71,35 +100,6 @@ class HomeViewModel @Inject constructor(
                 return@launch
             }
         }
-
-    private suspend fun getLocationData(grid: LatXLngY): LocationEntity? {
-        val hasLocationData = mapRepository.getLocationDataFromDevice().filter {
-            grid.x.toInt() == it.x && grid.y.toInt() == it.y
-        }
-
-        val locationEntity: LocationEntity?
-
-        if (hasLocationData.isNotEmpty()) {
-            locationEntity = hasLocationData.first()
-        } else {
-            val responseData = mapRepository.getReverseGeoInformation(
-                latitude = grid.lat,
-                longitude = grid.lng
-            ) ?: run { return null }
-
-            locationEntity = LocationEntity(
-                name = responseData.toLocationNameString(),
-                latitude = grid.lat,
-                longitude = grid.lng,
-                x = grid.x.toInt(),
-                y = grid.y.toInt()
-            )
-
-            mapRepository.saveLocationDataToDevice(locationEntity)
-        }
-
-        return locationEntity
-    }
 
     private suspend fun getTodayWeatherData(location: LocationEntity): List<WeatherEntity>? {
         val hasWeatherData = weatherRepository.getWeatherItemsFromDevice().filter {

@@ -28,6 +28,7 @@ import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
+import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.date.setStringDateFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,6 +138,9 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                 val currentDate = Calendar.getInstance().apply {
                     set(year, monthOfYear, dayOfMonth)
                 }
+
+                binding.selectDateTextView.text = setMillisDateFormat(currentDate.timeInMillis)
+
                 selectDate = currentDate
                 getSelectedWeatherInfo()
             },

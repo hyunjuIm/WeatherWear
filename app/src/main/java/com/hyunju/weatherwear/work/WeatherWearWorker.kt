@@ -102,7 +102,7 @@ class WeatherWearWorker @AssistedInject constructor(
         val weatherEntityList = hasWeatherData.ifEmpty { getWeatherDataFromAPI(grid, date) }
 
         weatherEntityList?.let { list ->
-            Items(item = list.map { it.toItem() }).toEntity(date)?.let {
+            Items(item = list.map { it.toItem() }).toWeatherModel(date)?.let {
                 notificationTitle = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ ${getWeatherType(it).text}"
                 notificationContent = getCommentWeather(it)[0] +
                         "\n추천 옷차림 ଘ(੭˃ᴗ˂)━☆ﾟ.*･｡ﾟ ${pickClothes(it.TMX).map { clothes -> clothes.text }}"

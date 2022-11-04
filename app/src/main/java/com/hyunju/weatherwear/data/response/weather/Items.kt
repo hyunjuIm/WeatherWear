@@ -8,33 +8,41 @@ data class Items(
     @SerializedName("item")
     val item: List<Item?>?
 ) {
-    private fun fcstValueToInt(value: String?) = value?.toFloat()?.toInt() ?: -99
-    private fun fcstValueToDouble(value: String?) = value?.toDouble() ?: -99.0
+    private fun fcstValueToInt(value: String?) = value?.toFloat()?.toInt()
+    private fun fcstValueToDouble(value: String?) = value?.toDouble()
 
-    fun toEntity(date: String): WeatherModel? {
-        item?.let { item ->
-            val maxTemperatures = item.first { it?.category == CategoryType.TMX }?.fcstValue
-            val minTemperatures = item.first { it?.category == CategoryType.TMN }?.fcstValue
+    fun toWeatherModel(date: String): WeatherModel? {
+        if (item == null) return null
 
-            // 오늘 날짜 데이터 파싱
-            item.filter { it?.fcstDate == date && it.fcstTime == getCurrentTime() }.run {
-                return WeatherModel(
-                    date = first()?.fcstDate.orEmpty(),
-                    time = first()?.fcstTime.orEmpty(),
-                    POP = fcstValueToInt(first { it?.category == CategoryType.POP }?.fcstValue),
-                    PTY = fcstValueToInt(first { it?.category == CategoryType.PTY }?.fcstValue),
-                    REH = fcstValueToInt(first { it?.category == CategoryType.REH }?.fcstValue),
-                    SKY = fcstValueToInt(first { it?.category == CategoryType.SKY }?.fcstValue),
-                    TMN = fcstValueToInt(minTemperatures),
-                    TMX = fcstValueToInt(maxTemperatures),
-                    TMP = fcstValueToInt(first { it?.category == CategoryType.TMP }?.fcstValue),
-                    WSD = fcstValueToDouble(first { it?.category == CategoryType.WSD }?.fcstValue),
-                    x = first()?.nx ?: -1,
-                    y = first()?.ny ?: -1
-                )
-            }
+        val maxTemperatures =
+            item.filter { it?.fcstDate == date && it.category == CategoryType.TMX }
+        val minTemperatures =
+            item.filter { it?.fcstDate == date && it.category == CategoryType.TMN }
+
+        if (maxTemperatures.isEmpty() || minTemperatures.isEmpty()) return null
+
+        // 오늘 날짜 데이터 파싱
+        item.filter { it?.fcstDate == date && it.fcstTime == getCurrentTime() }.run {
+            return WeatherModel(
+                date = first()?.fcstDate.orEmpty(),
+                time = first()?.fcstTime.orEmpty(),
+                POP = fcstValueToInt(first { it?.category == CategoryType.POP }?.fcstValue)
+                    ?: return null,
+                PTY = fcstValueToInt(first { it?.category == CategoryType.PTY }?.fcstValue)
+                    ?: return null,
+                REH = fcstValueToInt(first { it?.category == CategoryType.REH }?.fcstValue)
+                    ?: return null,
+                SKY = fcstValueToInt(first { it?.category == CategoryType.SKY }?.fcstValue)
+                    ?: return null,
+                TMN = fcstValueToInt(minTemperatures.first()?.fcstValue) ?: return null,
+                TMX = fcstValueToInt(maxTemperatures.first()?.fcstValue) ?: return null,
+                TMP = fcstValueToInt(first { it?.category == CategoryType.TMP }?.fcstValue)
+                    ?: return null,
+                WSD = fcstValueToDouble(first { it?.category == CategoryType.WSD }?.fcstValue)
+                    ?: return null,
+                x = first()?.nx ?: return null,
+                y = first()?.ny ?: return null
+            )
         }
-
-        return null
     }
 }

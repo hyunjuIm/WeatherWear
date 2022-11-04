@@ -17,6 +17,7 @@
 
     <string name="finding_location">현재 위치 정보 조회 중 …</string>
     <string name="location_not_found">위치 정보 없음</string>
+    <string name="setting_location_permission">⚠️\n\n위치를 가져오기 위해 권한이 필요합니다.\n\n설정 - [위치] 권한을 허용한 뒤,\n새로고침 해주세요.\n\n확인을 누르면 설정으로 이동합니다.</string>
 
     <string name="please_setup_your_location_permission">위치 권한을 설정해주세요.</string>
     <string name="can_not_assigned_permission">권한을 얻지 못했습니다.</string>

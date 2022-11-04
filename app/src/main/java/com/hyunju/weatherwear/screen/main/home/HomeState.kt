@@ -19,9 +19,13 @@ sealed class HomeState {
     data class Success(
         val location: LocationEntity,
         val weatherInfo: WeatherModel,
-        val weatherType:Weather,
-        val sensibleTemperature:Int,
+        val weatherType: Weather,
+        val sensibleTemperature: Int,
         val comment: String
+    ) : HomeState()
+
+    data class Find(
+        val location: LocationEntity?
     ) : HomeState()
 
     data class Error(

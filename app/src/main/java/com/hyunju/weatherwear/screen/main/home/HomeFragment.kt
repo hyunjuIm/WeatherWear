@@ -2,10 +2,14 @@ package com.hyunju.weatherwear.screen.main.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -15,18 +19,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
+import com.hyunju.weatherwear.data.entity.SearchResultEntity
 import com.hyunju.weatherwear.databinding.FragmentHomeBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
+import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
+import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.WriteActivity
+import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.getCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.clothes.pickClothes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), ConfirmDialogInterface {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -51,17 +59,25 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             if (permissions.all { permission -> permission.value }) {
                 setMyLocationListener()
             } else {
-                with(binding.locationTextView) {
-                    setText(R.string.please_setup_your_location_permission)
-                    setOnClickListener {
-                        getMyLocation()
-                    }
+                binding.locationTextView.setText(R.string.please_setup_your_location_permission)
+                binding.locationTextView.setOnClickListener {
+                    showPermissionContextPopup()
                 }
-                Toast.makeText(
-                    requireContext(),
-                    R.string.can_not_assigned_permission,
-                    Toast.LENGTH_SHORT
-                ).show()
+            }
+        }
+
+    private val searchLocationLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getParcelableExtra<SearchResultEntity?>(SearchLocationActivity.LOCATION_KEY)
+                    ?.let {
+                        viewModel.getLocationData(
+                            LocationLatLngEntity(
+                                latitude = it.locationLatLng.latitude,
+                                longitude = it.locationLatLng.longitude
+                            )
+                        )
+                    }
             }
         }
 
@@ -76,7 +92,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         // SwipeRefreshLayout
         refresh.setOnRefreshListener {
             changeStatusBarForTime()
-            handleUninitializedState()
             viewModel.fetchData()
         }
     }
@@ -117,11 +132,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override fun observeData() {
         viewModel.homeStateLiveData.observe(this) {
             when (it) {
-                is HomeState.Uninitialized -> handleUninitializedState()
                 is HomeState.Loading -> handleLoadingState()
                 is HomeState.Pick -> handlePickState(it)
                 is HomeState.Success -> handleSuccessState(it)
+                is HomeState.Find -> handleFindState(it)
                 is HomeState.Error -> handleErrorState(it)
+                else -> Unit
             }
         }
 
@@ -130,15 +146,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    private fun handleUninitializedState() = with(binding) {
-        locationTextView.text = getString(R.string.finding_location)
-        loadingView.isVisible = true
-
-        getMyLocation()
-    }
-
     private fun handleLoadingState() = with(binding) {
         locationTextView.text = getString(R.string.loading)
+        loadingView.isVisible = true
     }
 
     private fun handlePickState(state: HomeState.Pick) = with(binding) {
@@ -173,6 +183,25 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             "체감온도 ${state.sensibleTemperature}° / 최저 ${state.weatherInfo.TMN}° / 최고 ${state.weatherInfo.TMX}°"
 
         adapter.submitList(pickClothes(state.weatherInfo.TMX))
+    }
+
+    private fun handleFindState(state: HomeState.Find) = with(binding) {
+        refresh.isRefreshing = false
+        loadingView.isGone = true
+
+        state.location?.let {
+            viewModel.updateLocationWeather(it)
+
+            locationTextView.setOnClickListener {
+                searchLocationLauncher.launch(
+                    SearchLocationActivity.newIntent(requireContext())
+                )
+            }
+
+            return@with
+        }
+
+        getMyLocation()
     }
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {
@@ -223,11 +252,27 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
+    private fun showPermissionContextPopup() {
+        activity?.supportFragmentManager?.let {
+            ConfirmDialog(
+                confirmDialogInterface = this,
+                text = getString(R.string.setting_location_permission)
+            ).show(it, "ConfirmDialog")
+        }
+    }
+
+    override fun onYesButtonClick() {
+        val intent = Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            val uri = Uri.fromParts("package", requireContext().packageName, null)
+            data = uri
+        }
+        startActivity(intent)
+    }
+
     inner class MyLocationListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            viewModel.updateLocationWeather(
-                LocationLatLngEntity(location.latitude, location.longitude)
-            )
+            viewModel.getLocationData(LocationLatLngEntity(location.latitude, location.longitude))
             removeLocationListener()
         }
     }

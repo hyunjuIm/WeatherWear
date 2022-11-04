@@ -65,7 +65,7 @@ class WriteViewModel @Inject constructor(
                     return@launch
                 }
 
-            Items(item = weatherEntityList.map { it.toItem() }).toEntity(date)?.let {
+            Items(item = weatherEntityList.map { it.toItem() }).toWeatherModel(date)?.let {
                 writeStateLiveData.value = WriteState.Success(
                     location = searchResultEntity,
                     weatherInfo = it,
