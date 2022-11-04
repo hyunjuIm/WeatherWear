@@ -45,6 +45,7 @@ object ClothesList {
         Clothes.SWEATER_SHIRT, // 맨투맨
         Clothes.HOODIE, // 후드티
         Clothes.SWEATER, // 니트
+        Clothes.SLACKS, // 슬랙스
         Clothes.PANTS, // 긴바지
         Clothes.JEAN_BLUE // 청바지
     )
@@ -57,6 +58,7 @@ object ClothesList {
         Clothes.SWEATER_SHIRT, // 맨투맨
         Clothes.HOODIE, // 후드티
         Clothes.SWEATER, // 니트
+        Clothes.SLACKS, // 슬랙스
         Clothes.PANTS, // 긴바지
         Clothes.JEAN_BLUE // 청바지
     )
@@ -67,6 +69,7 @@ object ClothesList {
         Clothes.SWEATER_SHIRT, // 맨투맨
         Clothes.HOODIE, // 후드티
         Clothes.SWEATER, // 니트
+        Clothes.SLACKS, // 슬랙스
         Clothes.PANTS, // 긴바지
         Clothes.JEAN_BLUE // 청바지
     )
@@ -79,6 +82,7 @@ object ClothesList {
         Clothes.SWEATER_SHIRT, // 맨투맨
         Clothes.HOODIE, // 후드티
         Clothes.SWEATER, // 니트
+        Clothes.SLACKS, // 슬랙스
         Clothes.PANTS, // 긴바지
         Clothes.JEAN_BLUE, // 청바지
         Clothes.MUFFLER // 목도리
@@ -99,8 +103,9 @@ enum class Clothes(
     LEATHER_JACKET("가죽자켓", R.drawable.clothes_leather_jacket),
 
     JEAN_BLUE("청바지", R.drawable.clothes_jean),
-    PANTS("긴바지", R.drawable.clothes_long_pants_brown),
+    PANTS("긴바지", R.drawable.clothes_long_pants),
     SHORT_PANTS("반바지", R.drawable.clothes_short_pants_yellow),
+    SLACKS("슬랙스", R.drawable.clothes_slacks),
 
     LONG_PADDING("롱패딩", R.drawable.clothes_long_padding),
     SHORT_PADDING("패딩", R.drawable.clothes_padding_orange),

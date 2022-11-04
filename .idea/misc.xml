@@ -50,6 +50,7 @@
         <entry key="app/src/main/res/drawable/clothes_padding_orange.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_short_padding.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_sleeveless.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_sweater.xml" value="0.4" />
         <entry key="app/src/main/res/drawable/clothes_sweater_brown.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_sweater_pink.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_trench_coat.xml" value="0.336" />

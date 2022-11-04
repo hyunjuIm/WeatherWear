@@ -19,14 +19,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
+                android:scaleType="centerCrop"
                 android:id="@+id/clothesIcon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                tools:src="@drawable/clothes_blouse" />
+                tools:src="@drawable/clothes_trench_coat" />
 
             <TextView
                 android:id="@+id/clothesTextView"
@@ -37,7 +39,7 @@
                 android:fontFamily="@font/maruburi_regular"
                 android:textColor="@color/blue_700"
                 android:textSize="11sp"
-                tools:text="블라우스" />
+                tools:text="트렌치코트" />
 
         </LinearLayout>
 
