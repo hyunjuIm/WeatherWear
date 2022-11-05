@@ -9,8 +9,8 @@ import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingFragment
-import com.hyunju.weatherwear.screen.main.setting.SettingViewModel
 import com.hyunju.weatherwear.screen.main.wear.WearFragment
+import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +62,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNo
     }
 
     override fun observeData() = viewModel.mainLiveData.observe(this) {
-        if (it == SettingViewModel.YET || it.isNullOrEmpty()) {
+        if (it == WeatherWearWorker.YET || it.isNullOrEmpty()) {
             YesOrNoDialog(
                 yesOrNoDialogInterface = this,
                 title = getString(R.string.push_title),

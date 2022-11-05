@@ -6,6 +6,7 @@ import com.hyunju.weatherwear.databinding.FragmentSettingBinding
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
+import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,9 +31,9 @@ class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>()
 
     override fun observeData() = viewModel.settingLiveData.observe(this) {
         when (it) {
-            SettingViewModel.YET -> showPushCheckDialog()
-            SettingViewModel.ON -> binding.pushSwitch.isChecked = true
-            SettingViewModel.OFF -> binding.pushSwitch.isChecked = false
+            WeatherWearWorker.YET -> showPushCheckDialog()
+            WeatherWearWorker.ON -> binding.pushSwitch.isChecked = true
+            WeatherWearWorker.OFF -> binding.pushSwitch.isChecked = false
         }
     }
 

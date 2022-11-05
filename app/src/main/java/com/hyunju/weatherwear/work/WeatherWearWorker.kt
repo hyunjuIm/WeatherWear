@@ -8,6 +8,7 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
@@ -20,7 +21,6 @@ import com.hyunju.weatherwear.data.repository.map.MapRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.data.response.weather.Items
 import com.hyunju.weatherwear.screen.main.MainActivity
-import com.hyunju.weatherwear.screen.main.setting.SettingViewModel
 import com.hyunju.weatherwear.util.clothes.pickClothes
 import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
@@ -50,7 +50,15 @@ class WeatherWearWorker @AssistedInject constructor(
         private const val CHANNEL_DESCRIPTION = "지금 바로 오늘의 날씨와 옷차림을 확인해보세요!"
         private const val CHANNEL_ID = "ChannelId"
 
+        const val NOTIFICATION = "notification"
         private const val NOTIFICATION_ID = 101
+
+        const val PUSH_ALERT = "pushAlert"
+        const val YET = "yet"
+        const val ON = "on"
+        const val OFF = "off"
+
+        const val WORK_NAME = "weather_wear_worker"
     }
 
     private var notificationTitle = context.getString(R.string.app_full_name)
@@ -58,22 +66,32 @@ class WeatherWearWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = coroutineScope {
         try {
-            val push = inputData.getString(SettingViewModel.PUSH_ALERT) ?: ""
-            if (push == SettingViewModel.ON) {
-                withContext(ioDispatchers) {
-                    getWeatherInformation()
+            when (inputData.getString(PUSH_ALERT) ?: "") {
+                ON -> {
+                    withContext(ioDispatchers) {
+                        getWeatherInformation()
+                    }
+
+                    createNotificationChannelIfNeeded()
+
+                    NotificationManagerCompat
+                        .from(context)
+                        .notify(NOTIFICATION_ID, createNotification())
+
+                    Toast.makeText(
+                        context, context.getString(R.string.push_on), Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-                createNotificationChannelIfNeeded()
-
-                NotificationManagerCompat
-                    .from(context)
-                    .notify(NOTIFICATION_ID, createNotification())
-
-                Result.success()
-            } else {
-                Result.success()
+                OFF -> {
+                    Toast.makeText(
+                        context, context.getString(R.string.push_off), Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> Unit
             }
+
+            Result.success()
+
         } catch (e: Exception) {
             Result.failure()
         }

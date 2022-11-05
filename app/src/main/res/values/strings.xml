@@ -68,7 +68,8 @@
     <string name="push_message">해당 기기로 날씨 및 옷차림에 관련된 정보를 푸시 알림으로 보내드리겠습니다.\n\n앱 푸시에 수신 동의하시겠습니까?</string>
     <string name="push_allow">허용</string>
     <string name="push_not_allow">허용 안 함</string>
-
+    <string name="push_on">푸시 알림 기능을 활성화합니다.</string>
+    <string name="push_off">푸시 알림 기능을 해제합니다.</string>
 
     <!-- Error -->
     <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
