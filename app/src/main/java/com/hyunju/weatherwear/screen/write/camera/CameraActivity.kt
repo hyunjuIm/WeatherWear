@@ -118,8 +118,6 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun showPreviewPhoto(uri: Uri) = with(binding) {
-        cameraExecutor.shutdown()
-
         frameLayoutPreview.isVisible = true
         frameLayoutPreview.isClickable = true
         imageViewPreview.load(uri.toString())
@@ -157,9 +155,9 @@ class CameraActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (isActivated) {
             super.onBackPressed()
+            finish()
         } else {
             showCamera()
-            startCamera()
         }
     }
 
@@ -167,4 +165,5 @@ class CameraActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
 }

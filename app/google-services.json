@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "505337938597",
+    "project_id": "weatherwear-e27b5",
+    "storage_bucket": "weatherwear-e27b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505337938597:android:0e1217e52500512cd8434c",
+        "android_client_info": {
+          "package_name": "com.hyunju.weatherwear"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505337938597-2hfkd23oo65p19gafl9603ahc13mq6ge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyunju.weatherwear",
+            "certificate_hash": "1a6471aa20151ec1a2a587841a3bd41b38d4be20"
+          }
+        },
+        {
+          "client_id": "505337938597-tm2arrfiee5e2m23jql6qc3m8f1g6i0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf6BipKl_4RatSeaslLg6k8LvLjmgIJuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505337938597-tm2arrfiee5e2m23jql6qc3m8f1g6i0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

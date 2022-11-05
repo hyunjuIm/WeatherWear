@@ -6,6 +6,7 @@ import com.hyunju.weatherwear.databinding.FragmentSettingBinding
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
+import com.hyunju.weatherwear.screen.main.setting.backup.BackUpActivity
 import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +25,11 @@ class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>()
     override fun getViewBinding() = FragmentSettingBinding.inflate(layoutInflater)
 
     override fun initViews() = with(binding) {
+        backUpButton.setOnClickListener {
+            startActivity(
+                BackUpActivity.newIntent(requireContext())
+            )
+        }
         pushSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateAgreeNotification(isChecked)
         }
