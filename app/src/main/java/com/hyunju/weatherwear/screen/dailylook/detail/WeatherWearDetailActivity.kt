@@ -10,15 +10,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityWeatherWearDetailBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WeatherWearDetailActivity :
-    BaseActivity<WeatherWearDetailViewModel, ActivityWeatherWearDetailBinding>() {
+    BaseActivity<WeatherWearDetailViewModel, ActivityWeatherWearDetailBinding>(),
+    YesOrNoDialogInterface {
 
     companion object {
         const val ID_KEY = "id"
@@ -33,6 +37,8 @@ class WeatherWearDetailActivity :
     override val viewModel by viewModels<WeatherWearDetailViewModel>()
 
     override fun getViewBinding() = ActivityWeatherWearDetailBinding.inflate(layoutInflater)
+
+    override val transitionMode = TransitionMode.HORIZON
 
     private val weatherWearId by lazy { intent.getLongExtra(ID_KEY, -1) }
 
@@ -68,20 +74,7 @@ class WeatherWearDetailActivity :
         weatherTypeTextView.text = state.weatherWearInfo.weatherType
         diaryTextView.text = state.weatherWearInfo.diary
 
-        deleteButton.setOnClickListener {
-            AlertDialog.Builder(this@WeatherWearDetailActivity)
-                .setMessage("삭제한 데이터는 되돌릴 수 없습니다.\n그래도 삭제하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    viewModel.deleteWeatherWearDate(weatherWearId)
-                }
-                .setNegativeButton("아니오") { _, _ ->
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                }
-                .create()
-                .show()
-        }
+        deleteButton.setOnClickListener { showDeleteDialog() }
     }
 
     private fun handleDelete() = with(binding) {
@@ -89,7 +82,7 @@ class WeatherWearDetailActivity :
 
         Toast.makeText(
             this@WeatherWearDetailActivity,
-            "삭제되었습니다.",
+            getString(R.string.deleted),
             Toast.LENGTH_SHORT
         ).show()
 
@@ -108,6 +101,20 @@ class WeatherWearDetailActivity :
             getString(state.messageId),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun showDeleteDialog() {
+        YesOrNoDialog(
+            yesOrNoDialogInterface = this,
+            title = null,
+            message = getString(R.string.ask_for_deletion),
+            positiveButton = getString(R.string.yes),
+            negativeButton = getString(R.string.no)
+        ).show(this.supportFragmentManager, "YesOrNoDialog")
+    }
+
+    override fun onYesButtonClick(value: Boolean) {
+        if (value) viewModel.deleteWeatherWearDate(weatherWearId)
     }
 
 }

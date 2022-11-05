@@ -46,7 +46,7 @@ class YesOrNoDialog(
 
         binding.noButton.text = negativeButton
         binding.noButton.setOnClickListener {
-            this.yesOrNoDialogInterface.onYesButtonClick(true)
+            this.yesOrNoDialogInterface.onYesButtonClick(false)
             dismiss()
         }
 
