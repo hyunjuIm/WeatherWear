@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selectTemperatureBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_rounded_top_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp"
+    app:behavior_draggable="true"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_rounded_gray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/notosans_kr_medium"
+        android:gravity="center"
+        android:text="@string/please_select_photo_option"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/optionGalleryView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_bottom_line_gray"
+        android:paddingHorizontal="16dp"
+        android:padding="16dp"
+        android:paddingVertical="12dp"
+        android:text="@string/gallery"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/optionCameraView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:text="@string/camera"
+        android:textSize="16sp" />
+
+</LinearLayout>

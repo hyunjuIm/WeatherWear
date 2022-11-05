@@ -34,6 +34,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel, ActivityGalleryBinding>()
 
     override fun initViews() {
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = null
         binding.recyclerView.addItemDecoration(
             GridSpacingItemDecoration(3, 1.5f.fromDpToPx())
         )
