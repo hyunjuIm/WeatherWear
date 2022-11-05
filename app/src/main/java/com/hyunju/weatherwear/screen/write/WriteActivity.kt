@@ -27,6 +27,8 @@ import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
+import com.hyunju.weatherwear.screen.dialog.PhotoOption
+import com.hyunju.weatherwear.screen.dialog.SelectPhotoOptionBottomSheetDialog
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
@@ -83,6 +85,23 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                 }
             }
         }
+
+    private val selectPhotoOptionBottomSheetDialog by lazy {
+        SelectPhotoOptionBottomSheetDialog { option ->
+            when (option) {
+                PhotoOption.CAMARA -> {
+                    cameraLauncher.launch(
+                        CameraActivity.newIntent(this)
+                    )
+                }
+                PhotoOption.GALLERY -> {
+                    galleryLauncher.launch(
+                        GalleryActivity.newIntent(this)
+                    )
+                }
+            }
+        }
+    }
 
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -256,20 +275,10 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     }
 
     private fun showPictureUploadDialog() {
-        AlertDialog.Builder(this)
-            .setMessage("사진 첨부 방식을 선택해주세요.")
-            .setPositiveButton("카메라") { _, _ ->
-                cameraLauncher.launch(
-                    CameraActivity.newIntent(this)
-                )
-            }
-            .setNegativeButton("갤러리") { _, _ ->
-                galleryLauncher.launch(
-                    GalleryActivity.newIntent(this)
-                )
-            }
-            .create()
-            .show()
+        selectPhotoOptionBottomSheetDialog.show(
+            supportFragmentManager,
+            "selectPhotoOptionBottomSheetDialog"
+        )
     }
 
     private fun checkHasPermission(uploadAction: () -> Unit) {
