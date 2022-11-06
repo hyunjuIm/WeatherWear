@@ -155,7 +155,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private fun handlePickState(state: HomeState.Pick) = with(binding) {
         state.weatherWearEntity?.let { item ->
-            weatherWearImageView.load(item.photo)
+            weatherWearImageView.clear()
+            weatherWearImageView.load(item.photo, 8f)
             weatherWearCardView.setOnClickListener {
                 startActivity(
                     WeatherWearDetailActivity.newIntent(requireContext(), item.id)
@@ -282,7 +283,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
         }
 
         @Deprecated("Deprecated in Java")
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        }
 
         override fun onProviderDisabled(provider: String) {}
 

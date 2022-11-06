@@ -1,5 +1,6 @@
 package com.hyunju.weatherwear.data.entity
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,6 +17,6 @@ data class WeatherWearEntity(
     val maxTemperature: Int,
     val minTemperature: Int,
     val weatherType: String,
-    val photo: String,
+    val photo: Bitmap,
     val diary: String
 ) : Parcelable

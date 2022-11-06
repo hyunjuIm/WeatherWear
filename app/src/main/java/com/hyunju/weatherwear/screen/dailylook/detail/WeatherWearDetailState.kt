@@ -13,7 +13,7 @@ sealed class WeatherWearDetailState {
         val weatherWearInfo: WeatherWearEntity
     ) : WeatherWearDetailState()
 
-    object Delete: WeatherWearDetailState()
+    object Delete : WeatherWearDetailState()
 
     data class Error(
         @StringRes val messageId: Int

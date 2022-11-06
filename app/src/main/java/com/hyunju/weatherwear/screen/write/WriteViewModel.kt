@@ -16,10 +16,13 @@ import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
+import com.hyunju.weatherwear.util.file.BitmapUtil
 import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -99,6 +102,13 @@ class WriteViewModel @Inject constructor(
     fun uploadWeatherWear(writeModel: WriteModel) = viewModelScope.launch(exceptionHandler) {
         writeStateLiveData.value = WriteState.Loading
 
+        val photo = withContext(Dispatchers.IO) {
+            BitmapUtil.setImageBitmap(writeModel.photo)
+        } ?: kotlin.run {
+            writeStateLiveData.value = WriteState.Error(R.string.request_error)
+            return@launch
+        }
+
         val weatherWear = WeatherWearEntity(
             location = writeModel.location,
             createDate = writeModel.date.timeInMillis,
@@ -106,7 +116,7 @@ class WriteViewModel @Inject constructor(
             maxTemperature = writeModel.weather.TMX,
             minTemperature = writeModel.weather.TMN,
             weatherType = getWeatherType(writeModel.weather).text,
-            photo = writeModel.photo.toString(),
+            photo = photo,
             diary = writeModel.diary
         )
 

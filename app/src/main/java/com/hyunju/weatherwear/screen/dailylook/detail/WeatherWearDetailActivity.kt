@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.hyunju.weatherwear.screen.dailylook.detail.PhotoDetailActivity
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityWeatherWearDetailBinding
 import com.hyunju.weatherwear.extension.load
@@ -71,8 +70,7 @@ class WeatherWearDetailActivity :
         photoImageView.setOnClickListener {
             startActivity(
                 PhotoDetailActivity.newIntent(
-                    this@WeatherWearDetailActivity,
-                    state.weatherWearInfo.photo
+                    this@WeatherWearDetailActivity
                 )
             )
         }

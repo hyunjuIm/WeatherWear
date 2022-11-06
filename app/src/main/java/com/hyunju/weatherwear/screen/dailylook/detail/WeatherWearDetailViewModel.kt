@@ -2,13 +2,17 @@ package com.hyunju.weatherwear.screen.dailylook.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
+import com.hyunju.weatherwear.util.file.BitmapUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,9 +25,13 @@ class WeatherWearDetailViewModel @Inject constructor(
 
     fun getWeatherWearData(id: Long) = viewModelScope.launch(exceptionHandler) {
         weatherWearDetailLiveData.value = WeatherWearDetailState.Loading
+
+        val weatherWearInfo = weatherWearRepository.getWeatherWear(id)
         weatherWearDetailLiveData.value = WeatherWearDetailState.Success(
-            weatherWearInfo = weatherWearRepository.getWeatherWear(id)
+            weatherWearInfo = weatherWearInfo
         )
+
+        PhotoDetailActivity.PhotoDetailObject.bitmap = weatherWearInfo.photo
     }
 
     fun deleteWeatherWearDate(id: Long) = viewModelScope.launch(exceptionHandler) {

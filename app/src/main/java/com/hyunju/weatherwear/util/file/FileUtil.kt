@@ -1,6 +1,6 @@
 package com.hyunju.weatherwear.util.file
 
-import com.hyunju.weatherwear.WeatherWearApplication
+import com.hyunju.weatherwear.WeatherWearApplication.Companion.appContext
 import com.hyunju.weatherwear.model.FileModel
 import java.io.File
 
@@ -25,11 +25,10 @@ fun createBackupFileList(): List<FileModel>? {
 
 private fun toDatabaseFileModel(name: String) = FileModel(
     name = name,
-    file = WeatherWearApplication.appContext?.getDatabasePath(name) ?: throw Exception()
+    file = appContext?.getDatabasePath(name) ?: throw Exception()
 )
 
 fun readDatabaseFile(name: String): File {
-    val filePath =
-        WeatherWearApplication.appContext?.getDatabasePath(name)?.path ?: throw Exception()
+    val filePath = appContext?.getDatabasePath(name)?.path ?: throw Exception()
     return File(filePath)
 }
