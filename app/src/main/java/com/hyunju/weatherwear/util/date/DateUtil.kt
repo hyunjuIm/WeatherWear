@@ -9,6 +9,12 @@ fun getTodayDate(): String {
     return dataFormat.format(currentTime)
 }
 
+fun getYesterdayDate(): String {
+    val currentTime: Long = System.currentTimeMillis()- (1000 * 60 * 60 * 24)
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    return dataFormat.format(currentTime)
+}
+
 fun getCurrentTime(): String {
     val currentTime: Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("HH")

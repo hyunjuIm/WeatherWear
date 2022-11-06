@@ -37,9 +37,11 @@
         <entry key="app/src/main/res/drawable/bg_rectangle_white.xml" value="0.4" />
         <entry key="app/src/main/res/drawable/bg_rounded_blue.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/bg_rounded_gray.xml" value="0.3715" />
+        <entry key="app/src/main/res/drawable/bg_rounded_snow.xml" value="0.384" />
         <entry key="app/src/main/res/drawable/bg_rounded_top_white.xml" value="0.3655" />
         <entry key="app/src/main/res/drawable/bg_rounded_white_line_blue.xml" value="0.2025" />
         <entry key="app/src/main/res/drawable/bg_rounded_white_line_gray.xml" value="0.2025" />
+        <entry key="app/src/main/res/drawable/bg_rounded_white_shadow.xml" value="0.384" />
         <entry key="app/src/main/res/drawable/bg_white_bottom_line_gray.xml" value="0.5565" />
         <entry key="app/src/main/res/drawable/btn_enable_blue.xml" value="0.454" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.1605" />
@@ -115,13 +117,16 @@
         <entry key="app/src/main/res/layout/bottom_sheet_select_temperature.xml" value="0.5" />
         <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.5" />
         <entry key="app/src/main/res/layout/dialog_yes_or_no.xml" value="0.26246600181323665" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.391968994140625" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_wear.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.3218426513671876" />
         <entry key="app/src/main/res/layout/item_gallery_photo.xml" value="0.18784722222222222" />
         <entry key="app/src/main/res/layout/item_pick_clothes.xml" value="0.5389492753623188" />
         <entry key="app/src/main/res/layout/item_search_location.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_time_weather.xml" value="0.4288157332193245" />
         <entry key="app/src/main/res/layout/item_wear.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_week_weather.xml" value="0.4288157332193245" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3203125" />
         <entry key="app/src/main/res/xml/file_provider.xml" value="0.1" />
       </map>

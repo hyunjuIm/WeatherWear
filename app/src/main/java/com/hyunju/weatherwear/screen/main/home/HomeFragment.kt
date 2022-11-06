@@ -85,50 +85,22 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private val adapter by lazy { PickClothesAdapter() }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) changeStatusBarForTime(binding.backgroundLayout)
+    }
+
     override fun initViews() = with(binding) {
         // 시간에 따른 상태바 색상, 배경 그라데이션 변경
-        changeStatusBarForTime()
+        changeStatusBarForTime(backgroundLayout)
 
         clothesRecyclerView.adapter = adapter
         clothesRecyclerView.itemAnimator = null
 
         // SwipeRefreshLayout
         refresh.setOnRefreshListener {
-            changeStatusBarForTime()
+            changeStatusBarForTime(backgroundLayout)
             viewModel.fetchData()
-        }
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-
-        if (hidden) {
-            setBaseStatusBar()
-        } else {
-            changeStatusBarForTime()
-        }
-    }
-
-    // 시간에 따른 상태바 색상, 배경 그라데이션 변경
-    private fun changeStatusBarForTime() {
-        requireActivity().window.apply {
-            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
-
-            if (getCurrentTime().toInt() in Time.AFTERNOON) {
-                statusBarColor = ContextCompat.getColor(requireContext(), R.color.sky_100)
-                binding.backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_sky)
-            } else {
-                statusBarColor = ContextCompat.getColor(requireContext(), R.color.blue_500)
-                binding.backgroundLayout.setBackgroundResource(R.drawable.bg_gradient_blue_navy)
-            }
-        }
-    }
-
-    private fun setBaseStatusBar() {
-        requireActivity().window.apply {
-            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars =
-                true
-            statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
         }
     }
 

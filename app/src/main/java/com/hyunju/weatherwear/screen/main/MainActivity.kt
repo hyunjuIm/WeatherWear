@@ -10,6 +10,7 @@ import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
 import com.hyunju.weatherwear.screen.main.home.HomeFragment
 import com.hyunju.weatherwear.screen.main.setting.SettingFragment
 import com.hyunju.weatherwear.screen.main.wear.WearFragment
+import com.hyunju.weatherwear.screen.main.weather.WeatherFragment
 import com.hyunju.weatherwear.work.WeatherWearWorker
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +31,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNo
                     true
                 }
                 R.id.menu_weather -> {
+                    showFragment(WeatherFragment.newInstance(), WeatherFragment.TAG)
                     true
                 }
                 R.id.menu_wear -> {

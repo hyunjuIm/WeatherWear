@@ -49,7 +49,14 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
         })
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) setBaseStatusBar()
+    }
+
     override fun initViews() = with(binding) {
+        setBaseStatusBar()
+
         titleTextView.setOnClickListener {
             recyclerView.smoothScrollToPosition(0)
         }

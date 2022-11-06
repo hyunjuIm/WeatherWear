@@ -4,8 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.hyunju.weatherwear.R
+import com.hyunju.weatherwear.util.date.getCurrentTime
+import com.hyunju.weatherwear.util.weather.Time
 import kotlinx.coroutines.Job
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
@@ -42,6 +48,29 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
 
     open fun initViews() = Unit
 
+    // 시간에 따른 상태바 색상, 배경 그라데이션 변경
+    fun changeStatusBarForTime(background: ConstraintLayout) {
+        requireActivity().window.apply {
+            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
+
+            if (getCurrentTime().toInt() in Time.AFTERNOON) {
+                statusBarColor = ContextCompat.getColor(requireContext(), R.color.sky_100)
+                background.setBackgroundResource(R.drawable.bg_gradient_blue_sky)
+            } else {
+                statusBarColor = ContextCompat.getColor(requireContext(), R.color.blue_500)
+                background.setBackgroundResource(R.drawable.bg_gradient_blue_navy)
+            }
+        }
+    }
+
+    fun setBaseStatusBar() {
+        requireActivity().window.apply {
+            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars =
+                true
+            statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+        }
+    }
+
     abstract fun observeData()
 
     override fun onDestroy() {
@@ -50,4 +79,5 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
         }
         super.onDestroy()
     }
+
 }

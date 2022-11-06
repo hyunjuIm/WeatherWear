@@ -12,9 +12,9 @@ object Time {
 }
 
 object Sky {
-    val SUN = 0..5
-    val CLOUDY = 6..8
-    val GRAY_CLOUDY = 9..10
+    val SUN = 0..3
+    val CLOUDY = 4..7
+    val GRAY_CLOUDY = 8..10
 }
 
 object Shape {

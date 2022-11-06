@@ -24,7 +24,14 @@ class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>()
 
     override fun getViewBinding() = FragmentSettingBinding.inflate(layoutInflater)
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) setBaseStatusBar()
+    }
+
     override fun initViews() = with(binding) {
+        setBaseStatusBar()
+
         backUpButton.setOnClickListener {
             startActivity(
                 BackUpActivity.newIntent(requireContext())
