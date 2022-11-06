@@ -17,7 +17,6 @@ import java.io.*
 import java.nio.channels.FileChannel
 import javax.inject.Inject
 
-
 @HiltViewModel
 class BackUpViewModel @Inject constructor(
     private val appPreferenceManager: AppPreferenceManager
@@ -67,7 +66,7 @@ class BackUpViewModel @Inject constructor(
         backUpStateLiveData.value = BackUpState.Loading
 
         try {
-            createBackupFileList()?.let { backUpFileList ->
+            BackUpUtil.createBackupFileList()?.let { backUpFileList ->
                 backUpFileList.map {
                     storage
                         .reference.child("room/" + auth.uid).child(it.name)
@@ -89,7 +88,11 @@ class BackUpViewModel @Inject constructor(
     fun restoreRoomData() = viewModelScope.launch(exceptionHandler) {
         backUpStateLiveData.value = BackUpState.Loading
 
-        val fileNameList = listOf(BACK_UP_DB_NAME, BACK_UP_DB_SHM_NAME, BACK_UP_DB_WAL_NAME)
+        val fileNameList = listOf(
+            BackUpUtil.BACK_UP_DB_NAME,
+            BackUpUtil.BACK_UP_DB_SHM_NAME,
+            BackUpUtil.BACK_UP_DB_WAL_NAME
+        )
 
         try {
             fileNameList.map { name ->
@@ -98,7 +101,8 @@ class BackUpViewModel @Inject constructor(
 
                 islandRef.getFile(localFile).addOnSuccessListener {
                     val src: FileChannel = FileInputStream(localFile).channel
-                    val dst: FileChannel = FileOutputStream(readDatabaseFile(name)).channel
+                    val dst: FileChannel =
+                        FileOutputStream(BackUpUtil.readDatabaseFile(name)).channel
                     dst.transferFrom(src, 0, src.size())
                 }.addOnFailureListener {
                     throw Exception()

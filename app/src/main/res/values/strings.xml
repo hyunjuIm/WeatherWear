@@ -11,6 +11,7 @@
     <string name="loading">로딩 중 …</string>
 
     <string name="ok">확인</string>
+    <string name="cancel">취소</string>
     <string name="delete">삭제</string>
     <string name="search">검색</string>
     <string name="write">등록하기</string>
@@ -91,6 +92,9 @@
     <string name="data_restore">데이터 복원하기</string>
     <string name="success_restore">데이터 복원을 성공하였습니다.</string>
     <string name="fail_data_restore">데이터 복원을 실패했습니다.</string>
+    <string name="ask_back_up">데이터 백업을 진행하시겠습니까?</string>
+    <string name="ask_restore">데이터 복원을 진행하시겠습니까?</string>
+    <string name="guide_permission_back_up">데이터 파일을 백업/복원 하기 위해\n권한이 필요합니다.</string>
     <string name="guide_back_up_comment">⚠️\n\n마지막으로 백업한 데이터를 기준으로\n현재 데이터에 덮어쓰는 형식으로 복원됩니다.\n\n오래된 백업 데이터로 복구를 진행하면\n소중한 데이터가 손실되고 말아요 (oT-T)尸\n\n데이터 백업/복원은 항상 신중하게 시도해주세요!</string>
 
     <!-- Error -->

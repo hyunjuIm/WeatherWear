@@ -6,10 +6,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -27,13 +23,18 @@ import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
+import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BackUpActivity : BaseActivity<BackUpViewModel, ActivityBackUpBinding>(),
-    ConfirmDialogInterface {
+    ConfirmDialogInterface, YesOrNoDialogInterface {
 
     companion object {
+        private const val BACK_UP = "backUp"
+        private const val RESTORE = "restore"
+
         fun newIntent(context: Context) = Intent(context, BackUpActivity::class.java)
     }
 
@@ -89,15 +90,11 @@ class BackUpActivity : BaseActivity<BackUpViewModel, ActivityBackUpBinding>(),
         }
 
         backUpButton.setOnClickListener {
-            checkExternalStoragePermission {
-                viewModel.backUpRoomData()
-            }
+            showYesOrNoDialog(BACK_UP, getString(R.string.ask_back_up))
         }
 
         restoreButton.setOnClickListener {
-            checkExternalStoragePermission {
-                viewModel.restoreRoomData()
-            }
+            showYesOrNoDialog(RESTORE, getString(R.string.ask_restore))
         }
     }
 
@@ -133,16 +130,10 @@ class BackUpActivity : BaseActivity<BackUpViewModel, ActivityBackUpBinding>(),
                 loginGroup.isVisible = true
             }
             is BackUpState.Success.BackUp -> {
-                ConfirmDialog(
-                    confirmDialogInterface = this@BackUpActivity,
-                    text = getString(R.string.success_data_back_up)
-                ).show(supportFragmentManager, "ConfirmDialog")
+                showSuccessConfirmDialog(getString(R.string.success_data_back_up))
             }
             is BackUpState.Success.Restore -> {
-                ConfirmDialog(
-                    confirmDialogInterface = this@BackUpActivity,
-                    text = getString(R.string.success_restore)
-                ).show(supportFragmentManager, "ConfirmDialog")
+                showSuccessConfirmDialog(getString(R.string.success_restore))
             }
         }
     }
@@ -176,10 +167,29 @@ class BackUpActivity : BaseActivity<BackUpViewModel, ActivityBackUpBinding>(),
         Toast.makeText(this@BackUpActivity, getString(state.messageId), Toast.LENGTH_SHORT).show()
     }
 
+    private fun showYesOrNoDialog(tag: String, message: String) {
+        checkExternalStoragePermission {
+            YesOrNoDialog(
+                yesOrNoDialogInterface = this@BackUpActivity,
+                title = null,
+                message = message,
+                positiveButton = getString(R.string.ok),
+                negativeButton = getString(R.string.cancel)
+            ).show(supportFragmentManager, tag)
+        }
+    }
+
+    private fun showSuccessConfirmDialog(text: String) {
+        ConfirmDialog(
+            confirmDialogInterface = this@BackUpActivity,
+            text = text
+        ).show(supportFragmentManager, "ConfirmDialog")
+    }
+
     private fun showPermissionContextPopup() {
         AlertDialog.Builder(this)
-            .setMessage("데이터 파일을 백업/복원 하기 위해\n권한이 필요합니다.")
-            .setPositiveButton("확인") { _, _ ->
+            .setMessage(getString(R.string.guide_permission_back_up))
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 storagePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             .create()
@@ -202,8 +212,15 @@ class BackUpActivity : BaseActivity<BackUpViewModel, ActivityBackUpBinding>(),
         }
     }
 
-    override fun onYesButtonClick() {
+    override fun onYesButtonClick() {}
 
+    override fun onYesButtonClick(value: Boolean, tag: String) {
+        if (value) {
+            when (tag) {
+                BACK_UP -> viewModel.backUpRoomData()
+                RESTORE -> viewModel.restoreRoomData()
+            }
+        }
     }
 
 }

@@ -40,13 +40,13 @@ class YesOrNoDialog(
 
         binding.yesButton.text = positiveButton
         binding.yesButton.setOnClickListener {
-            this.yesOrNoDialogInterface.onYesButtonClick(true)
+            this.yesOrNoDialogInterface.onYesButtonClick(true, tag ?: "")
             dismiss()
         }
 
         binding.noButton.text = negativeButton
         binding.noButton.setOnClickListener {
-            this.yesOrNoDialogInterface.onYesButtonClick(false)
+            this.yesOrNoDialogInterface.onYesButtonClick(false, tag ?: "")
             dismiss()
         }
 
@@ -60,5 +60,5 @@ class YesOrNoDialog(
 }
 
 interface YesOrNoDialogInterface {
-    fun onYesButtonClick(value: Boolean)
+    fun onYesButtonClick(value: Boolean, tag: String)
 }
