@@ -94,6 +94,9 @@ dependencies {
     kapt 'com.github.bumptech.glide:annotations:4.14.2'
     kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
     // Lottie
     implementation 'com.airbnb.android:lottie:3.4.0'
 
