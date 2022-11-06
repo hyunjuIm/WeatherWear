@@ -11,6 +11,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -156,12 +157,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
     private fun handlePickState(state: HomeState.Pick) = with(binding) {
         state.weatherWearEntity?.let { item ->
             weatherWearImageView.clear()
-            weatherWearImageView.load(item.photo, 8f)
+            weatherWearImageView.load(item.photo)
+            weatherWearImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+
             weatherWearCardView.setOnClickListener {
                 startActivity(
                     WeatherWearDetailActivity.newIntent(requireContext(), item.id)
                 )
             }
+
             return@with
         }
 

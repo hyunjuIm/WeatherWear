@@ -24,7 +24,6 @@ fun ImageView.load(url: String, corner: Float = 0f) {
     Glide.with(this)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
         .timeout(5000)
         .into(this)
@@ -34,7 +33,6 @@ fun ImageView.load(url: String) {
     Glide.with(this)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
 }
@@ -44,7 +42,6 @@ fun ImageView.load(drawable: Int) {
     Glide.with(this)
         .load(image)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
 }
@@ -54,7 +51,6 @@ fun ImageView.load(bitmap: Bitmap) {
         .asBitmap()
         .load(bitmap)
         .transition(BitmapTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .timeout(5000)
         .into(this)
 }
@@ -64,7 +60,6 @@ fun ImageView.load(bitmap: Bitmap, corner: Float = 0f) {
         .asBitmap()
         .load(bitmap)
         .transition(BitmapTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
         .timeout(5000)
         .into(this)

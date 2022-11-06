@@ -73,7 +73,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNo
         }
     }
 
-    override fun onYesButtonClick(value: Boolean) {
+    override fun onYesButtonClick(value: Boolean, tag: String) {
         viewModel.updateAgreeNotification(value)
     }
 

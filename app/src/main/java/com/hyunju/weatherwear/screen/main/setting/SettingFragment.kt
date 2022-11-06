@@ -55,7 +55,7 @@ class SettingFragment : BaseFragment<SettingViewModel, FragmentSettingBinding>()
         }
     }
 
-    override fun onYesButtonClick(value: Boolean) {
+    override fun onYesButtonClick(value: Boolean, tag: String) {
         viewModel.updateAgreeNotification(value)
     }
 

@@ -120,7 +120,7 @@ class WeatherWearDetailActivity :
         ).show(this.supportFragmentManager, "YesOrNoDialog")
     }
 
-    override fun onYesButtonClick(value: Boolean) {
+    override fun onYesButtonClick(value: Boolean, tag: String) {
         if (value) viewModel.deleteWeatherWearDate(weatherWearId)
     }
 
