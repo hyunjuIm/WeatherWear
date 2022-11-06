@@ -9,8 +9,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -29,9 +29,9 @@ import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
+import com.hyunju.weatherwear.util.clothes.pickClothes
 import com.hyunju.weatherwear.util.date.getCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
-import com.hyunju.weatherwear.util.clothes.pickClothes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -280,5 +280,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
             viewModel.getLocationData(LocationLatLngEntity(location.latitude, location.longitude))
             removeLocationListener()
         }
+
+        @Deprecated("Deprecated in Java")
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
+        override fun onProviderDisabled(provider: String) {}
+
+        override fun onProviderEnabled(provider: String) {}
     }
 }
