@@ -3,13 +3,6 @@ package com.hyunju.weatherwear.util.file
 import com.hyunju.weatherwear.WeatherWearApplication
 import com.hyunju.weatherwear.model.FileModel
 import java.io.File
-import java.text.SimpleDateFormat
-
-fun newJpgFileName(): String {
-    val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
-    val filename = sdf.format(System.currentTimeMillis())
-    return "${filename}.jpg"
-}
 
 const val BACK_UP_DB_NAME = "ApplicationDataBase.db"
 const val BACK_UP_DB_SHM_NAME = "ApplicationDataBase.db-shm"

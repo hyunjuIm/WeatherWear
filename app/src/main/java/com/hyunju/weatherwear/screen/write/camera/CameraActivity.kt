@@ -1,27 +1,36 @@
 package com.hyunju.weatherwear.screen.write.camera
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.hardware.display.DisplayManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.*
+import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+import androidx.camera.core.impl.ImageOutputConfig
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityCameraBinding
-import com.hyunju.weatherwear.extension.load
-import com.hyunju.weatherwear.util.file.newJpgFileName
+import com.hyunju.weatherwear.util.file.PathUtil
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -32,138 +41,224 @@ class CameraActivity : AppCompatActivity() {
         const val URI_KEY = "uri"
 
         fun newIntent(context: Context) = Intent(context, CameraActivity::class.java)
+
+        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val LENS_FACING: Int = CameraSelector.LENS_FACING_BACK
     }
+
+    private val previewLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getParcelableExtra<Uri?>(PreviewActivity.URI_KEY)?.let {
+                    setResult(Activity.RESULT_OK, Intent().apply {
+                        putExtra(PreviewActivity.URI_KEY, it)
+                    })
+                    finish()
+                }
+            }
+        }
 
     private val binding by lazy { ActivityCameraBinding.inflate(layoutInflater) }
 
-    private var preview: Preview? = null
-    private var imageCapture: ImageCapture? = null
-
-    private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+    private val cameraMainExecutor by lazy { ContextCompat.getMainExecutor(this) }
 
-    // 카메라 활성화 여부
-    private var isActivated: Boolean = false
+    private lateinit var imageCapture: ImageCapture
+    private val cameraProviderFuture by lazy { ProcessCameraProvider.getInstance(this) }
+    private val displayManager by lazy {
+        getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    }
+
+    private var displayId: Int = -1
+
+    private var camera: Camera? = null
+    private var root: View? = null
+    private var isCapturing: Boolean = false
+
+    private val displayListener = object : DisplayManager.DisplayListener {
+        override fun onDisplayAdded(displayId: Int) = Unit
+        override fun onDisplayRemoved(displayId: Int) = Unit
+
+        @SuppressLint("RestrictedApi")
+        override fun onDisplayChanged(displayId: Int) {
+            if (this@CameraActivity.displayId == displayId) {
+                if (::imageCapture.isInitialized && root != null) {
+                    imageCapture.targetRotation =
+                        root?.display?.rotation ?: ImageOutputConfig.INVALID_ROTATION
+                }
+            }
+        }
+    }
+
+    private lateinit var cameraAnimationListener: Animation.AnimationListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        startCamera()
+        startCamera(binding.previewView)
+    }
 
-        outputDirectory = getOutputDirectory()
+    private fun startCamera(viewFinder: PreviewView) {
+        displayManager.registerDisplayListener(displayListener, null)
+
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        bindViews()
+        viewFinder.postDelayed({
+            displayId = viewFinder.display.displayId
+            bindCameraUseCase()
+        }, 10)
     }
 
-    private fun bindViews() = with(binding) {
-        cameraButton.setOnClickListener { takePhoto() } // 카메라 촬영
-        cancelButton.setOnClickListener { onBackPressed() } // 다시 찍기 or 뒤로 가기
-    }
-
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+    private fun bindCameraUseCase() = with(binding) {
+        val rotation = previewView.display.rotation
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(LENS_FACING).build()
 
         cameraProviderFuture.addListener({
-            // 카메라의 수명 주기를 수명 주기 소유자에게 바인딩
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            val preview = Preview.Builder().apply {
+                setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                setTargetRotation(rotation)
+            }.build()
 
-            preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(binding.previewView.surfaceProvider)
-            }
-            imageCapture = ImageCapture.Builder().build()
+            val builder = ImageCapture.Builder()
+                .setCaptureMode(CAPTURE_MODE_MINIMIZE_LATENCY)
+                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetRotation(rotation)
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA // 후면 카메라로 설정
+            imageCapture = builder.build()
 
             try {
-                // 다시 바인딩하기 전에 사용 사례 바인딩 해제
-                cameraProvider.unbindAll()
-                // 설정된 카메라의 수명 주기 지정
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-            } catch (exc: Exception) {
-                Log.d("CameraX-Debug", "Use case binding failed", exc)
-                showErrorMessage()
+                cameraProvider.unbindAll() // 기존에 바인딩 되어 있는 카메라는 해제해주어야 함
+                camera = cameraProvider.bindToLifecycle(
+                    this@CameraActivity, cameraSelector, preview, imageCapture
+                )
+                preview.setSurfaceProvider(previewView.surfaceProvider)
+                bindCaptureListener()
+                bindZoomAndFocusListener()
+                setCameraAnimationListener()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+        }, cameraMainExecutor)
 
-        }, ContextCompat.getMainExecutor(this))
-
-        isActivated = true
     }
 
-    private fun takePhoto() {
-        val imageCapture = imageCapture ?: return
+    @SuppressLint("ClickableViewAccessibility")
+    private fun bindZoomAndFocusListener() = with(binding) {
+        // ScaleGestureDetector : 두 손가락의 값이 얼마나 늘어나고 줄어드는지 비교해서 콜백으로 넘겨줌
+        val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                val currentZoomRatio = camera?.cameraInfo?.zoomState?.value?.zoomRatio ?: 1f
+                val delta = detector.scaleFactor // 얼마나 움직였는지, 비율값
+                camera?.cameraControl?.setZoomRatio(currentZoomRatio * delta)
+                return true
+            }
+        }
 
-        // 이미지를 저장할 타임 스탬프 출력 파일 생성
-        val photoFile = File(outputDirectory, newJpgFileName())
+        val scaleGestureDetector = ScaleGestureDetector(this@CameraActivity, listener)
 
-        // 파일 + 메타데이터를 포함하는 출력 옵션 객체 생성
+        previewView.setOnTouchListener { v, event ->
+            scaleGestureDetector.onTouchEvent(event)
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.performClick()
+                    return@setOnTouchListener true
+                }
+                MotionEvent.ACTION_UP -> {
+                    val factory = previewView.meteringPointFactory
+                    val point = factory.createPoint(event.x, event.y)
+                    val action = FocusMeteringAction.Builder(point).build()
+
+                    camera?.cameraControl?.startFocusAndMetering(action)
+
+                    v.performClick()
+                    return@setOnTouchListener true
+                }
+                else -> return@setOnTouchListener false
+            }
+
+        }
+    }
+
+    private fun bindCaptureListener() = with(binding) {
+        cameraButton.setOnClickListener {
+            if (isCapturing.not()) {
+                isCapturing = true
+                captureCamera()
+            }
+        }
+    }
+
+    private var contentUri: Uri? = null
+
+    private fun captureCamera() {
+        if (!::imageCapture.isInitialized) return
+
+        val photoFile = File(
+            PathUtil.getOutputDirectory(this),
+            SimpleDateFormat(
+                FILENAME_FORMAT, Locale.KOREA
+            ).format(System.currentTimeMillis()) + ".jpg"
+        )
+
+        showCameraShutterAnimation()
+
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-
-        // 사진 촬영 후 트리거되는 이미지 캡처 수신기 설정
-        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this),
+        imageCapture.takePicture(
+            outputOptions,
+            cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
 
-                override fun onError(exc: ImageCaptureException) {
-                    showErrorMessage()
-                    Log.d("CameraX-Debug", "Photo capture failed: ${exc.message}", exc)
+                    savedUri?.let {
+                        contentUri = it
+                        isCapturing = false
+                    }
+
+                    previewLauncher.launch(
+                        PreviewActivity.newIntent(this@CameraActivity, savedUri)
+                    )
                 }
 
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
-                    showPreviewPhoto(savedUri)
-                    Log.d("CameraX-Debug", "Photo capture succeeded: $savedUri")
+                override fun onError(e: ImageCaptureException) {
+                    Toast.makeText(
+                        this@CameraActivity,
+                        getString(R.string.request_error) + e.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    isCapturing = false
                 }
             })
     }
 
-    private fun showPreviewPhoto(uri: Uri) = with(binding) {
-        frameLayoutPreview.isVisible = true
-        frameLayoutPreview.isClickable = true
-        imageViewPreview.load(uri.toString())
+    private fun showCameraShutterAnimation() = with(binding) {
+        val animation = AnimationUtils.loadAnimation(this@CameraActivity, R.anim.camera_shutter)
+        animation.setAnimationListener(cameraAnimationListener)
 
-        usePhotoButton.setOnClickListener {
-            setResult(Activity.RESULT_OK, Intent().apply {
-                putExtra(URI_KEY, uri)
-            })
-            finish()
+        frameLayoutShutter.apply {
+            this.animation = animation
+            isVisible = true
+            startAnimation(animation)
         }
-
-        isActivated = false
     }
 
-    private fun showCamera() = with(binding) {
-        frameLayoutPreview.isGone = true
-        frameLayoutPreview.isClickable = false
-    }
-
-    private fun showErrorMessage() {
-        Toast.makeText(this@CameraActivity, R.string.request_error, Toast.LENGTH_SHORT)
-            .show()
-    }
-
-    private fun getOutputDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply {
-                mkdirs()
+    private fun setCameraAnimationListener() {
+        cameraAnimationListener = object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
             }
-        }
-        return if (mediaDir != null && mediaDir.exists()) mediaDir
-        else filesDir
-    }
 
-    override fun onBackPressed() {
-        if (isActivated) {
-            super.onBackPressed()
-            finish()
-        } else {
-            showCamera()
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.frameLayoutShutter.isGone = true
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        cameraExecutor.shutdown()
-    }
-
 }

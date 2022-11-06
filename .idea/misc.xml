@@ -104,6 +104,7 @@
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3075671277461351" />
         <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.35541699142634453" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/activity_preview.xml" value="0.24605779970633754" />
         <entry key="app/src/main/res/layout/activity_search_location.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_search_weather_wear.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_weather_wear_detail.xml" value="0.42478790283203127" />
