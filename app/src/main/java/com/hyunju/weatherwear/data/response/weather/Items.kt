@@ -3,6 +3,7 @@ package com.hyunju.weatherwear.data.response.weather
 import com.google.gson.annotations.SerializedName
 import com.hyunju.weatherwear.model.TimeWeatherModel
 import com.hyunju.weatherwear.model.WeatherModel
+import com.hyunju.weatherwear.model.WeekWeatherModel
 import com.hyunju.weatherwear.util.date.*
 import com.hyunju.weatherwear.util.weather.getWeatherType
 
@@ -58,6 +59,7 @@ data class Items(
         )
     }
 
+    // 24시간 시간대별 날씨 정보 반환
     fun getTimeWeatherModelList(): List<TimeWeatherModel> {
         val todayTime = setDateFromString(getTodayDate() + getStringCurrentTime())
         val tomorrowTime = setDateFromString(getTomorrowDate() + getStringCurrentTime())
@@ -67,11 +69,11 @@ data class Items(
         } ?: throw Exception()
 
         return weatherTypeList.map { it?.fcstTime }.distinct().map { time ->
-            setWeatherTypeModel(weatherTypeList.filter { it?.fcstTime == time })
+            setTimeWeatherModel(weatherTypeList.filter { it?.fcstTime == time })
         }
     }
 
-    private fun setWeatherTypeModel(itemList: List<Item?>): TimeWeatherModel {
+    private fun setTimeWeatherModel(itemList: List<Item?>): TimeWeatherModel {
         val data = itemList.first()
 
         val time = data?.fcstTime?.toInt()
@@ -84,6 +86,30 @@ data class Items(
             time = setAmPmFormat(time),
             icon = getWeatherType(time, sky, shape).image,
             temperature = temperature ?: throw Exception()
+        )
+    }
+
+    // 요일별 일기 예보 정보 반환
+    fun getWeekWeatherModelList(): List<WeekWeatherModel> {
+        val dateList = item?.map { it?.fcstDate }?.distinct()?.slice(0..2) ?: throw Exception()
+
+        return dateList.map { date ->
+            setWeekWeatherModel(item.filter { it?.fcstDate == date }, date.orEmpty())
+        }
+    }
+
+    private fun setWeekWeatherModel(itemList: List<Item?>, date: String): WeekWeatherModel {
+        val maxSkyValue = itemList.filter { it?.category == CategoryType.SKY }
+            .map { it?.fcstValue.orEmpty().toInt() }.max()
+        val maxShapeValue = itemList.filter { it?.category == CategoryType.PTY }
+            .map { it?.fcstValue.orEmpty().toInt() }.max()
+
+        return WeekWeatherModel(
+            date = date,
+            dayOfWeek = setDayOfWeek(date),
+            icon = getWeatherType(900, maxSkyValue, maxShapeValue).image,
+            maxTemperature = findCategoryIntValue(itemList, CategoryType.TMX) ?: throw Exception(),
+            minTemperature = findCategoryIntValue(itemList, CategoryType.TMN) ?: throw Exception()
         )
     }
 

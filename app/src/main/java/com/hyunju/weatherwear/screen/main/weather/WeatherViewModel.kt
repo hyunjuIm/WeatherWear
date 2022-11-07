@@ -93,6 +93,13 @@ class WeatherViewModel @Inject constructor(
                 timeWeatherInfo = timeWeatherList
             )
 
+            // 요일별 일기 예보 정보 반환
+            val weekWeatherList = weatherItemList.getWeekWeatherModelList()
+            weekWeatherList[0].dayOfWeek = "오늘"
+            weatherStateLiveData.value = WeatherState.Success.Week(
+                weekWeatherList = weekWeatherList
+            )
+
         } catch (e: Exception) {
             weatherStateLiveData.value = WeatherState.Error(R.string.can_not_load_weather_info)
             return@launch

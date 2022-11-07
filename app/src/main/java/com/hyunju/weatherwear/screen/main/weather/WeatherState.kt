@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.hyunju.weatherwear.data.entity.LocationEntity
 import com.hyunju.weatherwear.model.TimeWeatherModel
 import com.hyunju.weatherwear.model.WeatherModel
+import com.hyunju.weatherwear.model.WeekWeatherModel
 import com.hyunju.weatherwear.util.weather.Weather
 
 sealed class WeatherState {
@@ -25,9 +26,9 @@ sealed class WeatherState {
             val timeWeatherInfo: List<TimeWeatherModel>
         ) : Success()
 
-//        data class ALL(
-//            val weather
-//        ) : Success()
+        data class Week(
+            val weekWeatherList: List<WeekWeatherModel>
+        ) : Success()
     }
 
     data class Find(

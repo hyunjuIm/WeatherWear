@@ -47,6 +47,7 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
         }
 
     private val timeAdapter by lazy { TimeWeatherAdapter() }
+    private val weekAdapter by lazy { WeekWeatherAdapter() }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
@@ -59,6 +60,9 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
 
         timeRecyclerView.adapter = timeAdapter
         timeRecyclerView.itemAnimator = null
+
+        weekRecyclerView.adapter = weekAdapter
+        weekRecyclerView.itemAnimator = null
 
         // SwipeRefreshLayout
         refresh.setOnRefreshListener {
@@ -90,7 +94,7 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
         when (state) {
             is WeatherState.Success.Today -> handleTodayState(state)
             is WeatherState.Success.Time -> handleTimeState(state)
-            else -> Unit
+            is WeatherState.Success.Week -> handleWeekState(state)
         }
     }
 
@@ -112,6 +116,11 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
     @SuppressLint("SetTextI18n")
     private fun handleTimeState(state: WeatherState.Success.Time) {
         timeAdapter.submitList(state.timeWeatherInfo)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun handleWeekState(state: WeatherState.Success.Week) {
+        weekAdapter.submitList(state.weekWeatherList)
     }
 
     private fun handleFindState(state: WeatherState.Find) = with(binding) {

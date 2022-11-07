@@ -28,6 +28,13 @@ fun setDateFromString(date: String): Long {
     return dataFormat.parse(date).time
 }
 
+fun setDayOfWeek(date: String): String {
+    val input = SimpleDateFormat("yyyyMMdd")
+    val output = SimpleDateFormat("E")
+
+    return output.format(input.parse(date) as Date)
+}
+
 fun setAmPmFormat(time: Int?): String {
     time ?: return "정보 없음"
 

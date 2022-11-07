@@ -151,6 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="일기예보"
+                        android:fontFamily="@font/notosans_kr_light"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
