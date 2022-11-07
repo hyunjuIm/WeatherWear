@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.hyunju.weatherwear.R
-import com.hyunju.weatherwear.util.date.getCurrentTime
+import com.hyunju.weatherwear.util.date.getStringCurrentTime
 import com.hyunju.weatherwear.util.weather.Time
 import kotlinx.coroutines.Job
 
@@ -53,7 +53,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
         requireActivity().window.apply {
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
 
-            if (getCurrentTime().toInt() in Time.AFTERNOON) {
+            if (getStringCurrentTime().toInt() in Time.AFTERNOON) {
                 statusBarColor = ContextCompat.getColor(requireContext(), R.color.sky_100)
                 background.setBackgroundResource(R.drawable.bg_gradient_blue_sky)
             } else {

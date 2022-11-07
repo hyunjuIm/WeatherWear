@@ -26,8 +26,8 @@ import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
+import com.hyunju.weatherwear.util.date.getYesterdayDate
 import com.hyunju.weatherwear.util.weather.getCommentWeather
-import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*
@@ -102,7 +102,6 @@ class WeatherWearWorker @AssistedInject constructor(
         val location = mapRepository.getLocationDataFromDevice()
         if (location.isEmpty()) return
 
-        val date = getTodayDate()
         val searchResultEntity = SearchResultEntity(
             name = location.first().name,
             locationLatLng = LocationLatLngEntity(
@@ -114,29 +113,29 @@ class WeatherWearWorker @AssistedInject constructor(
         val grid = convertGridGPS(TO_GRID, searchResultEntity.locationLatLng)
 
         val hasWeatherData = weatherRepository.getWeatherItemsFromDevice().filter {
-            date == it.baseDate && grid.x.toInt() == it.nx && grid.y.toInt() == it.ny
+            getTodayDate() == it.baseDate && grid.x.toInt() == it.nx && grid.y.toInt() == it.ny
         }
 
-        val weatherEntityList = hasWeatherData.ifEmpty { getWeatherDataFromAPI(grid, date) }
+        val weatherEntityList = hasWeatherData.ifEmpty { getWeatherDataFromAPI(grid) }
 
         weatherEntityList?.let { list ->
-            Items(item = list.map { it.toItem() }).toWeatherModel(date)?.let {
-                notificationTitle = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ ${getWeatherType(it).text}"
+            Items(item = list.map { it.toItem() }).getDateWeatherModel(getTodayDate())?.let {
+                notificationTitle = "최고 기온 ${it.TMX}°/ 최저 기온 ${it.TMN}°/ ${it.toWeatherType().text}"
                 notificationContent = getCommentWeather(it)[0] +
                         "\n추천 옷차림 ଘ(੭˃ᴗ˂)━☆ﾟ.*･｡ﾟ ${pickClothes(it.TMX).map { clothes -> clothes.text }}"
             }
         }
     }
 
-    private suspend fun getWeatherDataFromAPI(grid: LatXLngY, date: String): List<WeatherEntity>? {
+    private suspend fun getWeatherDataFromAPI(grid: LatXLngY): List<WeatherEntity>? {
         val weatherEntityList: List<WeatherEntity>?
 
         val responseData = weatherRepository.getWeather(
             dataType = "JSON",
-            numOfRows = 600,
+            numOfRows = 2000,
             pageNo = 1,
-            baseDate = date,
-            baseTime = "0200",
+            baseDate = getYesterdayDate(),
+            baseTime = "2300",
             nx = grid.x.toInt(),
             ny = grid.y.toInt()
         ) ?: run { return null }

@@ -68,11 +68,11 @@ class WriteViewModel @Inject constructor(
                     return@launch
                 }
 
-            Items(item = weatherEntityList.map { it.toItem() }).toWeatherModel(date)?.let {
+            Items(item = weatherEntityList.map { it.toItem() }).getDateWeatherModel(date)?.let {
                 writeStateLiveData.value = WriteState.Success(
                     location = searchResultEntity,
                     weatherInfo = it,
-                    weatherType = getWeatherType(it).text
+                    weatherType = getWeatherType(it.date.toInt(), it.SKY, it.PTY).text
                 )
             } ?: run {
                 writeStateLiveData.value = WriteState.Error(R.string.can_not_load_weather_info)
@@ -84,7 +84,7 @@ class WriteViewModel @Inject constructor(
 
         val responseData = weatherRepository.getWeather(
             dataType = "JSON",
-            numOfRows = 600,
+            numOfRows = 2000,
             pageNo = 1,
             baseDate = date,
             baseTime = "0200",
@@ -115,7 +115,11 @@ class WriteViewModel @Inject constructor(
             date = writeModel.date.time,
             maxTemperature = writeModel.weather.TMX,
             minTemperature = writeModel.weather.TMN,
-            weatherType = getWeatherType(writeModel.weather).text,
+            weatherType = getWeatherType(
+                writeModel.weather.date.toInt(),
+                writeModel.weather.SKY,
+                writeModel.weather.PTY
+            ).text,
             photo = photo,
             diary = writeModel.diary
         )

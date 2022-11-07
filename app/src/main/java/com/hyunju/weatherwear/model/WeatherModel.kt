@@ -1,7 +1,9 @@
 package com.hyunju.weatherwear.model
 
 import android.os.Parcelable
+import com.hyunju.weatherwear.util.weather.*
 import kotlinx.parcelize.Parcelize
+import kotlin.math.pow
 
 @Parcelize
 data class WeatherModel(
@@ -17,4 +19,11 @@ data class WeatherModel(
     var WSD: Double, // 풍속 - 약함(0~3), 약간강(4~8), 강(9~13), 매우강(14~)
     var x: Int,
     var y: Int
-) : Parcelable
+) : Parcelable {
+
+    fun toWeatherType(): Weather = getWeatherType(time.toInt(), SKY, PTY)
+
+    fun toSensibleTemperature() =
+        (13.12 + 0.6215 * TMP.toFloat() - 11.37 * WSD.pow(0.16) + 0.3965 * TMP * WSD.pow(0.16)).toInt()
+
+}

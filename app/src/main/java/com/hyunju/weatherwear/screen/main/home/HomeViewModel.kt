@@ -14,11 +14,10 @@ import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
+import com.hyunju.weatherwear.util.date.getYesterdayDate
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.weather.getCommentWeather
-import com.hyunju.weatherwear.util.weather.getWeatherType
-import com.hyunju.weatherwear.util.weather.getSensibleTemperature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -86,16 +85,17 @@ class HomeViewModel @Inject constructor(
                 return@launch
             }
 
-            Items(item = weatherItemList.map { it.toItem() }).toWeatherModel(getTodayDate())?.let {
-                val commentList = getCommentWeather(it)
-                homeStateLiveData.value = HomeState.Success(
-                    location = locationEntity,
-                    weatherInfo = it,
-                    weatherType = getWeatherType(it),
-                    sensibleTemperature = getSensibleTemperature(it.TMP, it.WSD),
-                    comment = commentList[0] + "\n" + commentList[1]
-                )
-            } ?: run {
+            Items(item = weatherItemList.map { it.toItem() })
+                .getDateWeatherModel(getTodayDate())?.let {
+                    val commentList = getCommentWeather(it)
+                    homeStateLiveData.value = HomeState.Success(
+                        location = locationEntity,
+                        weatherInfo = it,
+                        weatherType = it.toWeatherType(),
+                        sensibleTemperature = it.toSensibleTemperature(),
+                        comment = commentList[0] + "\n" + commentList[1]
+                    )
+                } ?: run {
                 homeStateLiveData.value = HomeState.Error(R.string.can_not_load_weather_info)
                 return@launch
             }
@@ -113,10 +113,10 @@ class HomeViewModel @Inject constructor(
         } else {
             val responseData = weatherRepository.getWeather(
                 dataType = "JSON",
-                numOfRows = 600,
+                numOfRows = 2000,
                 pageNo = 1,
-                baseDate = getTodayDate(),
-                baseTime = "0200",
+                baseDate = getYesterdayDate(),
+                baseTime = "2300",
                 nx = location.x,
                 ny = location.y
             ) ?: run { return null }

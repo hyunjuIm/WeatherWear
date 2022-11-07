@@ -3,18 +3,9 @@ package com.hyunju.weatherwear.util.weather
 import com.hyunju.weatherwear.model.WeatherModel
 import kotlin.math.pow
 
-// 체감온도
-fun getSensibleTemperature(temperatures: Int, windSpeed: Double): Int {
-    return (13.12 + 0.6215 * temperatures.toFloat()
-            - 11.37 * windSpeed.pow(0.16)
-            + 0.3965 * temperatures * windSpeed.pow(0.16)).toInt()
-}
-
 // 날씨 이미지, 정보 ui 셋팅
-fun getWeatherType(weatherInfo: WeatherModel): Weather {
-    val afternoon = (weatherInfo.time.toInt()) in Time.AFTERNOON
-    val sky = weatherInfo.SKY
-    val shape = weatherInfo.PTY
+fun getWeatherType(time: Int?, sky: Int?, shape: Int?): Weather {
+    val afternoon = time in Time.AFTERNOON
 
     return when {
         (sky in Sky.SUN && shape == Shape.NONE) -> if (afternoon) Weather.SUN else Weather.NIGHT

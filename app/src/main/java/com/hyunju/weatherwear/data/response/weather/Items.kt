@@ -1,8 +1,10 @@
 package com.hyunju.weatherwear.data.response.weather
 
 import com.google.gson.annotations.SerializedName
+import com.hyunju.weatherwear.model.TimeWeatherModel
 import com.hyunju.weatherwear.model.WeatherModel
-import com.hyunju.weatherwear.util.date.getCurrentTime
+import com.hyunju.weatherwear.util.date.*
+import com.hyunju.weatherwear.util.weather.getWeatherType
 
 data class Items(
     @SerializedName("item")
@@ -11,38 +13,78 @@ data class Items(
     private fun fcstValueToInt(value: String?) = value?.toFloat()?.toInt()
     private fun fcstValueToDouble(value: String?) = value?.toDouble()
 
-    fun toWeatherModel(date: String): WeatherModel? {
-        if (item == null) return null
+    private fun findCategoryTemperatures(date: String, category: CategoryType) =
+        item!!.filter { it?.fcstDate == date && it.category == category }
 
-        val maxTemperatures =
-            item.filter { it?.fcstDate == date && it.category == CategoryType.TMX }
-        val minTemperatures =
-            item.filter { it?.fcstDate == date && it.category == CategoryType.TMN }
+    private fun findCategoryIntValue(itemList: List<Item?>, category: CategoryType) =
+        fcstValueToInt(itemList.first { it?.category == category }?.fcstValue)
+
+    private fun findCategoryDoubleValue(itemList: List<Item?>, category: CategoryType) =
+        fcstValueToDouble(itemList.first { it?.category == category }?.fcstValue)
+
+    // 해당 날짜 날씨 정보 반환
+    fun getDateWeatherModel(date: String): WeatherModel? {
+        item ?: return null
+
+        val maxTemperatures = findCategoryTemperatures(date, CategoryType.TMX)
+        val minTemperatures = findCategoryTemperatures(date, CategoryType.TMN)
 
         if (maxTemperatures.isEmpty() || minTemperatures.isEmpty()) return null
 
-        // 오늘 날짜 데이터 파싱
-        item.filter { it?.fcstDate == date && it.fcstTime == getCurrentTime() }.run {
-            return WeatherModel(
-                date = first()?.fcstDate.orEmpty(),
-                time = first()?.fcstTime.orEmpty(),
-                POP = fcstValueToInt(first { it?.category == CategoryType.POP }?.fcstValue)
-                    ?: return null,
-                PTY = fcstValueToInt(first { it?.category == CategoryType.PTY }?.fcstValue)
-                    ?: return null,
-                REH = fcstValueToInt(first { it?.category == CategoryType.REH }?.fcstValue)
-                    ?: return null,
-                SKY = fcstValueToInt(first { it?.category == CategoryType.SKY }?.fcstValue)
-                    ?: return null,
-                TMN = fcstValueToInt(minTemperatures.first()?.fcstValue) ?: return null,
-                TMX = fcstValueToInt(maxTemperatures.first()?.fcstValue) ?: return null,
-                TMP = fcstValueToInt(first { it?.category == CategoryType.TMP }?.fcstValue)
-                    ?: return null,
-                WSD = fcstValueToDouble(first { it?.category == CategoryType.WSD }?.fcstValue)
-                    ?: return null,
-                x = first()?.nx ?: return null,
-                y = first()?.ny ?: return null
-            )
+        // 해당 날짜로 데이터 파싱
+        val dayList = item.filter { it?.fcstDate == date && it.fcstTime == getStringCurrentTime() }
+        return toWeatherModel(
+            dayList,
+            fcstValueToInt(maxTemperatures.first()?.fcstValue),
+            fcstValueToInt(minTemperatures.first()?.fcstValue)
+        )
+    }
+
+    private fun toWeatherModel(itemList: List<Item?>, max: Int?, min: Int?): WeatherModel? {
+        val data = itemList.first()
+        return WeatherModel(
+            date = data?.fcstDate.orEmpty(),
+            time = data?.fcstTime.orEmpty(),
+            POP = findCategoryIntValue(itemList, CategoryType.POP) ?: return null,
+            PTY = findCategoryIntValue(itemList, CategoryType.PTY) ?: return null,
+            REH = findCategoryIntValue(itemList, CategoryType.REH) ?: return null,
+            SKY = findCategoryIntValue(itemList, CategoryType.SKY) ?: return null,
+            TMN = min ?: return null,
+            TMX = max ?: return null,
+            TMP = findCategoryIntValue(itemList, CategoryType.TMP) ?: return null,
+            WSD = findCategoryDoubleValue(itemList, CategoryType.WSD) ?: return null,
+            x = data?.nx ?: return null,
+            y = data?.ny ?: return null
+        )
+    }
+
+    fun getTimeWeatherModelList(): List<TimeWeatherModel> {
+        val todayTime = setDateFromString(getTodayDate() + getStringCurrentTime())
+        val tomorrowTime = setDateFromString(getTomorrowDate() + getStringCurrentTime())
+
+        val weatherTypeList = item?.filter {
+            setDateFromString(it?.fcstDate + it?.fcstTime) in todayTime..tomorrowTime
+        } ?: throw Exception()
+
+        return weatherTypeList.map { it?.fcstTime }.distinct().map { time ->
+            setWeatherTypeModel(weatherTypeList.filter { it?.fcstTime == time })
         }
     }
+
+    private fun setWeatherTypeModel(itemList: List<Item?>): TimeWeatherModel {
+        val data = itemList.first()
+
+        val time = data?.fcstTime?.toInt()
+        val sky = findCategoryIntValue(itemList, CategoryType.SKY)
+        val shape = findCategoryIntValue(itemList, CategoryType.PTY)
+        val temperature = findCategoryIntValue(itemList, CategoryType.TMP)
+
+        return TimeWeatherModel(
+            date = data?.fcstDate ?: "",
+            time = setAmPmFormat(time),
+            icon = getWeatherType(time, sky, shape).image,
+            temperature = temperature ?: throw Exception()
+        )
+    }
+
 }

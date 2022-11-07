@@ -1,7 +1,6 @@
 package com.hyunju.weatherwear.screen.main.wear
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -21,13 +20,12 @@ class WearAdapter(val clickItem: (Long) -> Unit) :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: WeatherWearEntity) = with(binding) {
-            binding.wearImageView.clear()
-            binding.wearImageView.load(item.photo, 8f)
+            wearImageView.clear()
+            wearImageView.load(item.photo, 8f)
 
-            binding.dateTextView.text = setMillisDateFormat(item.date.time)
-            binding.temperatureTextView.text =
-                "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
-            binding.locationTextView.text = item.location
+            dateTextView.text = setMillisDateFormat(item.date.time)
+            temperatureTextView.text = "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
+            locationTextView.text = item.location
 
             root.setOnClickListener { clickItem(item.id) }
         }

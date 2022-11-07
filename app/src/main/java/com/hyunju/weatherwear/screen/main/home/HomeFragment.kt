@@ -13,8 +13,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -31,8 +29,6 @@ import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.clothes.pickClothes
-import com.hyunju.weatherwear.util.date.getCurrentTime
-import com.hyunju.weatherwear.util.weather.Time
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
