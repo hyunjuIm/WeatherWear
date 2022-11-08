@@ -140,13 +140,13 @@ class ModifyActivity : BaseActivity<ModifyViewModel, ActivityModifyBinding>(),
     }
 
     private fun handleLoadingState() = with(binding) {
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
         modifyButton.isEnabled = false
     }
 
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: ModifyState.Success) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         state.weatherWearInfo.photo.apply {
             originalPhoto = this
@@ -183,7 +183,7 @@ class ModifyActivity : BaseActivity<ModifyViewModel, ActivityModifyBinding>(),
     }
 
     private fun handleModifyState() = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         Toast.makeText(
             this@ModifyActivity,
@@ -195,7 +195,7 @@ class ModifyActivity : BaseActivity<ModifyViewModel, ActivityModifyBinding>(),
     }
 
     private fun handleErrorState(state: ModifyState.Error) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         Toast.makeText(this@ModifyActivity, getString(state.messageId), Toast.LENGTH_SHORT).show()
     }

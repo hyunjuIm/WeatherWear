@@ -83,13 +83,13 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
 
     private fun handleLoadingState() = with(binding) {
         locationTextView.text = getString(R.string.loading)
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
     }
 
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: WeatherState.Success) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         when (state) {
             is WeatherState.Success.Today -> handleTodayState(state)
@@ -125,7 +125,7 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
 
     private fun handleFindState(state: WeatherState.Find) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         state.location?.let {
             viewModel.updateLocationWeather(it)
@@ -142,7 +142,7 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
 
     private fun handleErrorState(state: WeatherState.Error) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         locationTextView.text = getString(state.messageId)
     }

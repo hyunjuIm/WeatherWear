@@ -121,12 +121,12 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
     }
 
     private fun handleLoadingState() = with(binding) {
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
         recyclerView.isGone = true
     }
 
     private fun handleSuccessState(state: WearState.Success) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
         refresh.isRefreshing = false
         recyclerView.isVisible = true
 
@@ -134,7 +134,7 @@ class WearFragment : BaseFragment<WearViewModel, FragmentWearBinding>() {
     }
 
     private fun handleErrorState(state: WearState.Error) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
         refresh.isRefreshing = false
 
         Toast.makeText(requireContext(), state.messageId, Toast.LENGTH_SHORT).show()

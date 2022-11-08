@@ -119,7 +119,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private fun handleLoadingState() = with(binding) {
         locationTextView.text = getString(R.string.loading)
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
     }
 
     private fun handlePickState(state: HomeState.Pick) = with(binding) {
@@ -147,7 +147,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: HomeState.Success) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         locationTextView.text = state.location.name
         nowTemperatureTextView.text = state.weatherInfo.TMP.toString() + "°"
@@ -165,7 +165,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private fun handleFindState(state: HomeState.Find) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         state.location?.let {
             viewModel.updateLocationWeather(it)
@@ -184,7 +184,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private fun handleErrorState(state: HomeState.Error) = with(binding) {
         refresh.isRefreshing = false
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         locationTextView.text = getString(state.messageId)
     }

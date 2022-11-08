@@ -208,13 +208,13 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     }
 
     private fun handleLoadingState() = with(binding) {
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
         writeButton.isEnabled = false
     }
 
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: WriteState.Success) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         weatherTextView.text =
             "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType}"
@@ -242,7 +242,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     }
 
     private fun handleFailState() = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         weatherTextView.text = getString(R.string.weather_and_temperature_info_not_found)
 
@@ -263,7 +263,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     }
 
     private fun handleRegister(state: WriteState.Register) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         startActivity(
             WeatherWearDetailActivity.newIntent(
@@ -276,7 +276,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     }
 
     private fun handleErrorState(state: WriteState.Error) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
         writeButton.isEnabled = false
 
         weatherTextView.text = ""

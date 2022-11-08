@@ -127,12 +127,12 @@ class SearchWeatherWearActivity :
     }
 
     private fun handleLoadingState() = with(binding) {
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
         recyclerView.isGone = true
     }
 
     private fun handleSuccessState(state: SearchWeatherWearState.Success) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         binding.searchTextView.text = state.searchText
 
@@ -148,7 +148,7 @@ class SearchWeatherWearActivity :
     }
 
     private fun handleErrorState(state: SearchWeatherWearState.Error) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
         Toast.makeText(this@SearchWeatherWearActivity, state.messageId, Toast.LENGTH_SHORT)
             .show()
     }

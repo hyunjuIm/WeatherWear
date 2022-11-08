@@ -65,12 +65,12 @@ class WeatherWearDetailActivity :
     }
 
     private fun handleLoadingState() = with(binding) {
-        loadingView.isVisible = true
+        loadingView.root.isVisible = true
     }
 
     @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: WeatherWearDetailState.Success) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         titleTextView.text = setMillisDateFormat(state.weatherWearInfo.date.time)
 
@@ -110,7 +110,7 @@ class WeatherWearDetailActivity :
     }
 
     private fun handleDelete() = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         Toast.makeText(
             this@WeatherWearDetailActivity,
@@ -126,7 +126,7 @@ class WeatherWearDetailActivity :
     }
 
     private fun handleErrorState(state: WeatherWearDetailState.Error) = with(binding) {
-        loadingView.isGone = true
+        loadingView.root.isGone = true
 
         Toast.makeText(
             this@WeatherWearDetailActivity,
