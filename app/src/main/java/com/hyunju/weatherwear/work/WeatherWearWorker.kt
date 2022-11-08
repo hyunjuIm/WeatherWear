@@ -77,15 +77,6 @@ class WeatherWearWorker @AssistedInject constructor(
                     NotificationManagerCompat
                         .from(context)
                         .notify(NOTIFICATION_ID, createNotification())
-
-                    Toast.makeText(
-                        context, context.getString(R.string.push_on), Toast.LENGTH_SHORT
-                    ).show()
-                }
-                OFF -> {
-                    Toast.makeText(
-                        context, context.getString(R.string.push_off), Toast.LENGTH_SHORT
-                    ).show()
                 }
                 else -> Unit
             }
