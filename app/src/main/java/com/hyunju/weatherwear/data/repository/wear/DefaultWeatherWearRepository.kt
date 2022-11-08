@@ -20,7 +20,10 @@ class DefaultWeatherWearRepository @Inject constructor(
             weatherWearDao.getLatestItem()
         }
 
-    override suspend fun getSearchDateWeatherWears(start: Date, end:Date): List<WeatherWearEntity> =
+    override suspend fun getSearchDateWeatherWears(
+        start: Date,
+        end: Date
+    ): List<WeatherWearEntity> =
         withContext(Dispatchers.IO) {
             weatherWearDao.getSearchDate(start, end)
         }
@@ -47,6 +50,11 @@ class DefaultWeatherWearRepository @Inject constructor(
     override suspend fun insertWeatherWear(weatherWearEntity: WeatherWearEntity): Long =
         withContext(Dispatchers.IO) {
             weatherWearDao.insert(weatherWearEntity)
+        }
+
+    override suspend fun modifyWeatherWear(weatherWearEntity: WeatherWearEntity) =
+        withContext(Dispatchers.IO) {
+            weatherWearDao.update(weatherWearEntity)
         }
 
     override suspend fun removeWeatherWear(id: Long) = withContext(Dispatchers.IO) {

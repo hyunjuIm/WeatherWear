@@ -22,6 +22,12 @@
         <item name="android:padding">12dp</item>
     </style>
 
+    <style name="Widget.WeatherWear.BaseUnableView" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/bg_rounded_snow_line_gray</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/gray_500</item>
+    </style>
+
     <style name="Widget.WeatherWear.BaseButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/bg_rounded_blue</item>
         <item name="android:textSize">16sp</item>

@@ -19,6 +19,8 @@ interface WeatherWearRepository {
 
     suspend fun insertWeatherWear(weatherWearEntity: WeatherWearEntity): Long
 
+    suspend fun modifyWeatherWear(weatherWearEntity: WeatherWearEntity)
+
     suspend fun removeWeatherWear(id: Long)
 
 }

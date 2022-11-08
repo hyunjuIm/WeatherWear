@@ -244,7 +244,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private fun handleFailState() = with(binding) {
         loadingView.isGone = true
 
-        weatherTextView.text = getString(R.string.weather_info_not_found)
+        weatherTextView.text = getString(R.string.weather_and_temperature_info_not_found)
 
         // 등록하기
         writeButton.setOnClickListener {

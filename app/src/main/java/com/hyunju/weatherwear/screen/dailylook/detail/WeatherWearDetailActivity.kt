@@ -2,6 +2,7 @@ package com.hyunju.weatherwear.screen.dailylook.detail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -14,6 +15,8 @@ import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
+import com.hyunju.weatherwear.screen.main.wear.search.SearchWeatherWearActivity
+import com.hyunju.weatherwear.screen.modify.ModifyActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,14 +43,18 @@ class WeatherWearDetailActivity :
 
     private val weatherWearId by lazy { intent.getLongExtra(ID_KEY, -1) }
 
-    override fun initViews() {
-        binding.toolbar.setNavigationOnClickListener { finish() }
+    override fun onResume() {
+        super.onResume()
 
         viewModel.getWeatherWearData(weatherWearId)
     }
 
+    override fun initViews() {
+        binding.toolbar.setNavigationOnClickListener { finish() }
+    }
+
     @SuppressLint("SetTextI18n")
-    override fun observeData() = viewModel.weatherWearDetailLiveData.observe(this) {
+    override fun observeData() = viewModel.detailStateLiveData.observe(this) {
         when (it) {
             is WeatherWearDetailState.Loading -> handleLoadingState()
             is WeatherWearDetailState.Success -> handleSuccessState(it)
@@ -88,15 +95,18 @@ class WeatherWearDetailActivity :
             temperatureView.isGone = true
         }
 
-        state.weatherWearInfo.weatherType?.let {
-            weatherTypeTextView.text = it
-        } ?: kotlin.run {
-            weatherTypeTextView.isGone = true
+        val weatherType = state.weatherWearInfo.weatherType
+        weatherTypeTextView.text = if (weatherType.isNullOrEmpty()) {
+            getString(R.string.weather_and_temperature_info_not_found)
+        } else {
+            weatherType
         }
 
         diaryTextView.text = state.weatherWearInfo.diary
 
-        deleteButton.setOnClickListener { showDeleteDialog() }
+        moreButton.setOnClickListener {
+            showMoreOptionDialog()
+        }
     }
 
     private fun handleDelete() = with(binding) {
@@ -123,6 +133,28 @@ class WeatherWearDetailActivity :
             getString(state.messageId),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun showMoreOptionDialog() {
+        val options = arrayOf<CharSequence>(
+            getString(R.string.modified),
+            getString(R.string.delete)
+        )
+
+        AlertDialog.Builder(this).setItems(options) { _, index ->
+            when (options[index]) {
+                getString(R.string.modified) -> {
+                    startActivity(
+                        ModifyActivity.newIntent(this, weatherWearId)
+                    )
+                }
+                getString(R.string.delete) -> {
+                    showDeleteDialog()
+                }
+            }
+        }.setCancelable(true)
+            .create()
+            .show()
     }
 
     private fun showDeleteDialog() {

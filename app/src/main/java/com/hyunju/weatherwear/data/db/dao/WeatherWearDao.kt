@@ -1,9 +1,6 @@
 package com.hyunju.weatherwear.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.hyunju.weatherwear.data.entity.WeatherWearEntity
 import com.hyunju.weatherwear.util.weather.Temperatures
 import java.util.*
@@ -31,6 +28,9 @@ interface WeatherWearDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(weatherWearEntity: WeatherWearEntity): Long
+
+    @Update
+    suspend fun update(weatherWearEntity: WeatherWearEntity)
 
     @Query("DELETE FROM WeatherWearEntity WHERE id=:id")
     suspend fun delete(id: Long)

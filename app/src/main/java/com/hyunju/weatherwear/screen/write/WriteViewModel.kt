@@ -14,11 +14,12 @@ import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
+import com.hyunju.weatherwear.util.date.calculateSubtractionDate
 import com.hyunju.weatherwear.util.date.getTodayDate
+import com.hyunju.weatherwear.util.date.getYesterdayDate
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.file.BitmapUtil
-import com.hyunju.weatherwear.util.weather.getWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,6 +58,13 @@ class WriteViewModel @Inject constructor(
         viewModelScope.launch(exceptionHandler) {
             writeStateLiveData.value = WriteState.Loading
 
+            // 최근 3일이 아니면 조회 없이 반환
+            val calculateDate = calculateSubtractionDate(start = getTodayDate(), end = date)
+            if (calculateDate > 2) {
+                writeStateLiveData.value = WriteState.Fail
+                return@launch
+            }
+
             val grid = convertGridGPS(TO_GRID, searchResultEntity.locationLatLng)
 
             val hasWeatherData = weatherRepository.getWeatherItemsFromDevice().filter {
@@ -85,10 +93,10 @@ class WriteViewModel @Inject constructor(
 
         val responseData = weatherRepository.getWeather(
             dataType = "JSON",
-            numOfRows = 2000,
+            numOfRows = 600,
             pageNo = 1,
-            baseDate = date,
-            baseTime = "0200",
+            baseDate = getYesterdayDate(date),
+            baseTime = "2300",
             nx = grid.x.toInt(),
             ny = grid.y.toInt()
         ) ?: run { return null }

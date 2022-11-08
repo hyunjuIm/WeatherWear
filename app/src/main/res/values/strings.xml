@@ -13,6 +13,7 @@
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="delete">삭제</string>
+    <string name="modified">수정</string>
     <string name="search">검색</string>
     <string name="write">등록하기</string>
     <string name="yes">예</string>
@@ -26,7 +27,7 @@
     <string name="can_not_assigned_permission">권한을 얻지 못했습니다.</string>
     <string name="can_not_load_address_info">위치 정보를 불러올 수 없습니다.</string>
     <string name="can_not_load_weather_info">날씨 정보를 불러올 수 없습니다.</string>
-    <string name="weather_info_not_found">날씨 정보 없음</string>
+    <string name="weather_and_temperature_info_not_found">날씨 / 기온 정보 없음</string>
 
     <string name="select_date">날짜 선택</string>
     <string name="select_location">위치 선택</string>
@@ -55,6 +56,12 @@
     <string name="guide_select_date_and_location">날짜와 위치를 모두 선택하면 날씨를 확인할 수 있어요 :)\n(※ 최근 3일간 날씨 정보만 제공 가능합니다.)</string>
     <string name="one_line_diary">한 줄 일기</string>
     <string name="guide_diary">일기 작성은 선택!\n부담이 되지 않는다면 소소하게 한 줄 적어보세요 ;)</string>
+
+    <!-- Modify -->
+    <string name="completed_modify">수정되었습니다.</string>
+    <string name="modify_weather_wear">웨더웨어 수정하기</string>
+    <string name="guide_modify_not_date_and_location">⚠️ 날짜와 위치는 수정이 불가능합니다.</string>
+    <string name="modify">수정하기</string>
 
     <!-- Photo -->
     <string name="please_select_photo_option">사진 첨부 방식을 선택해주세요.</string>

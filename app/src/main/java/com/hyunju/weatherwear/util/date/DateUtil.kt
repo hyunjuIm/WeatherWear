@@ -9,6 +9,12 @@ val PM = 1200..2300
 fun getTodayDate() = toDateFormat(0)
 fun getYesterdayDate(): String = toDateFormat(-1 * (1000 * 60 * 60 * 24))
 fun getTomorrowDate(): String = toDateFormat((1000 * 60 * 60 * 24))
+fun getYesterdayDate(date: String): String {
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    val currentTime = setStringToCalendar(date).timeInMillis - (1000 * 60 * 60 * 24)
+    return dataFormat.format(currentTime)
+}
+
 fun toDateFormat(num: Int): String {
     val currentTime: Long = System.currentTimeMillis() + num
     val dataFormat = SimpleDateFormat("yyyyMMdd")
@@ -49,7 +55,7 @@ fun setAmPmFormat(time: Int?): String {
     return "정보 없음"
 }
 
-fun setStringToCalendar(date:String):Calendar {
+fun setStringToCalendar(date: String): Calendar {
     val input = SimpleDateFormat("yyyyMMdd")
     input.parse(date)
     return input.calendar
@@ -77,6 +83,13 @@ fun setMillisDateFormat(date: Long): String {
 fun setMillisDateFormatForApi(date: Long): String {
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     return dataFormat.format(date)
+}
+
+fun calculateSubtractionDate(start: String, end: String): Int {
+    val format = SimpleDateFormat("yyyyMMdd")
+
+    val sec = (format.parse(start).time - format.parse(end).time) / 1000
+    return (sec / (24 * 60 * 60)).toInt()
 }
 
 fun getTimeUsingInWorkRequest(): Long {

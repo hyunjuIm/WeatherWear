@@ -24,16 +24,13 @@
             android:textSize="16sp"
             tools:text="2022.10.21" />
 
-        <TextView
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:padding="16dp"
-            android:text="@string/delete"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/moreButton"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_more_vert" />
 
     </androidx.appcompat.widget.Toolbar>
 
