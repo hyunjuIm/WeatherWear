@@ -49,6 +49,12 @@ fun setAmPmFormat(time: Int?): String {
     return "정보 없음"
 }
 
+fun setStringToCalendar(date:String):Calendar {
+    val input = SimpleDateFormat("yyyyMMdd")
+    input.parse(date)
+    return input.calendar
+}
+
 fun setHangulDateFormat(date: String): String {
     val input = SimpleDateFormat("yyyyMMdd")
     val output = SimpleDateFormat("yyyy년 MM월 dd일 E요일")

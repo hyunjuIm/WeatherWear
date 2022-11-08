@@ -6,7 +6,7 @@ import java.util.*
 data class WriteModel(
     val date: Calendar,
     val location: String,
-    val weather: WeatherModel,
+    val weather: WeatherModel?,
     val photo: Uri,
     val diary: String
 )

@@ -14,9 +14,9 @@ data class WeatherWearEntity(
     val location: String,
     val createDate: Long,
     val date: Date,
-    val maxTemperature: Int,
-    val minTemperature: Int,
-    val weatherType: String,
+    val maxTemperature: Int?,
+    val minTemperature: Int?,
+    val weatherType: String?,
     val photo: Bitmap,
     val diary: String
 ) : Parcelable

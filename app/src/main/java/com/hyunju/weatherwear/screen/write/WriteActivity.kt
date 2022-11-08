@@ -34,6 +34,7 @@ import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.date.setMillisDateFormat
 import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.date.setStringDateFormat
+import com.hyunju.weatherwear.util.date.setStringToCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -89,16 +90,8 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private val selectPhotoOptionBottomSheetDialog by lazy {
         SelectPhotoOptionBottomSheetDialog { option ->
             when (option) {
-                PhotoOption.CAMARA -> {
-                    cameraLauncher.launch(
-                        CameraActivity.newIntent(this)
-                    )
-                }
-                PhotoOption.GALLERY -> {
-                    galleryLauncher.launch(
-                        GalleryActivity.newIntent(this)
-                    )
-                }
+                PhotoOption.CAMARA -> cameraLauncher.launch(CameraActivity.newIntent(this))
+                PhotoOption.GALLERY -> galleryLauncher.launch(GalleryActivity.newIntent(this))
             }
         }
     }
@@ -106,9 +99,13 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
     private val searchLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                selectLocation =
-                    result.data?.getParcelableExtra(SearchLocationActivity.LOCATION_KEY)
-                getSelectedWeatherInfo()
+                result.data?.getParcelableExtra<SearchResultEntity>(SearchLocationActivity.LOCATION_KEY)
+                    ?.let {
+                        selectLocation = it
+                        binding.selectLocationTextView.text = selectLocation?.name
+
+                        getSelectedWeatherInfo()
+                    }
             }
         }
 
@@ -168,10 +165,9 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             selectDate.get(Calendar.MONTH),
             selectDate.get(Calendar.DAY_OF_MONTH)
         ).apply {
-            datePicker.minDate =
-                Calendar.getInstance().apply { add(Calendar.DATE, -2) }.timeInMillis
+//            datePicker.minDate =
+//                Calendar.getInstance().apply { add(Calendar.DATE, -2) }.timeInMillis
             datePicker.maxDate = System.currentTimeMillis()
-            title = "최근 3일만 선택할 수 있어요 :)"
         }.show()
     }
 
@@ -201,6 +197,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             is WriteState.Uninitialized -> handleUninitializedState()
             is WriteState.Loading -> handleLoadingState()
             is WriteState.Success -> handleSuccessState(it)
+            is WriteState.Fail -> handleFailState()
             is WriteState.Register -> handleRegister(it)
             is WriteState.Error -> handleErrorState(it)
         }
@@ -225,6 +222,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         selectDateTextView.text = setStringDateFormat(state.weatherInfo.date)
         selectLocationTextView.text = state.location.name
 
+        selectDate = setStringToCalendar(state.weatherInfo.date)
         selectLocation = state.location
 
         // 등록하기
@@ -232,8 +230,29 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
             viewModel.uploadWeatherWear(
                 WriteModel(
                     date = selectDate,
-                    location = state.location.name,
+                    location = selectLocation?.name ?: getString(R.string.location_not_found),
                     weather = state.weatherInfo,
+                    photo = selectPhoto!!,
+                    diary = binding.diaryEditText.text.toString()
+                )
+            )
+        }
+
+        isEnabledWriteButton()
+    }
+
+    private fun handleFailState() = with(binding) {
+        loadingView.isGone = true
+
+        weatherTextView.text = getString(R.string.weather_info_not_found)
+
+        // 등록하기
+        writeButton.setOnClickListener {
+            viewModel.uploadWeatherWear(
+                WriteModel(
+                    date = selectDate,
+                    location = selectLocation?.name ?: getString(R.string.location_not_found),
+                    weather = null,
                     photo = selectPhoto!!,
                     diary = binding.diaryEditText.text.toString()
                 )
@@ -271,6 +290,12 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                 searchResultEntity = it,
                 date = setMillisDateFormatForApi(selectDate.timeInMillis)
             )
+        } ?: run {
+            Toast.makeText(
+                this@WriteActivity,
+                getString(R.string.fail_get_information),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

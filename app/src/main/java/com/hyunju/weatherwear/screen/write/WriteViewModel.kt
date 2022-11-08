@@ -1,5 +1,6 @@
 package com.hyunju.weatherwear.screen.write
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.R
@@ -59,12 +60,12 @@ class WriteViewModel @Inject constructor(
             val grid = convertGridGPS(TO_GRID, searchResultEntity.locationLatLng)
 
             val hasWeatherData = weatherRepository.getWeatherItemsFromDevice().filter {
-                date == it.baseDate && grid.x.toInt() == it.nx && grid.y.toInt() == it.ny
+                date == it.fcstDate && grid.x.toInt() == it.nx && grid.y.toInt() == it.ny
             }
 
             val weatherEntityList =
                 hasWeatherData.ifEmpty { getWeatherDataFromAPI(grid, date) } ?: run {
-                    writeStateLiveData.value = WriteState.Error(R.string.can_not_load_weather_info)
+                    writeStateLiveData.value = WriteState.Fail
                     return@launch
                 }
 
@@ -72,7 +73,7 @@ class WriteViewModel @Inject constructor(
                 writeStateLiveData.value = WriteState.Success(
                     location = searchResultEntity,
                     weatherInfo = it,
-                    weatherType = getWeatherType(it.date.toInt(), it.SKY, it.PTY).text
+                    weatherType = it.toWeatherType().text
                 )
             } ?: run {
                 writeStateLiveData.value = WriteState.Error(R.string.can_not_load_weather_info)
@@ -109,20 +110,29 @@ class WriteViewModel @Inject constructor(
             return@launch
         }
 
-        val weatherWear = WeatherWearEntity(
-            location = writeModel.location,
-            createDate = writeModel.date.timeInMillis,
-            date = writeModel.date.time,
-            maxTemperature = writeModel.weather.TMX,
-            minTemperature = writeModel.weather.TMN,
-            weatherType = getWeatherType(
-                writeModel.weather.date.toInt(),
-                writeModel.weather.SKY,
-                writeModel.weather.PTY
-            ).text,
-            photo = photo,
-            diary = writeModel.diary
-        )
+        val weatherWear = if (writeModel.weather == null) {
+            WeatherWearEntity(
+                location = writeModel.location,
+                createDate = writeModel.date.timeInMillis,
+                date = writeModel.date.time,
+                maxTemperature = null,
+                minTemperature = null,
+                weatherType = null,
+                photo = photo,
+                diary = writeModel.diary
+            )
+        } else {
+            WeatherWearEntity(
+                location = writeModel.location,
+                createDate = writeModel.date.timeInMillis,
+                date = writeModel.date.time,
+                maxTemperature = writeModel.weather.TMX,
+                minTemperature = writeModel.weather.TMN,
+                weatherType = writeModel.weather.toWeatherType().text,
+                photo = photo,
+                diary = writeModel.diary
+            )
+        }
 
         writeStateLiveData.value = WriteState.Register(
             weatherWearRepository.insertWeatherWear(weatherWear)

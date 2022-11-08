@@ -61,6 +61,7 @@ class WeatherWearDetailActivity :
         loadingView.isVisible = true
     }
 
+    @SuppressLint("SetTextI18n")
     private fun handleSuccessState(state: WeatherWearDetailState.Success) = with(binding) {
         loadingView.isGone = true
 
@@ -76,9 +77,23 @@ class WeatherWearDetailActivity :
         }
 
         locationTextView.text = state.weatherWearInfo.location
-        maxTemperatureTextView.text = "${state.weatherWearInfo.maxTemperature}°"
-        minTemperatureTextView.text = "${state.weatherWearInfo.minTemperature}°"
-        weatherTypeTextView.text = state.weatherWearInfo.weatherType
+
+        val maxTemperature = state.weatherWearInfo.maxTemperature
+        val minTemperature = state.weatherWearInfo.minTemperature
+        if (maxTemperature != null && minTemperature != null) {
+            temperatureView.isVisible = true
+            maxTemperatureTextView.text = "${maxTemperature}°"
+            minTemperatureTextView.text = "${minTemperature}°"
+        } else {
+            temperatureView.isGone = true
+        }
+
+        state.weatherWearInfo.weatherType?.let {
+            weatherTypeTextView.text = it
+        } ?: kotlin.run {
+            weatherTypeTextView.isGone = true
+        }
+
         diaryTextView.text = state.weatherWearInfo.diary
 
         deleteButton.setOnClickListener { showDeleteDialog() }

@@ -24,7 +24,13 @@ class WearAdapter(val clickItem: (Long) -> Unit) :
             wearImageView.load(item.photo, 8f)
 
             dateTextView.text = setMillisDateFormat(item.date.time)
-            temperatureTextView.text = "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
+
+            if (item.maxTemperature != null && item.minTemperature != null) {
+                temperatureTextView.text = "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"
+            } else {
+                temperatureTextView.text = "기온 정보 없음"
+            }
+
             locationTextView.text = item.location
 
             root.setOnClickListener { clickItem(item.id) }

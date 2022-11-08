@@ -18,6 +18,8 @@ sealed class WriteState {
         val weatherType: String
     ) : WriteState()
 
+    object Fail : WriteState()
+
     data class Register(
         val id: Long
     ) : WriteState()

@@ -84,6 +84,7 @@
                     tools:text="강남구 대치동" />
 
                 <LinearLayout
+                    android:id="@+id/temperatureView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

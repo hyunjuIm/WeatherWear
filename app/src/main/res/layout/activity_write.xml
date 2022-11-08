@@ -124,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/guide_select_date_and_location"
                     android:textColor="@color/blue_500"
+                    android:gravity="center"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

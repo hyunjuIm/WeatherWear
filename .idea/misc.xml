@@ -111,7 +111,7 @@
         <entry key="app/src/main/res/layout/activity_search_location.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_search_weather_wear.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_weather_wear_detail.xml" value="0.42478790283203127" />
-        <entry key="app/src/main/res/layout/activity_write.xml" value="0.2245088868101029" />
+        <entry key="app/src/main/res/layout/activity_write.xml" value="0.5" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_location.xml" value="0.5" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_photo_option.xml" value="0.3658204895738894" />
         <entry key="app/src/main/res/layout/bottom_sheet_select_temperature.xml" value="0.5" />
