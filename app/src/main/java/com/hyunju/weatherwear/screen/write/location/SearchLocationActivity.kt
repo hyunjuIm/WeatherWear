@@ -3,13 +3,11 @@ package com.hyunju.weatherwear.screen.write.location
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.icu.number.Scale.none
-import android.os.Bundle
 import android.view.KeyEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivitySearchLocationBinding
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +42,8 @@ class SearchLocationActivity :
 
         locationRecyclerView.adapter = adapter
 
+        searchEditText.requestFocus()
+
         searchEditText.setOnKeyListener { _, keyCode, event ->
             if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 viewModel.searchLocation(searchEditText.text.toString())
@@ -52,7 +52,6 @@ class SearchLocationActivity :
             }
             false
         }
-
     }
 
     override fun observeData() = viewModel.searchLocationListLiveData.observe(this) {

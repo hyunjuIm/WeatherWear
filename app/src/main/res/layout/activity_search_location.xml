@@ -21,10 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="none"
+            app:endIconDrawable="@drawable/ic_cancel_fill"
             app:endIconMode="clear_text"
             app:hintEnabled="false">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
                 android:id="@+id/searchEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

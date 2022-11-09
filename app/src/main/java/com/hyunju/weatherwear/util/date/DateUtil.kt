@@ -90,6 +90,26 @@ fun calculateIntervalDate(start: String, end: String): Int {
     return (sec / (24 * 60 * 60)).toInt()
 }
 
+// 기간 검색 어제 59분
+fun setLongToYesterdayLong(date: Long): Long = Calendar.getInstance()
+    .apply { timeInMillis = date - (1000 * 60 * 60 * 24) }
+    .apply {
+        set(
+            this.get(Calendar.YEAR), this.get(Calendar.MONTH), this.get(Calendar.DAY_OF_MONTH),
+            23, 59, 59
+        )
+    }.timeInMillis
+
+// 기간 검색 내일 0분
+fun setLongToTomorrowLong(date: Long): Long = Calendar.getInstance()
+    .apply { timeInMillis = date + (1000 * 60 * 60 * 24) }
+    .apply {
+        set(
+            this.get(Calendar.YEAR), this.get(Calendar.MONTH), this.get(Calendar.DAY_OF_MONTH),
+            0, 0, 0
+        )
+    }.timeInMillis
+
 // Int -> 오전/오후 구하기
 fun setIntToAmPm(time: Int?): String {
     time ?: return "정보 없음"

@@ -217,6 +217,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/snow"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_add_photo" />
+
+                    <ImageView
+                        android:id="@+id/emptyImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/snow"
                         android:scaleType="center"
                         android:src="@drawable/ic_add_photo" />
 

@@ -4,19 +4,24 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivitySearchWeatherWearBinding
 import com.hyunju.weatherwear.extension.fromDpToPx
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.SelectTemperatureBottomSheetDialog
-import com.hyunju.weatherwear.util.view.GridSpacingItemDecoration
 import com.hyunju.weatherwear.screen.main.wear.WearAdapter
+import com.hyunju.weatherwear.util.view.GridSpacingItemDecoration
+import com.hyunju.weatherwear.util.weather.Temperatures
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -62,13 +67,15 @@ class SearchWeatherWearActivity :
         })
     }
 
+    lateinit var saveStateDate: Pair<Long, Long>
+    lateinit var saveStateTemperature: Pair<String, Temperatures>
+
     private val selectTemperatureBottomSheetDialog by lazy {
         SelectTemperatureBottomSheetDialog { standard, temperature ->
+            saveStateTemperature = Pair(standard, temperature)
             viewModel.searchTemperature(standard, temperature)
         }
     }
-
-    private var selectDate = Calendar.getInstance()
 
     override fun initViews() = with(binding) {
         toolbar.setNavigationOnClickListener { finish() }
@@ -77,6 +84,7 @@ class SearchWeatherWearActivity :
         searchTextView.setOnClickListener { bindingSearchOption() }
 
         recyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(spanCount = 2, spacing = 16f.fromDpToPx())
         )
@@ -84,45 +92,58 @@ class SearchWeatherWearActivity :
 
     private fun bindingSearchOption() {
         when (option) {
-            DATE -> {
-                showDatePickerDialog()
-            }
-            TEMPERATURES -> {
-                selectTemperatureBottomSheetDialog.show(
-                    supportFragmentManager,
-                    "selectTemperatureBottomSheetDialog"
-                )
+            DATE -> showDateRangePicker()
+            TEMPERATURES -> showSelectTemperatureBottomSheetDialog()
+        }
+    }
+
+    private fun showDateRangePicker() {
+        MaterialDatePicker.Builder.dateRangePicker().apply {
+            setTitleText("조회할 기간을 선택해주세요 :)")
+            setPositiveButtonText("선택")
+            setCalendarConstraints(
+                CalendarConstraints.Builder()
+                    .setEnd(System.currentTimeMillis())
+                    .setValidator(DateValidatorPointBackward.now())
+                    .build()
+            )
+        }.build().apply {
+            show(supportFragmentManager, this.toString())
+            addOnNegativeButtonClickListener { this.dismiss() }
+            addOnPositiveButtonClickListener {
+                saveStateDate = Pair(it.first, it.second)
+                viewModel.searchDate(start = it.first, end = it.second)
             }
         }
     }
 
-    // 날짜 선택
-    private fun showDatePickerDialog() {
-        DatePickerDialog(
-            this, R.style.Widget_WeatherWear_SpinnerDatePicker,
-            { _, year, monthOfYear, dayOfMonth ->
-                // 선택한 날짜
-                val currentDate = Calendar.getInstance().apply {
-                    set(year, monthOfYear, dayOfMonth, 0, 0, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-
-                viewModel.searchDate(currentDate)
-            },
-            selectDate.get(Calendar.YEAR),
-            selectDate.get(Calendar.MONTH),
-            selectDate.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            datePicker.maxDate = System.currentTimeMillis()
-        }.show()
+    private fun showSelectTemperatureBottomSheetDialog() {
+        selectTemperatureBottomSheetDialog.show(
+            supportFragmentManager,
+            "selectTemperatureBottomSheetDialog"
+        )
     }
 
-    override fun observeData() = viewModel.searchWeatherWearStateLiveData.observe(this) {
-        when (it) {
-            is SearchWeatherWearState.Loading -> handleLoadingState()
-            is SearchWeatherWearState.Success -> handleSuccessState(it)
-            is SearchWeatherWearState.Error -> handleErrorState(it)
-            else -> Unit
+    override fun observeData() {
+        viewModel.searchWeatherWearStateLiveData.observe(this) {
+            when (it) {
+                is SearchWeatherWearState.Loading -> handleLoadingState()
+                is SearchWeatherWearState.Success -> handleSuccessState(it)
+                is SearchWeatherWearState.Error -> handleErrorState(it)
+                else -> Unit
+            }
+        }
+
+        viewModel.updateUIState.observe(this) {
+            if (it) {
+                when (option) {
+                    DATE -> viewModel.searchDate(saveStateDate.first, saveStateDate.second)
+                    TEMPERATURES -> viewModel.searchTemperature(
+                        saveStateTemperature.first,
+                        saveStateTemperature.second
+                    )
+                }
+            }
         }
     }
 

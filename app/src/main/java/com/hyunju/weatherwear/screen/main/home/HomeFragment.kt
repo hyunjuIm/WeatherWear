@@ -124,6 +124,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
 
     private fun handlePickState(state: HomeState.Pick) = with(binding) {
         state.weatherWearEntity?.let { item ->
+            emptyImageView.isGone = true
+
             weatherWearImageView.clear()
             weatherWearImageView.load(item.photo)
             weatherWearImageView.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -137,6 +139,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
             return@with
         }
 
+        emptyImageView.isVisible = true
+        weatherWearImageView.clear()
         weatherWearCardView.setOnClickListener {
             startActivity(
                 WriteActivity.newIntent(requireContext())

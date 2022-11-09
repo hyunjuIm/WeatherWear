@@ -11,16 +11,16 @@ interface WeatherWearDao {
     @Query("SELECT * FROM WeatherWearEntity WHERE id=:id")
     suspend fun get(id: Long): WeatherWearEntity
 
-    @Query("SELECT * FROM WeatherWearEntity WHERE dateText=:date ORDER BY date DESC LIMIT 1")
+    @Query("SELECT * FROM (SELECT * FROM WeatherWearEntity ORDER BY id DESC) WHERE dateText=:date ORDER BY date DESC LIMIT 1")
     suspend fun getTodayLatestItem(date: String): WeatherWearEntity
 
-    @Query("SELECT * FROM WeatherWearEntity WHERE dateText=:date")
-    suspend fun getSearchDate(date: String): List<WeatherWearEntity>
+    @Query("SELECT * FROM (SELECT * FROM WeatherWearEntity ORDER BY id DESC) WHERE date BETWEEN :start AND :end ORDER BY date DESC")
+    suspend fun getSearchDate(start: Date, end: Date): List<WeatherWearEntity>
 
-    @Query("SELECT * FROM WeatherWearEntity WHERE maxTemperature BETWEEN :start AND :end")
+    @Query("SELECT * FROM (SELECT * FROM WeatherWearEntity ORDER BY id DESC) WHERE maxTemperature BETWEEN :start AND :end ORDER BY date DESC")
     suspend fun getSearchMaxTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
 
-    @Query("SELECT * FROM WeatherWearEntity WHERE minTemperature BETWEEN :start AND :end")
+    @Query("SELECT * FROM (SELECT * FROM WeatherWearEntity ORDER BY id DESC) WHERE minTemperature BETWEEN :start AND :end ORDER BY date DESC")
     suspend fun getSearchMinTemperatureRange(start: Int, end: Int): List<WeatherWearEntity>
 
     @Query("SELECT * FROM (SELECT * FROM WeatherWearEntity ORDER BY id DESC) ORDER BY date DESC")
