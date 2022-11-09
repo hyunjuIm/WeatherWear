@@ -6,42 +6,92 @@ import java.util.*
 val AM = 0..1100
 val PM = 1200..2300
 
-fun getTodayDate() = toDateFormat(0)
+// String 형태로 날짜 반환 : yyyyMMdd
+fun getTodayDate(): String = toDateFormat(0)
 fun getYesterdayDate(): String = toDateFormat(-1 * (1000 * 60 * 60 * 24))
 fun getTomorrowDate(): String = toDateFormat((1000 * 60 * 60 * 24))
-fun getYesterdayDate(date: String): String {
-    val dataFormat = SimpleDateFormat("yyyyMMdd")
-    val currentTime = setStringToCalendar(date).timeInMillis - (1000 * 60 * 60 * 24)
-    return dataFormat.format(currentTime)
-}
-
 fun toDateFormat(num: Int): String {
     val currentTime: Long = System.currentTimeMillis() + num
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     return dataFormat.format(currentTime)
 }
 
-fun getStringCurrentTime(): String = toTimeFormat() + "00"
-fun getIntCurrentTime(): Int = toTimeFormat().toInt()
+// String 형태 -1일 -> 어제 날짜 계산
+fun getStringYesterdayDate(date: String): String {
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    val currentTime = setStringToCalendar(date).timeInMillis - (1000 * 60 * 60 * 24)
+    return dataFormat.format(currentTime)
+}
+
+// String 형태로 시간 반환 -> HH00
+fun getNowTime(): String = toTimeFormat() + "00"
 fun toTimeFormat(): String {
     val currentTime: Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("HH")
     return dataFormat.format(currentTime)
 }
 
-fun setDateFromString(date: String): Long {
+// String(yyyyMMddHHmm) -> timeInMillis
+fun setStringToTimeInMillis(date: String): Long {
     val dataFormat = SimpleDateFormat("yyyyMMddHHmm")
-    return dataFormat.parse(date).time
+    return (dataFormat.parse(date) as Date).time
 }
 
-fun setDayOfWeek(date: String): String {
+// String(yyyyMMdd) -> 요일 구하기
+fun setStringToDayOfWeek(date: String): String {
     val input = SimpleDateFormat("yyyyMMdd")
     val output = SimpleDateFormat("E")
-
     return output.format(input.parse(date) as Date)
 }
 
-fun setAmPmFormat(time: Int?): String {
+// String(yyyyMMdd) -> Calendar
+fun setStringToCalendar(date: String): Calendar {
+    val input = SimpleDateFormat("yyyyMMdd")
+    input.parse(date)
+    return input.calendar
+}
+
+// String(yyyyMMdd) -> String(yyyy년 MM월 dd일 E요일)
+fun setStringToHangeulFullDate(date: String): String {
+    val input = SimpleDateFormat("yyyyMMdd")
+    val output = SimpleDateFormat("yyyy년 MM월 dd일 E요일")
+    return output.format(input.parse(date) as Date)
+}
+
+// String(yyyyMMdd) -> String(yyyy.MM.dd)
+fun setStringToStringWithDot(date: String): String {
+    val input = SimpleDateFormat("yyyyMMdd")
+    val output = SimpleDateFormat("yyyy.MM.dd")
+    return output.format(input.parse(date) as Date)
+}
+
+// Long -> String(yyyyMMdd)
+fun setTimeInMillisToString(date: Long): String {
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    return dataFormat.format(date)
+}
+
+// Long -> String(yyyy.MM.dd)
+fun setTimeInMillisToStringWithDot(date: Long): String {
+    val dataFormat = SimpleDateFormat("yyyy.MM.dd")
+    return dataFormat.format(date)
+}
+
+// Long -> String(yyyy년 MM월 dd일 (E))
+fun setTimeInMillisToHangeulFullDate(date: Long): String {
+    val dataFormat = SimpleDateFormat("yyyy년 MM월 dd일 (E)")
+    return dataFormat.format(date)
+}
+
+// 날짜 차이 값 계산
+fun calculateIntervalDate(start: String, end: String): Int {
+    val dataFormat = SimpleDateFormat("yyyyMMdd")
+    val sec = (dataFormat.parse(start).time - dataFormat.parse(end).time) / 1000
+    return (sec / (24 * 60 * 60)).toInt()
+}
+
+// Int -> 오전/오후 구하기
+fun setIntToAmPm(time: Int?): String {
     time ?: return "정보 없음"
 
     val am = time / 100
@@ -53,43 +103,6 @@ fun setAmPmFormat(time: Int?): String {
     }
 
     return "정보 없음"
-}
-
-fun setStringToCalendar(date: String): Calendar {
-    val input = SimpleDateFormat("yyyyMMdd")
-    input.parse(date)
-    return input.calendar
-}
-
-fun setHangulDateFormat(date: String): String {
-    val input = SimpleDateFormat("yyyyMMdd")
-    val output = SimpleDateFormat("yyyy년 MM월 dd일 E요일")
-
-    return output.format(input.parse(date) as Date)
-}
-
-fun setStringDateFormat(date: String): String {
-    val input = SimpleDateFormat("yyyyMMdd")
-    val output = SimpleDateFormat("yyyy.MM.dd")
-
-    return output.format(input.parse(date) as Date)
-}
-
-fun setMillisDateFormat(date: Long): String {
-    val dataFormat = SimpleDateFormat("yyyy.MM.dd")
-    return dataFormat.format(date)
-}
-
-fun setMillisDateFormatForApi(date: Long): String {
-    val dataFormat = SimpleDateFormat("yyyyMMdd")
-    return dataFormat.format(date)
-}
-
-fun calculateSubtractionDate(start: String, end: String): Int {
-    val format = SimpleDateFormat("yyyyMMdd")
-
-    val sec = (format.parse(start).time - format.parse(end).time) / 1000
-    return (sec / (24 * 60 * 60)).toInt()
 }
 
 fun getTimeUsingInWorkRequest(): Long {

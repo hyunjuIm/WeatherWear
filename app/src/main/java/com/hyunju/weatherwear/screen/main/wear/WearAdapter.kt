@@ -10,7 +10,7 @@ import com.hyunju.weatherwear.data.entity.WeatherWearEntity
 import com.hyunju.weatherwear.databinding.ItemWearBinding
 import com.hyunju.weatherwear.extension.clear
 import com.hyunju.weatherwear.extension.load
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
+import com.hyunju.weatherwear.util.date.setTimeInMillisToStringWithDot
 
 class WearAdapter(val clickItem: (Long) -> Unit) :
     ListAdapter<WeatherWearEntity, WearAdapter.ViewHolder>(diffUtil) {
@@ -23,7 +23,7 @@ class WearAdapter(val clickItem: (Long) -> Unit) :
             wearImageView.clear()
             wearImageView.load(item.photo, 8f)
 
-            dateTextView.text = setMillisDateFormat(item.date.time)
+            dateTextView.text = setTimeInMillisToStringWithDot(item.date.time)
 
             if (item.maxTemperature != null && item.minTemperature != null) {
                 temperatureTextView.text = "최고 ${item.maxTemperature}° / 최저 ${item.minTemperature}°"

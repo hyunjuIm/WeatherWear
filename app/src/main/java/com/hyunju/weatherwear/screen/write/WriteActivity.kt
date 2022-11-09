@@ -3,13 +3,11 @@ package com.hyunju.weatherwear.screen.write
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,9 +29,9 @@ import com.hyunju.weatherwear.screen.dialog.PhotoOption
 import com.hyunju.weatherwear.screen.dialog.SelectPhotoOptionBottomSheetDialog
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
-import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
-import com.hyunju.weatherwear.util.date.setStringDateFormat
+import com.hyunju.weatherwear.util.date.setTimeInMillisToStringWithDot
+import com.hyunju.weatherwear.util.date.setTimeInMillisToString
+import com.hyunju.weatherwear.util.date.setStringToStringWithDot
 import com.hyunju.weatherwear.util.date.setStringToCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -156,7 +154,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
                     set(year, monthOfYear, dayOfMonth)
                 }
 
-                binding.selectDateTextView.text = setMillisDateFormat(currentDate.timeInMillis)
+                binding.selectDateTextView.text = setTimeInMillisToStringWithDot(currentDate.timeInMillis)
 
                 selectDate = currentDate
                 getSelectedWeatherInfo()
@@ -219,7 +217,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         weatherTextView.text =
             "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType}"
 
-        selectDateTextView.text = setStringDateFormat(state.weatherInfo.date)
+        selectDateTextView.text = setStringToStringWithDot(state.weatherInfo.date)
         selectLocationTextView.text = state.location.name
 
         selectDate = setStringToCalendar(state.weatherInfo.date)
@@ -288,7 +286,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         selectLocation?.let {
             viewModel.getWeatherInformation(
                 searchResultEntity = it,
-                date = setMillisDateFormatForApi(selectDate.timeInMillis)
+                date = setTimeInMillisToString(selectDate.timeInMillis)
             )
         } ?: run {
             Toast.makeText(

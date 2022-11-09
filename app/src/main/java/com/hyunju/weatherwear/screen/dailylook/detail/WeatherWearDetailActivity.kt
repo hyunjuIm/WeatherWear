@@ -15,9 +15,8 @@ import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialog
 import com.hyunju.weatherwear.screen.dialog.YesOrNoDialogInterface
-import com.hyunju.weatherwear.screen.main.wear.search.SearchWeatherWearActivity
 import com.hyunju.weatherwear.screen.modify.ModifyActivity
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
+import com.hyunju.weatherwear.util.date.setTimeInMillisToHangeulFullDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,7 +71,7 @@ class WeatherWearDetailActivity :
     private fun handleSuccessState(state: WeatherWearDetailState.Success) = with(binding) {
         loadingView.root.isGone = true
 
-        titleTextView.text = setMillisDateFormat(state.weatherWearInfo.date.time)
+        titleTextView.text = setTimeInMillisToHangeulFullDate(state.weatherWearInfo.date.time)
 
         photoImageView.load(state.weatherWearInfo.photo)
         photoImageView.setOnClickListener {

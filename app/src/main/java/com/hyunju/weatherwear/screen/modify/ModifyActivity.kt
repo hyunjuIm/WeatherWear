@@ -19,18 +19,13 @@ import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.databinding.ActivityModifyBinding
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseActivity
-import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
 import com.hyunju.weatherwear.screen.dialog.PhotoOption
 import com.hyunju.weatherwear.screen.dialog.SelectPhotoOptionBottomSheetDialog
-import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.screen.write.camera.CameraActivity
 import com.hyunju.weatherwear.screen.write.gallery.GalleryActivity
-import com.hyunju.weatherwear.util.date.setDateFromString
-import com.hyunju.weatherwear.util.date.setHangulDateFormat
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
-import com.hyunju.weatherwear.util.date.setStringDateFormat
+import com.hyunju.weatherwear.util.date.setTimeInMillisToStringWithDot
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -166,7 +161,7 @@ class ModifyActivity : BaseActivity<ModifyViewModel, ActivityModifyBinding>(),
                 getString(R.string.weather_and_temperature_info_not_found)
             }
 
-        selectDateTextView.text = setMillisDateFormat(state.weatherWearInfo.date.time)
+        selectDateTextView.text = setTimeInMillisToStringWithDot(state.weatherWearInfo.date.time)
         selectLocationTextView.text = state.weatherWearInfo.location
 
         diaryEditText.setText(state.weatherWearInfo.diary)

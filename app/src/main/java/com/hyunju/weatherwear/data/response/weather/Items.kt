@@ -33,7 +33,7 @@ data class Items(
         if (maxTemperatures.isEmpty() || minTemperatures.isEmpty()) return null
 
         // 해당 날짜로 데이터 파싱
-        val dayList = item.filter { it?.fcstDate == date && it.fcstTime == getStringCurrentTime() }
+        val dayList = item.filter { it?.fcstDate == date && it.fcstTime == getNowTime() }
         return toWeatherModel(
             dayList,
             fcstValueToInt(maxTemperatures.first()?.fcstValue),
@@ -61,11 +61,11 @@ data class Items(
 
     // 24시간 시간대별 날씨 정보 반환
     fun getTimeWeatherModelList(): List<TimeWeatherModel> {
-        val todayTime = setDateFromString(getTodayDate() + getStringCurrentTime())
-        val tomorrowTime = setDateFromString(getTomorrowDate() + getStringCurrentTime())
+        val todayTime = setStringToTimeInMillis(getTodayDate() + getNowTime())
+        val tomorrowTime = setStringToTimeInMillis(getTomorrowDate() + getNowTime())
 
         val weatherTypeList = item?.filter {
-            setDateFromString(it?.fcstDate + it?.fcstTime) in todayTime..tomorrowTime
+            setStringToTimeInMillis(it?.fcstDate + it?.fcstTime) in todayTime..tomorrowTime
         } ?: throw Exception()
 
         return weatherTypeList.map { it?.fcstTime }.distinct().map { time ->
@@ -83,7 +83,7 @@ data class Items(
 
         return TimeWeatherModel(
             date = data?.fcstDate ?: "",
-            time = setAmPmFormat(time),
+            time = setIntToAmPm(time),
             icon = getWeatherType(time, sky, shape).image,
             temperature = temperature ?: throw Exception()
         )
@@ -106,7 +106,7 @@ data class Items(
 
         return WeekWeatherModel(
             date = date,
-            dayOfWeek = setDayOfWeek(date),
+            dayOfWeek = setStringToDayOfWeek(date),
             icon = getWeatherType(900, maxSkyValue, maxShapeValue).image,
             maxTemperature = findCategoryIntValue(itemList, CategoryType.TMX) ?: throw Exception(),
             minTemperature = findCategoryIntValue(itemList, CategoryType.TMN) ?: throw Exception()

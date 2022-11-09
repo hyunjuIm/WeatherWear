@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.data.repository.wear.WeatherWearRepository
 import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.screen.dialog.SelectTemperatureBottomSheetDialog
-import com.hyunju.weatherwear.util.date.setMillisDateFormat
-import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
+import com.hyunju.weatherwear.util.date.setTimeInMillisToStringWithDot
+import com.hyunju.weatherwear.util.date.setTimeInMillisToString
 import com.hyunju.weatherwear.util.weather.Temperatures
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -25,10 +25,10 @@ class SearchWeatherWearViewModel @Inject constructor(
     fun searchDate(date: Calendar) = viewModelScope.launch(exceptionHandler) {
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Loading
 
-        val dateText = setMillisDateFormatForApi(date.timeInMillis)
+        val dateText = setTimeInMillisToString(date.timeInMillis)
 
         searchWeatherWearStateLiveData.value = SearchWeatherWearState.Success(
-            searchText = setMillisDateFormat(date.timeInMillis),
+            searchText = setTimeInMillisToStringWithDot(date.timeInMillis),
             weatherWearList = weatherWearRepository.getSearchDateWeatherWears(dateText)
         )
     }

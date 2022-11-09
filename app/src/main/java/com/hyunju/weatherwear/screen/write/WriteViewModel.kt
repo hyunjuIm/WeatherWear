@@ -1,6 +1,5 @@
 package com.hyunju.weatherwear.screen.write
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyunju.weatherwear.R
@@ -14,10 +13,10 @@ import com.hyunju.weatherwear.screen.base.BaseViewModel
 import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
-import com.hyunju.weatherwear.util.date.calculateSubtractionDate
+import com.hyunju.weatherwear.util.date.calculateIntervalDate
 import com.hyunju.weatherwear.util.date.getTodayDate
-import com.hyunju.weatherwear.util.date.getYesterdayDate
-import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
+import com.hyunju.weatherwear.util.date.getStringYesterdayDate
+import com.hyunju.weatherwear.util.date.setTimeInMillisToString
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.file.BitmapUtil
@@ -60,7 +59,7 @@ class WriteViewModel @Inject constructor(
             writeStateLiveData.value = WriteState.Loading
 
             // 최근 3일이 아니면 조회 없이 반환
-            val calculateDate = calculateSubtractionDate(start = getTodayDate(), end = date)
+            val calculateDate = calculateIntervalDate(start = getTodayDate(), end = date)
             if (calculateDate > 2) {
                 writeStateLiveData.value = WriteState.Fail
                 return@launch
@@ -96,7 +95,7 @@ class WriteViewModel @Inject constructor(
             dataType = "JSON",
             numOfRows = 600,
             pageNo = 1,
-            baseDate = getYesterdayDate(date),
+            baseDate = getStringYesterdayDate(date),
             baseTime = "2300",
             nx = grid.x.toInt(),
             ny = grid.y.toInt()
@@ -119,7 +118,7 @@ class WriteViewModel @Inject constructor(
             return@launch
         }
 
-        val dateText = setMillisDateFormatForApi(writeModel.date.timeInMillis)
+        val dateText = setTimeInMillisToString(writeModel.date.timeInMillis)
 
         val weatherWear = if (writeModel.weather == null) {
             WeatherWearEntity(

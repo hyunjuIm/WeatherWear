@@ -3,7 +3,6 @@ package com.hyunju.weatherwear.screen.main.weather
 import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.get
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -15,7 +14,7 @@ import com.hyunju.weatherwear.extension.clear
 import com.hyunju.weatherwear.extension.load
 import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
-import com.hyunju.weatherwear.util.date.setHangulDateFormat
+import com.hyunju.weatherwear.util.date.setStringToHangeulFullDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,7 +100,7 @@ class WeatherFragment : BaseFragment<WeatherViewModel, FragmentWeatherBinding>()
     @SuppressLint("SetTextI18n")
     private fun handleTodayState(state: WeatherState.Success.Today) = with(binding) {
         locationTextView.text = state.location.name
-        dateTextView.text = setHangulDateFormat(state.weatherInfo.date)
+        dateTextView.text = setStringToHangeulFullDate(state.weatherInfo.date)
 
         weatherIconImageView.clear()
         weatherIconImageView.load(state.weatherType.image)
