@@ -248,10 +248,9 @@
             android:layout_gravity="center"
             android:layout_height="18dp"
             android:layout_margin="16dp"
-            android:background="@drawable/bg_circle_white"
+            android:background="@drawable/bg_circle_blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/gray_200" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:layout_width="24dp"
@@ -261,7 +260,7 @@
             android:src="@drawable/ic_help_fill"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/blue_500" />
+            app:tint="@color/lemon" />
 
     </FrameLayout>
 
