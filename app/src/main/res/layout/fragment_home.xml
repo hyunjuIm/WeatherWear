@@ -236,6 +236,35 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <FrameLayout
+        android:id="@+id/infoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="18dp"
+            android:layout_gravity="center"
+            android:layout_height="18dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_circle_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/gray_200" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_help_fill"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/blue_500" />
+
+    </FrameLayout>
+
     <include
         android:id="@+id/loadingView"
         layout="@layout/loading_weather" />

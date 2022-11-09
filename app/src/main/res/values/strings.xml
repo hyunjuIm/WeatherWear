@@ -33,6 +33,7 @@
     <string name="select_location">위치 선택</string>
 
     <string name="comment_wear_tab">비슷한 날씨, 혹은 내가 이맘때쯤 어떤 옷을 입었는지\n데일리룩으로 기록하고 확인해보세요!</string>
+    <string name="comment_info">상단에 보이는 위치를 클릭하면\n주소를 설정할 수 있어요!\n(위치 권한 설정은 필수❗️)\n\n오늘의 기온별 옷차림을 만나보고,\n웨더웨어로 기록해보세요 (˵•̀ᴗ-˵) ✧</string>
 
     <!-- Temperature -->
     <string name="max_temperature">최고 기온</string>

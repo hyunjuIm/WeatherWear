@@ -26,6 +26,7 @@ import com.hyunju.weatherwear.screen.base.BaseFragment
 import com.hyunju.weatherwear.screen.dailylook.detail.WeatherWearDetailActivity
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialog
 import com.hyunju.weatherwear.screen.dialog.ConfirmDialogInterface
+import com.hyunju.weatherwear.screen.dialog.InfoDialog
 import com.hyunju.weatherwear.screen.write.WriteActivity
 import com.hyunju.weatherwear.screen.write.location.SearchLocationActivity
 import com.hyunju.weatherwear.util.clothes.pickClothes
@@ -97,6 +98,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(), Confirm
         refresh.setOnRefreshListener {
             changeStatusBarForTime(backgroundLayout)
             viewModel.fetchData()
+        }
+
+        infoButton.setOnClickListener {
+            activity?.supportFragmentManager?.let {
+                InfoDialog(
+                    text = getString(R.string.comment_info)
+                ).show(it, "InfoDialog")
+            }
         }
     }
 
