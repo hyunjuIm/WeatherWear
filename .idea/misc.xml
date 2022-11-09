@@ -131,6 +131,7 @@
         <entry key="app/src/main/res/layout/item_time_weather.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_wear.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_week_weather.xml" value="0.4288157332193245" />
+        <entry key="app/src/main/res/layout/loading_weather.xml" value="0.2620778110303549" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3203125" />
         <entry key="app/src/main/res/xml/file_provider.xml" value="0.1" />
       </map>

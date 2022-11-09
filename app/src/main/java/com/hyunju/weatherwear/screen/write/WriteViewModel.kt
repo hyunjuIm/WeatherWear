@@ -17,6 +17,7 @@ import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.calculateSubtractionDate
 import com.hyunju.weatherwear.util.date.getTodayDate
 import com.hyunju.weatherwear.util.date.getYesterdayDate
+import com.hyunju.weatherwear.util.date.setMillisDateFormatForApi
 import com.hyunju.weatherwear.util.event.UpdateEventBus
 import com.hyunju.weatherwear.util.event.UpdateEvent
 import com.hyunju.weatherwear.util.file.BitmapUtil
@@ -118,11 +119,14 @@ class WriteViewModel @Inject constructor(
             return@launch
         }
 
+        val dateText = setMillisDateFormatForApi(writeModel.date.timeInMillis)
+
         val weatherWear = if (writeModel.weather == null) {
             WeatherWearEntity(
                 location = writeModel.location,
                 createDate = writeModel.date.timeInMillis,
                 date = writeModel.date.time,
+                dateText = dateText,
                 maxTemperature = null,
                 minTemperature = null,
                 weatherType = null,
@@ -134,6 +138,7 @@ class WriteViewModel @Inject constructor(
                 location = writeModel.location,
                 createDate = writeModel.date.timeInMillis,
                 date = writeModel.date.time,
+                dateText = dateText,
                 maxTemperature = writeModel.weather.TMX,
                 minTemperature = writeModel.weather.TMN,
                 weatherType = writeModel.weather.toWeatherType().text,

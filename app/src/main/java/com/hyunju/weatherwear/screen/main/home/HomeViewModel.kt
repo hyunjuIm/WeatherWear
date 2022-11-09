@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
         homeStateLiveData.value = HomeState.Loading
 
         homeStateLiveData.value = HomeState.Pick(
-            weatherWearEntity = weatherWearRepository.getWeatherWearLatestItem()
+            weatherWearEntity = weatherWearRepository.getWeatherWearLatestItem(getTodayDate())
         )
 
         val location = mapRepository.getLocationDataFromDevice()

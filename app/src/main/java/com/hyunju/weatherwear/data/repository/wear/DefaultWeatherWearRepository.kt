@@ -15,17 +15,14 @@ class DefaultWeatherWearRepository @Inject constructor(
         weatherWearDao.get(id)
     }
 
-    override suspend fun getWeatherWearLatestItem(): WeatherWearEntity =
+    override suspend fun getWeatherWearLatestItem(date: String): WeatherWearEntity =
         withContext(Dispatchers.IO) {
-            weatherWearDao.getLatestItem()
+            weatherWearDao.getTodayLatestItem(date)
         }
 
-    override suspend fun getSearchDateWeatherWears(
-        start: Date,
-        end: Date
-    ): List<WeatherWearEntity> =
+    override suspend fun getSearchDateWeatherWears(date: String): List<WeatherWearEntity> =
         withContext(Dispatchers.IO) {
-            weatherWearDao.getSearchDate(start, end)
+            weatherWearDao.getSearchDate(date)
         }
 
     override suspend fun getSearchMaxTemperatureRangeWeatherWears(
