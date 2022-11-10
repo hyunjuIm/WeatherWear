@@ -215,7 +215,7 @@ class WriteActivity : BaseActivity<WriteViewModel, ActivityWriteBinding>(), Conf
         loadingView.root.isGone = true
 
         weatherTextView.text =
-            "최고 기온 ${state.weatherInfo.TMX}°/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType}"
+            "최고 기온 ${state.weatherInfo.TMX}고/ 최저 기온 ${state.weatherInfo.TMN}°/ ${state.weatherType}"
 
         selectDateTextView.text = setStringToStringWithDot(state.weatherInfo.date)
         selectLocationTextView.text = state.location.name
