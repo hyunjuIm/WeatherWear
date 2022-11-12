@@ -58,6 +58,13 @@ fun setStringToHangeulFullDate(date: String): String {
     return output.format(input.parse(date) as Date)
 }
 
+// String(yyyyMMdd) -> String(yyyy년 MM월 dd일 E요일)
+fun setStringToHangeulDateWithDot(date: String): String {
+    val input = SimpleDateFormat("yyyyMMdd")
+    val output = SimpleDateFormat("yyyy.MM.dd (E)")
+    return output.format(input.parse(date) as Date)
+}
+
 // String(yyyyMMdd) -> String(yyyy.MM.dd)
 fun setStringToStringWithDot(date: String): String {
     val input = SimpleDateFormat("yyyyMMdd")

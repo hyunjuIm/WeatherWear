@@ -106,6 +106,9 @@
     <string name="guide_permission_back_up">데이터 파일을 백업/복원 하기 위해\n권한이 필요합니다.</string>
     <string name="guide_back_up_comment">⚠️\n\n마지막으로 백업한 데이터를 기준으로\n현재 데이터에 덮어쓰는 형식으로 복원됩니다.\n\n오래된 백업 데이터로 복구를 진행하면\n소중한 데이터가 손실되고 말아요 (oT-T)尸\n\n데이터 백업/복원은 항상 신중하게 시도해주세요!</string>
 
+    <!-- Widget -->
+    <string name="update_widget">웨더웨더 위젯 업데이트 중…</string>
+
     <!-- Error -->
     <string name="request_error">예기치 못한 오류가 발생했습니다.</string>
     <string name="fail_get_information">정보 조회를 실패했습니다.</string>

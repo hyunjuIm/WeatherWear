@@ -22,12 +22,17 @@ import com.hyunju.weatherwear.data.repository.map.MapRepository
 import com.hyunju.weatherwear.data.repository.weather.WeatherRepository
 import com.hyunju.weatherwear.data.response.weather.Items
 import com.hyunju.weatherwear.screen.main.MainActivity
+import com.hyunju.weatherwear.util.clothes.Clothes
 import com.hyunju.weatherwear.util.clothes.pickClothes
 import com.hyunju.weatherwear.util.conventer.LatXLngY
 import com.hyunju.weatherwear.util.conventer.TO_GRID
 import com.hyunju.weatherwear.util.conventer.convertGridGPS
+import com.hyunju.weatherwear.util.date.getNowTime
 import com.hyunju.weatherwear.util.date.getTodayDate
 import com.hyunju.weatherwear.util.date.getYesterdayDate
+import com.hyunju.weatherwear.util.date.setStringToHangeulDateWithDot
+import com.hyunju.weatherwear.util.weather.Time
+import com.hyunju.weatherwear.util.weather.Weather
 import com.hyunju.weatherwear.util.weather.getCommentWeather
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -82,6 +87,7 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
         companion object {
             private const val NOTIFICATION_ID = 12345
             private const val WIDGET_REFRESH_CHANNEL_ID = "WIDGET_REFRESH"
+            private const val WIDGET_REFRESH_CHANNEL_NAME = "위젯 갱신 채널"
         }
 
         @Inject
@@ -108,15 +114,56 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
                         widgetWeatherModel?.let {
                             val updateViews =
                                 RemoteViews(packageName, R.layout.widget_provider_layout).apply {
+                                    setTextViewText(R.id.widgetLocationTextView, it.location)
+                                    setTextViewText(R.id.widgetDateTextView, it.date)
                                     setTextViewText(
-                                        R.id.widgetMaxTemperatureTextView,
-                                        "최고 ${it.maxTemperatures}°"
+                                        R.id.widgetTemperatureTextView,
+                                        "최저 ${it.minTemperatures}° / 최고 ${it.maxTemperatures}°"
+                                    )
+                                    setImageViewResource(
+                                        R.id.widgetWeatherImageView,
+                                        it.weatherType.image
                                     )
                                     setTextViewText(
-                                        R.id.widgetMinTemperatureTextView,
-                                        "최저 ${it.minTemperatures}°"
+                                        R.id.widgetNowTemperatureTextView,
+                                        "${it.nowTemperatures}°"
                                     )
-                                    setTextViewText(R.id.widgetClothesTextView, it.clothes)
+
+                                    setImageViewResource(
+                                        R.id.widgetFirstClothesIcon, it.clothes[0].image
+                                    )
+                                    setTextViewText(
+                                        R.id.widgetFirstClothesTextView, it.clothes[0].text
+                                    )
+                                    setImageViewResource(
+                                        R.id.widgetSecondClothesIcon, it.clothes[1].image
+                                    )
+                                    setTextViewText(
+                                        R.id.widgetSecondClothesTextView, it.clothes[1].text
+                                    )
+                                    setImageViewResource(
+                                        R.id.widgetThirdClothesIcon, it.clothes[2].image
+                                    )
+                                    setTextViewText(
+                                        R.id.widgetThirdClothesTextView, it.clothes[2].text
+                                    )
+
+                                    setTextViewText(R.id.widgetCommentTextView, it.comment)
+
+
+                                    if (getNowTime().toInt() in Time.AFTERNOON) {
+                                        setInt(
+                                            R.id.widgetView,
+                                            "setBackgroundResource",
+                                            R.drawable.bg_rounded_gradient_blue_sky
+                                        )
+                                    } else {
+                                        setInt(
+                                            R.id.widgetView,
+                                            "setBackgroundResource",
+                                            R.drawable.bg_rounded_gradient_blue_navy
+                                        )
+                                    }
                                 }
 
                             updateWidget(updateViews)
@@ -143,7 +190,7 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
                     ?.createNotificationChannel(
                         NotificationChannel(
                             WIDGET_REFRESH_CHANNEL_ID,
-                            "위젯 갱신 채널",
+                            WIDGET_REFRESH_CHANNEL_NAME,
                             NotificationManager.IMPORTANCE_LOW
                         )
                     )
@@ -153,6 +200,7 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
         private fun createNotification() =
             NotificationCompat.Builder(appContext!!, WIDGET_REFRESH_CHANNEL_ID)
                 .setSmallIcon(R.drawable.weather_sun)
+                .setContentText(getString(R.string.update_widget))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .build()
@@ -186,11 +234,14 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
             weatherEntityList?.let { list ->
                 Items(item = list.map { it.toItem() }).getDateWeatherModel(getTodayDate())?.let {
                     return WidgetWeatherModel(
+                        location = location.first().name,
+                        date = setStringToHangeulDateWithDot(it.date),
                         maxTemperatures = it.TMX.toString(),
                         minTemperatures = it.TMN.toString(),
-                        weatherType = it.toWeatherType().text,
+                        nowTemperatures = it.TMP.toString(),
+                        weatherType = it.toWeatherType(),
                         comment = getCommentWeather(it)[0],
-                        clothes = pickClothes(it.TMX).map { clothes -> clothes.text }.toString()
+                        clothes = pickClothes(it.TMX)
                     )
                 }
             }
@@ -220,11 +271,14 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
     }
 
     data class WidgetWeatherModel(
+        val location: String,
+        val date: String,
         val maxTemperatures: String,
         val minTemperatures: String,
-        val weatherType: String,
+        val nowTemperatures: String,
+        val weatherType: Weather,
         val comment: String,
-        val clothes: String
+        val clothes: List<Clothes>
     )
 
 }
