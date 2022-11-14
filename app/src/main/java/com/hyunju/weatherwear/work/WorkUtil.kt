@@ -13,11 +13,8 @@ fun doWorkChaining(notification: String?) {
     val workManager = WorkManager.getInstance(appContext!!)
 
     if (notification == WeatherWearWorker.ON) {
-        val delay = getTimeUsingInWorkRequest()
-
-        val periodicWorkRequest = PeriodicWorkRequestBuilder<WeatherWearWorker>(24, TimeUnit.HOURS)
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<WeatherWearWorker>(6, TimeUnit.HOURS)
             .setConstraints(createConstraints())
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
             .setInputData(inputData)
             .build()
 

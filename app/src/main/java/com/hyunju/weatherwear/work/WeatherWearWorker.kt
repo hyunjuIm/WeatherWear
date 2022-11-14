@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
+import androidx.lifecycle.LifecycleService
 import androidx.work.*
 import com.hyunju.weatherwear.R
 import com.hyunju.weatherwear.data.entity.LocationLatLngEntity
@@ -27,6 +28,7 @@ import com.hyunju.weatherwear.util.conventer.convertGridGPS
 import com.hyunju.weatherwear.util.date.getTodayDate
 import com.hyunju.weatherwear.util.date.getYesterdayDate
 import com.hyunju.weatherwear.util.weather.getCommentWeather
+import com.hyunju.weatherwear.widget.WeatherWearAppWidgetProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*
@@ -46,7 +48,6 @@ class WeatherWearWorker @AssistedInject constructor(
 
     companion object {
         private const val CHANNEL_NAME = "Daily WeatherWear Updates"
-        private const val CHANNEL_DESCRIPTION = "지금 바로 오늘의 날씨와 옷차림을 확인해보세요!"
         private const val CHANNEL_ID = "ChannelId"
 
         const val NOTIFICATION = "notification"
@@ -72,7 +73,6 @@ class WeatherWearWorker @AssistedInject constructor(
                     }
 
                     createNotificationChannelIfNeeded()
-
                     NotificationManagerCompat
                         .from(context)
                         .notify(NOTIFICATION_ID, createNotification())
@@ -139,15 +139,14 @@ class WeatherWearWorker @AssistedInject constructor(
 
     private fun createNotificationChannelIfNeeded() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            channel.description = CHANNEL_DESCRIPTION
-
             (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                .createNotificationChannel(channel)
+                .createNotificationChannel(
+                    NotificationChannel(
+                        CHANNEL_ID,
+                        CHANNEL_NAME,
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                )
         }
     }
 
