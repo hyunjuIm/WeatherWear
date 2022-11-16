@@ -152,7 +152,7 @@
         <entry key="app/src/main/res/layout/item_week_weather.xml" value="0.4288157332193245" />
         <entry key="app/src/main/res/layout/loading_weather.xml" value="0.2620778110303549" />
         <entry key="app/src/main/res/layout/widget_middle.xml" value="0.4625908507909363" />
-        <entry key="app/src/main/res/layout/widget_provider_layout.xml" value="0.2971086739780658" />
+        <entry key="app/src/main/res/layout/widget_provider_layout.xml" value="0.33" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3203125" />
         <entry key="app/src/main/res/xml/file_provider.xml" value="0.1" />
         <entry key="app/src/main/res/xml/widget_provider.xml" value="0.46173578452330055" />

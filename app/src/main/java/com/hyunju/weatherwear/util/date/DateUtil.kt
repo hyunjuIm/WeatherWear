@@ -31,6 +31,13 @@ fun toTimeFormat(): String {
     return dataFormat.format(currentTime)
 }
 
+// String(HH:mm) -> 현재 시간 가져오기
+fun getNowFullTime(): String {
+    val currentTime: Long = System.currentTimeMillis()
+    val dataFormat = SimpleDateFormat("HH:mm")
+    return dataFormat.format(currentTime)
+}
+
 // String(yyyyMMddHHmm) -> timeInMillis
 fun setStringToTimeInMillis(date: String): Long {
     val dataFormat = SimpleDateFormat("yyyyMMddHHmm")
@@ -61,7 +68,7 @@ fun setStringToHangeulFullDate(date: String): String {
 // String(yyyyMMdd) -> String(yyyy년 MM월 dd일 E요일)
 fun setStringToHangeulDateWithDot(date: String): String {
     val input = SimpleDateFormat("yyyyMMdd")
-    val output = SimpleDateFormat("yyyy.MM.dd (E)")
+    val output = SimpleDateFormat("yyyy.MM.dd (E) ")
     return output.format(input.parse(date) as Date)
 }
 
