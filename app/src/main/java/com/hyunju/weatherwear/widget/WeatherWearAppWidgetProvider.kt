@@ -92,7 +92,7 @@ class WeatherWearAppWidgetProvider : AppWidgetProvider() {
                         updateWidget(updateViews)
                     }
                 } catch (e: Exception) {
-                    Log.e("으악^^", "$e")
+                    e.printStackTrace()
                 } finally {
                     stopSelf()
                 }
