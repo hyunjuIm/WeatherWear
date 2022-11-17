@@ -1,5 +1,7 @@
 package com.hyunju.weatherwear.screen.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.hyunju.weatherwear.R
@@ -16,6 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNoDialogInterface {
+
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
+    }
 
     override val viewModel by viewModels<MainViewModel>()
 

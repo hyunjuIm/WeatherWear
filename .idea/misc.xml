@@ -64,6 +64,8 @@
         <entry key="app/src/main/res/drawable/clothes_mini_skirt.xml" value="0.4005" />
         <entry key="app/src/main/res/drawable/clothes_padding_orange.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_short_padding.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/clothes_short_sleeves_green.xml" value="0.409" />
+        <entry key="app/src/main/res/drawable/clothes_short_sleeves_purple.xml" value="0.409" />
         <entry key="app/src/main/res/drawable/clothes_sleeveless.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/clothes_sweater.xml" value="0.4" />
         <entry key="app/src/main/res/drawable/clothes_sweater_brown.xml" value="0.208" />
@@ -124,6 +126,7 @@
         <entry key="app/src/main/res/layout/activity_back_up.xml" value="0.46164703369140625" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3075671277461351" />
         <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.35541699142634453" />
+        <entry key="app/src/main/res/layout/activity_intro.xml" value="0.4625908507909363" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/activity_modify.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_photo_detail.xml" value="0.2357207615593835" />
@@ -154,6 +157,8 @@
         <entry key="app/src/main/res/layout/widget_middle.xml" value="0.4625908507909363" />
         <entry key="app/src/main/res/layout/widget_provider_layout.xml" value="0.6279744631456762" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3203125" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.32" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.32" />
         <entry key="app/src/main/res/xml/file_provider.xml" value="0.1" />
         <entry key="app/src/main/res/xml/widget_provider.xml" value="0.46173578452330055" />
       </map>

@@ -20,14 +20,18 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/ic_main"
+        android:label="@string/app_hanguel_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_main_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherWear"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".screen.main.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".screen.modify.ModifyActivity"
             android:exported="false" />
@@ -59,12 +63,10 @@
             android:name=".screen.write.WriteActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.main.MainActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:name=".screen.intro.IntroActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -88,14 +90,13 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
 
-        <service
-            android:name=".widget.WeatherWearAppWidgetProvider$UpdateWidgetService" />
-
+        <service android:name=".widget.WeatherWearAppWidgetProvider$UpdateWidgetService" />
     </application>
 
 </manifest>
