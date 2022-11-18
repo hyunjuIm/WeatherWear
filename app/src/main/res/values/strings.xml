@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WeatherWear</string>
     <string name="app_full_name">웨더웨어(WeatherWear)</string>
+    <string name="app_hanguel_name">웨더웨어</string>
 
     <!-- Menu -->
     <string name="home">홈</string>
