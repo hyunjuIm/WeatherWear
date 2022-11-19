@@ -14,6 +14,7 @@ fun doWorkChaining(notification: String?) {
 
     if (notification == WeatherWearWorker.ON) {
         val periodicWorkRequest = PeriodicWorkRequestBuilder<WeatherWearWorker>(6, TimeUnit.HOURS)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setConstraints(createConstraints())
             .setInputData(inputData)
             .build()
