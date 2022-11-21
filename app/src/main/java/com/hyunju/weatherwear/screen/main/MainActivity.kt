@@ -27,6 +27,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(), YesOrNo
 
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
+    override val transitionMode= TransitionMode.NONE
+
     override fun initViews() = with(binding) {
         showFragment(HomeFragment.newInstance(), HomeFragment.TAG)
 

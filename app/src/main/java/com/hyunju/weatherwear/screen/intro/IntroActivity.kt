@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class IntroActivity : AppCompatActivity() {
 
-    private val time: Long = 1300
+    private val time: Long = 1800
 
     private val binding by lazy { ActivityIntroBinding.inflate(layoutInflater) }
 
