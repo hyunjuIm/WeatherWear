@@ -22,7 +22,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
 
     @StringRes
     open val layoutId: Int = -1
-    open val transitionMode: TransitionMode = TransitionMode.NOT_SELECT
+    open val transitionMode: TransitionMode = TransitionMode.NONE
 
     private lateinit var fetchJob: Job
 
@@ -39,7 +39,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         when (transitionMode) {
             TransitionMode.HORIZON -> overridePendingTransition(R.anim.horizon_enter, R.anim.none)
             TransitionMode.VERTICAL -> overridePendingTransition(R.anim.vertical_enter, R.anim.none)
-            TransitionMode.NONE -> overridePendingTransition(R.anim.none, R.anim.none)
             else -> Unit
         }
 
@@ -52,7 +51,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         when (transitionMode) {
             TransitionMode.HORIZON -> overridePendingTransition(R.anim.none, R.anim.horizon_exit)
             TransitionMode.VERTICAL -> overridePendingTransition(R.anim.none, R.anim.vertical_exit)
-            TransitionMode.NONE -> overridePendingTransition(R.anim.none, R.anim.none)
             else -> Unit
         }
     }
@@ -61,14 +59,8 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
         super.onBackPressed()
         if (isFinishing) {
             when (transitionMode) {
-                TransitionMode.HORIZON -> overridePendingTransition(
-                    R.anim.none,
-                    R.anim.horizon_exit
-                )
-                TransitionMode.VERTICAL -> overridePendingTransition(
-                    R.anim.none,
-                    R.anim.vertical_exit
-                )
+                TransitionMode.HORIZON -> overridePendingTransition(R.anim.none, R.anim.horizon_exit)
+                TransitionMode.VERTICAL -> overridePendingTransition(R.anim.none, R.anim.vertical_exit)
                 else -> Unit
             }
         }
@@ -110,7 +102,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatAct
     }
 
     enum class TransitionMode {
-        NOT_SELECT,
         NONE,
         HORIZON,
         VERTICAL
