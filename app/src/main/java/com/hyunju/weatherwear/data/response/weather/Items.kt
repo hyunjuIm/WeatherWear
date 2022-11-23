@@ -100,12 +100,8 @@ data class Items(
     }
 
     private fun setWeekWeatherModel(itemList: List<Item?>, date: String): WeekWeatherModel {
-        val maxSkyValue = itemList.filter { it?.category == CategoryType.SKY }
-            .filter { it?.fcstTime?.toInt() in Time.AFTERNOON }
-            .map { it?.fcstValue.orEmpty().toInt() }.max()
-        val maxShapeValue = itemList.filter { it?.category == CategoryType.PTY }
-            .filter { it?.fcstTime?.toInt() in Time.AFTERNOON }
-            .map { it?.fcstValue.orEmpty().toInt() }.max()
+        val maxSkyValue = maxCountValue(itemList, CategoryType.SKY)
+        val maxShapeValue = maxCountValue(itemList, CategoryType.PTY)
 
         return WeekWeatherModel(
             date = date,
@@ -115,5 +111,11 @@ data class Items(
             minTemperature = findCategoryIntValue(itemList, CategoryType.TMN) ?: throw Exception()
         )
     }
+
+    private fun maxCountValue(itemList: List<Item?>, category: CategoryType) =
+        itemList.filter { it?.category == category }
+            .filter { it?.fcstTime?.toInt() in Time.AFTERNOON }
+            .groupBy { it?.fcstValue }.maxBy { it.value.count() }
+            .value.first()?.fcstValue.orEmpty().toInt()
 
 }
