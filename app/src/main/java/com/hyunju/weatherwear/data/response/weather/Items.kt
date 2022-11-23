@@ -5,6 +5,7 @@ import com.hyunju.weatherwear.model.TimeWeatherModel
 import com.hyunju.weatherwear.model.WeatherModel
 import com.hyunju.weatherwear.model.WeekWeatherModel
 import com.hyunju.weatherwear.util.date.*
+import com.hyunju.weatherwear.util.weather.Time
 import com.hyunju.weatherwear.util.weather.getWeatherType
 
 data class Items(
@@ -100,8 +101,10 @@ data class Items(
 
     private fun setWeekWeatherModel(itemList: List<Item?>, date: String): WeekWeatherModel {
         val maxSkyValue = itemList.filter { it?.category == CategoryType.SKY }
+            .filter { it?.fcstTime?.toInt() in Time.AFTERNOON }
             .map { it?.fcstValue.orEmpty().toInt() }.max()
         val maxShapeValue = itemList.filter { it?.category == CategoryType.PTY }
+            .filter { it?.fcstTime?.toInt() in Time.AFTERNOON }
             .map { it?.fcstValue.orEmpty().toInt() }.max()
 
         return WeekWeatherModel(
