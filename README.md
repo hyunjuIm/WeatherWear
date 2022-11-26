@@ -53,8 +53,15 @@
 
 > ## 스크린샷
 
-|![앱 등록 1](https://user-images.githubusercontent.com/68545018/204073271-042141b9-4edb-4ea2-99d9-63357b99e4b5.png)|![앱 등록 2](https://user-images.githubusercontent.com/68545018/204073273-24a894c9-fe31-4435-a3dd-5c37ed66d6d9.png)|![앱 등록 3](https://user-images.githubusercontent.com/68545018/204073614-efd78a66-fae6-4673-a647-9f17d302c470.png)|![앱 등록 4](https://user-images.githubusercontent.com/68545018/204073275-47ba6dec-8ad8-4980-a72a-7bf07006c329.png)|
-|---|---|---|---|
-|![앱 등록 4](https://user-images.githubusercontent.com/68545018/204073275-47ba6dec-8ad8-4980-a72a-7bf07006c329.png)|![앱 등록 5](https://user-images.githubusercontent.com/68545018/204073276-1f099548-4f68-43cf-8d2f-e4bca79e82f2.png)|![앱 등록 6](https://user-images.githubusercontent.com/68545018/204073277-46ebaa16-957d-427e-94b2-2126d8f6ef9e.png)||![앱 등록 7](https://user-images.githubusercontent.com/68545018/204073278-a5d7d8e4-9154-4dd7-91bf-e38d9763b5d7.png)|  |
+|![앱 등록 1](https://user-images.githubusercontent.com/68545018/204073271-042141b9-4edb-4ea2-99d9-63357b99e4b5.png)|![앱 등록 2](https://user-images.githubusercontent.com/68545018/204073273-24a894c9-fe31-4435-a3dd-5c37ed66d6d9.png)|
+|---|---|
 
+![앱 등록 3](https://user-images.githubusercontent.com/68545018/204073614-efd78a66-fae6-4673-a647-9f17d302c470.png)|![앱 등록 4](https://user-images.githubusercontent.com/68545018/204073275-47ba6dec-8ad8-4980-a72a-7bf07006c329.png)|
+|---|---|
+
+|![앱 등록 5](https://user-images.githubusercontent.com/68545018/204073276-1f099548-4f68-43cf-8d2f-e4bca79e82f2.png)|![앱 등록 6](https://user-images.githubusercontent.com/68545018/204073277-46ebaa16-957d-427e-94b2-2126d8f6ef9e.png)|
+|---|---|
+
+|![앱 등록 7](https://user-images.githubusercontent.com/68545018/204073278-a5d7d8e4-9154-4dd7-91bf-e38d9763b5d7.png)|![empty](https://user-images.githubusercontent.com/68545018/204073718-48724cd3-cc70-46b8-a1f6-e5bfced15623.png)|
+|---|---|
 
